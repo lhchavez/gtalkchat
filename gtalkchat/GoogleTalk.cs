@@ -55,7 +55,8 @@ namespace gtalkchat {
             Send(
                 "/register",
                 sw => {
-                    sw.Write("token=" + HttpUtility.UrlEncode(this.Token) + "&url=" + HttpUtility.UrlEncode(url));
+                    string data = "token=" + HttpUtility.UrlEncode(this.Token) + "&url=" + HttpUtility.UrlEncode(url);
+                    sw.Write(data);
                 },
                 scb,
                 ecb

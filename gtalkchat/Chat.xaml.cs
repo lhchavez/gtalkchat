@@ -42,6 +42,7 @@ namespace gtalkchat {
                 pushChannel.HttpNotificationReceived += new EventHandler<HttpNotificationEventArgs>(PushChannel_HttpNotificationReceived);
 
                 pushChannel.Open();
+                pushChannel.BindToShellToast();
             } else {
                 // The channel was already open, so just register for all the events.
                 pushChannel.ChannelUriUpdated += new EventHandler<NotificationChannelUriEventArgs>(PushChannel_ChannelUriUpdated);
@@ -51,26 +52,35 @@ namespace gtalkchat {
 
             settings = IsolatedStorageSettings.ApplicationSettings;
 
-            settings.Remove("token");
-
             if (settings.Contains("token")) {
                 var tokenBytes = ProtectedData.Unprotect(settings["token"] as byte[], null);
                 gtalk = new GoogleTalk(Encoding.UTF8.GetString(tokenBytes, 0, tokenBytes.Length));
 
                 if (pushChannel.ChannelUri != null) {
-                    gtalk.Register(pushChannel.ChannelUri.ToString(), data => { }, error => Dispatcher.BeginInvoke(() => MessageBox.Show(error)));
+                    gtalk.Register(pushChannel.ChannelUri.ToString(), data => { }, error => {
+                        Dispatcher.BeginInvoke(() => {
+                            settings.Remove("token");
+                            settings.Save();
+
+                            MessageBox.Show(error);
+                            NavigationService.GoBack();
+                        });
+                    });
                 }
             } else {
                 var authBytes = ProtectedData.Unprotect(settings["auth"] as byte[], null);
                 gtalk = new GoogleTalk(settings["username"] as string, Encoding.UTF8.GetString(authBytes, 0, authBytes.Length), token => {
-                    settings["token"] = ProtectedData.Protect(Encoding.UTF8.GetBytes(token), null); ;
+                    settings["token"] = ProtectedData.Protect(Encoding.UTF8.GetBytes(token), null);
                     settings.Save();
 
                     if (pushChannel.ChannelUri != null) {
                         gtalk.Register(pushChannel.ChannelUri.ToString(), data => { }, error => Dispatcher.BeginInvoke(() => MessageBox.Show(error)));
                     }
                 }, error => {
-                    Dispatcher.BeginInvoke(() => MessageBox.Show(error));
+                    Dispatcher.BeginInvoke(() => {
+                        MessageBox.Show(error);
+                        NavigationService.GoBack();
+                    });
                 });
             }
         }
@@ -84,7 +94,13 @@ namespace gtalkchat {
         }
 
         void PushChannel_ChannelUriUpdated(object sender, NotificationChannelUriEventArgs e) {
-            gtalk.Register(e.ChannelUri.ToString(), data => { }, error => Dispatcher.BeginInvoke(() => MessageBox.Show(error)));
+            gtalk.Register(e.ChannelUri.ToString(), data => { }, error => Dispatcher.BeginInvoke(() => {
+                MessageBox.Show(error);
+                settings.Remove("token");
+                settings.Save();
+
+                NavigationService.GoBack();
+            }));
         }
 
         void PushChannel_ErrorOccurred(object sender, NotificationChannelErrorEventArgs e) {
