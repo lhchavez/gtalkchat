@@ -20,10 +20,10 @@ namespace gtalkchat {
         private IsolatedStorageSettings settings;
         private GoogleTalk gtalk;
 
-        public Chat() {
-            /// Holds the push channel that is created or found.
-            HttpNotificationChannel pushChannel;
+        /// Holds the push channel that is created or found.
+        HttpNotificationChannel pushChannel;
 
+        public Chat() {
             // The name of our push channel.
             string channelName = "GtalkChatChannel";
 
@@ -51,13 +51,21 @@ namespace gtalkchat {
             }
 
             settings = IsolatedStorageSettings.ApplicationSettings;
+        }
+
+        protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e) {
+            base.OnNavigatedTo(e);
+
+            if (NavigationContext.QueryString.ContainsKey("from")) {
+                to.Text = NavigationContext.QueryString["from"];
+            }
 
             if (settings.Contains("token")) {
                 var tokenBytes = ProtectedData.Unprotect(settings["token"] as byte[], null);
                 gtalk = new GoogleTalk(Encoding.UTF8.GetString(tokenBytes, 0, tokenBytes.Length));
 
                 if (pushChannel.ChannelUri != null) {
-                    gtalk.Register(pushChannel.ChannelUri.ToString(), data => { }, error => {
+                    gtalk.Register(pushChannel.ChannelUri.ToString(), data => this.GetOfflineMessages(), error => {
                         Dispatcher.BeginInvoke(() => {
                             settings.Remove("token");
                             settings.Save();
@@ -74,10 +82,16 @@ namespace gtalkchat {
                     settings.Save();
 
                     if (pushChannel.ChannelUri != null) {
-                        gtalk.Register(pushChannel.ChannelUri.ToString(), data => { }, error => Dispatcher.BeginInvoke(() => MessageBox.Show(error)));
+                        gtalk.Register(pushChannel.ChannelUri.ToString(), data => this.GetOfflineMessages(), error => Dispatcher.BeginInvoke(() => MessageBox.Show(error)));
                     }
                 }, error => {
                     Dispatcher.BeginInvoke(() => {
+                        if (error.StartsWith("401")) {
+                            // stale auth token. get a new one and we should be all happy again.
+                            settings.Remove("auth");
+                            settings.Save();
+                        }
+
                         MessageBox.Show(error);
                         NavigationService.GoBack();
                     });
@@ -85,11 +99,29 @@ namespace gtalkchat {
             }
         }
 
+        private void GetOfflineMessages() {
+            gtalk.MessageQueue(message => Dispatcher.BeginInvoke(() => {
+                chatLog.Text += String.Format("{0} on {1}: {2}\n", message.From, message.Time, message.Body);
+            }), error => Dispatcher.BeginInvoke(() => MessageBox.Show(error)));
+        }
+
         private void send_Click(object sender, RoutedEventArgs e) {
-            gtalk.Message(to.Text, body.Text, data => Dispatcher.BeginInvoke(() => body.Text = "" ), error => Dispatcher.BeginInvoke(() => {
+            send.IsEnabled = false;
+            to.IsEnabled = false;
+            body.IsEnabled = false;
+
+            gtalk.SendMessage(to.Text, body.Text, data => Dispatcher.BeginInvoke(() => {
+                body.Text = "";
+                send.IsEnabled = true;
+                to.IsEnabled = true;
+                body.IsEnabled = true;
+            }), error => Dispatcher.BeginInvoke(() => {
                 MessageBox.Show(error);
                 settings.Remove("token");
                 settings.Save();
+                send.IsEnabled = true;
+                to.IsEnabled = true;
+                body.IsEnabled = true;
             }));
         }
 

@@ -35,7 +35,7 @@ namespace gtalkchat {
         }
 
         private void login_Click(object sender, RoutedEventArgs e) {
-            if (settings.Contains("auth") || settings.Contains("token")) {
+            if (settings.Contains("username") && settings["username"] == username.Text && (settings.Contains("auth") || settings.Contains("token"))) {
                 NavigationService.Navigate(new Uri("/Chat.xaml", UriKind.Relative));
                 return;
             }
@@ -44,7 +44,7 @@ namespace gtalkchat {
             settings["password"] = ProtectedData.Protect(Encoding.UTF8.GetBytes(password.Password), null);
             settings.Save();
 
-            GoogleLogin(username.Text, password.Password, (string token) => {
+            GoogleLogin(username.Text, password.Password, token => {
                 Dispatcher.BeginInvoke(() => {
                     settings["auth"] = ProtectedData.Protect(Encoding.UTF8.GetBytes(token), null);
                     settings.Save();
@@ -81,9 +81,11 @@ namespace gtalkchat {
 
                         var responseStream = response.GetResponseStream();
                         using (var sr = new StreamReader(responseStream)) {
-                            sr.ReadLine();
-                            sr.ReadLine();
-                            callback(sr.ReadLine().Split(new char[] { '=' })[1]);
+                            string line;
+
+                            while (!(line = sr.ReadLine()).StartsWith("Auth="));
+
+                            callback(line.Split(new char[] { '=' })[1]);
                         }
                     } catch (WebException e) {
                         var response = e.Response as HttpWebResponse;

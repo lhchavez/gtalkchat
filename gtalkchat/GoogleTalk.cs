@@ -9,14 +9,34 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.IO;
+using Procurios.Public;
+using System.Collections.Generic;
 
 namespace gtalkchat {
     public class GoogleTalk {
         private string Token;
         public delegate void WriteDataCallback(StreamWriter sw);
         public delegate void SuccessCallback(string data);
-        public delegate void RosterCallback(string[] roster);
+        public delegate void RosterCallback(Roster roster);
+        public delegate void MessageCallback(Message message);
         public delegate void ErrorCallback(string error);
+
+        public struct Message {
+            public string From;
+            public DateTime Time;
+            public string Type;
+            public string Body;
+            public bool OTR;
+        };
+
+        public struct Roster {
+            public string JID;
+            public bool Online;
+            public string Name;
+            public string Show;
+            public string Status;
+            public string Photo;
+        };
 
         public GoogleTalk(string Username, string Auth, SuccessCallback scb, ErrorCallback ecb) {
             Login(Username, Auth, scb, ecb);
@@ -40,7 +60,7 @@ namespace gtalkchat {
             );
         }
 
-        public void Message(string to, string body, SuccessCallback scb, ErrorCallback ecb) {
+        public void SendMessage(string to, string body, SuccessCallback scb, ErrorCallback ecb) {
             Send(
                 "/message",
                 sw => {
@@ -74,19 +94,74 @@ namespace gtalkchat {
             );
         }
 
-        public void Roster(RosterCallback rcb, ErrorCallback ecb) {
+        public void GetRoster(RosterCallback rcb, ErrorCallback ecb) {
             Send(
-                "/logout",
+                "/roster",
                 sw => {
                     sw.Write("token=" + HttpUtility.UrlEncode(this.Token));
                 },
-                data => {
+                line => {
+                    bool success = true;
+
+                    var json = JSON.JsonDecode(line, ref success);
+
+                    if (success && json is Dictionary<string, object>) {
+                        var data = json as Dictionary<string, object>;
+
+                        var roster = new Roster();
+
+                        roster.JID = data["jid"] as string;
+                        roster.Online = !data.ContainsKey("type") || !"unavailable".Equals(data["type"] as string);
+                        if (data.ContainsKey("name")) roster.Name = data["name"] as string;
+                        if (data.ContainsKey("show")) roster.Show = data["show"] as string;
+                        if (data.ContainsKey("photo")) roster.Photo = data["photo"] as string;
+
+                        rcb(roster);
+                    } else {
+                        ecb("Invalid JSON");
+                    }
+                },
+                ecb,
+                true
+            );
+        }
+
+        public void MessageQueue(MessageCallback mcb, ErrorCallback ecb) {
+            Send(
+                "/messagequeue",
+                sw => {
+                    sw.Write("token=" + HttpUtility.UrlEncode(this.Token));
+                },
+                line => {
+                    bool success = true;
+
+                    var json = JSON.JsonDecode(line, ref success);
+
+                    if (success && json is Dictionary<string, object>) {
+                        var data = json as Dictionary<string, object>;
+
+                        var message = new Message();
+
+                        message.From = data["from"] as string;
+                        message.Time = new DateTime(1970,1,1,0,0,0,0).AddMilliseconds(long.Parse(data["time"].ToString().Split(new char[] { '.' })[0])).ToLocalTime();
+                        if (data.ContainsKey("type")) message.Type = data["type"] as string;
+                        if (data.ContainsKey("body")) message.Body = data["body"] as string;
+                        if (data.ContainsKey("otr")) message.OTR = true.Equals(data["otr"]);
+
+                        mcb(message);
+                    } else {
+                        ecb("Invalid JSON");
+                    }
                 },
                 ecb
             );
         }
 
         private void Send(string uri, WriteDataCallback wdcb, SuccessCallback scb, ErrorCallback ecb) {
+            Send(uri, wdcb, scb, ecb, false);
+        }
+
+        private void Send(string uri, WriteDataCallback wdcb, SuccessCallback scb, ErrorCallback ecb, bool lines) {
             var req = HttpWebRequest.CreateHttp("https://gtalkjsonproxy.lhchavez.com" + uri);
 
             req.ContentType = "application/x-www-form-urlencoded";
@@ -105,7 +180,17 @@ namespace gtalkchat {
 
                         var responseStream = response.GetResponseStream();
                         using (var sr = new StreamReader(responseStream)) {
-                            scb(sr.ReadToEnd());
+                            if (lines) {
+                                string line;
+
+                                while ((line = sr.ReadLine()) != null) {
+                                    if (line.Length > 0) {
+                                        scb(line);
+                                    }
+                                }
+                            } else {
+                                scb(sr.ReadToEnd());
+                            }
                         }
                     } catch (WebException e) {
                         var response = e.Response as HttpWebResponse;

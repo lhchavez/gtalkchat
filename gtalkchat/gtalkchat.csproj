@@ -65,6 +65,7 @@
       <DependentUpon>Chat.xaml</DependentUpon>
     </Compile>
     <Compile Include="GoogleTalk.cs" />
+    <Compile Include="JSON.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
