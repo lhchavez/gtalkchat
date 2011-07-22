@@ -86,7 +86,7 @@ public sealed class MD5Core {
         }
 
         // The final data block. 
-        return MD5Core.GetHashFinalBlock(input, startIndex, endIndex - startIndex, abcd, (Int64)input.Length * 8);
+        return MD5Core.GetHashFinalBlock(input, startIndex, endIndex - startIndex, abcd, (Int64)length * 8);
     }
 
     internal static byte[] GetHashFinalBlock(byte[] input, int ibStart, int cbSize, ABCDStruct ABCD, Int64 len) {
