@@ -39,7 +39,7 @@ namespace gtalkchat
         public bool OTR
         {
             get { return otr; }
-            set { if (value != otr) { from = otr; Changed("OTR"); } }
+            set { if (value != otr) { otr = value; Changed("OTR"); } }
         }
 
         #endregion
