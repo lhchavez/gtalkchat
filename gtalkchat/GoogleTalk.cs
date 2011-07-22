@@ -11,13 +11,15 @@ using System.Windows.Shapes;
 using System.IO;
 using Procurios.Public;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace gtalkchat {
     public class GoogleTalk {
         private string Token;
+        private AESUtility Aes;
         public delegate void WriteDataCallback(StreamWriter sw);
         public delegate void SuccessCallback(string data);
-        public delegate void RosterCallback(Roster roster);
+        public delegate void RosterCallback(Contact roster);
         public delegate void MessageCallback(Message message);
         public delegate void ErrorCallback(string error);
 
@@ -29,7 +31,7 @@ namespace gtalkchat {
             public bool OTR;
         };
 
-        public struct Roster {
+        public struct Contact {
             public string JID;
             public bool Online;
             public string Name;
@@ -46,6 +48,10 @@ namespace gtalkchat {
             this.Token = Token;
         }
 
+        public void SetKey(string key) {
+            this.Aes = new AESUtility(key);
+        }
+
         private void Login(string Username, string Auth, SuccessCallback scb, ErrorCallback ecb) {
             Send(
                 "/login",
@@ -54,6 +60,20 @@ namespace gtalkchat {
                 },
                 data => {
                     this.Token = data;
+                    scb(data);
+                },
+                ecb
+            );
+        }
+
+        public void GetKey(SuccessCallback scb, ErrorCallback ecb) {
+            Send(
+                "/key",
+                sw => {
+                    sw.Write("token=" + HttpUtility.UrlEncode(this.Token));
+                },
+                data => {
+                    this.Aes = new AESUtility(data);
                     scb(data);
                 },
                 ecb
@@ -94,7 +114,9 @@ namespace gtalkchat {
             );
         }
 
-        public void GetRoster(RosterCallback rcb, ErrorCallback ecb) {
+        public ObservableCollection<Contact> GetRoster(RosterCallback rcb, ErrorCallback ecb) {
+            var o = new ObservableCollection<Contact>();
+
             Send(
                 "/roster",
                 sw => {
@@ -108,7 +130,7 @@ namespace gtalkchat {
                     if (success && json is Dictionary<string, object>) {
                         var data = json as Dictionary<string, object>;
 
-                        var roster = new Roster();
+                        var roster = new Contact();
 
                         roster.JID = data["jid"] as string;
                         roster.Online = !data.ContainsKey("type") || !"unavailable".Equals(data["type"] as string);
@@ -116,7 +138,7 @@ namespace gtalkchat {
                         if (data.ContainsKey("show")) roster.Show = data["show"] as string;
                         if (data.ContainsKey("photo")) roster.Photo = data["photo"] as string;
 
-                        rcb(roster);
+                        o.Add(roster);
                     } else {
                         ecb("Invalid JSON");
                     }
@@ -124,6 +146,31 @@ namespace gtalkchat {
                 ecb,
                 true
             );
+
+            return o;
+        }
+
+        public void ParseMessage(string cipher, MessageCallback mcb, ErrorCallback ecb) {
+            bool success = true;
+
+            var line = Aes.Decipher(cipher);
+            var json = JSON.JsonDecode(line, ref success);
+
+            if (success && json is Dictionary<string, object>) {
+                var data = json as Dictionary<string, object>;
+
+                var message = new Message();
+
+                message.From = data["from"] as string;
+                message.Time = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddMilliseconds(long.Parse(data["time"].ToString().Split(new char[] { '.' })[0])).ToLocalTime();
+                if (data.ContainsKey("type")) message.Type = data["type"] as string;
+                if (data.ContainsKey("body")) message.Body = data["body"] as string;
+                if (data.ContainsKey("otr")) message.OTR = true.Equals(data["otr"]);
+
+                mcb(message);
+            } else {
+                ecb("Invalid JSON");
+            }
         }
 
         public void MessageQueue(MessageCallback mcb, ErrorCallback ecb) {
@@ -132,28 +179,11 @@ namespace gtalkchat {
                 sw => {
                     sw.Write("token=" + HttpUtility.UrlEncode(this.Token));
                 },
-                line => {
-                    bool success = true;
-
-                    var json = JSON.JsonDecode(line, ref success);
-
-                    if (success && json is Dictionary<string, object>) {
-                        var data = json as Dictionary<string, object>;
-
-                        var message = new Message();
-
-                        message.From = data["from"] as string;
-                        message.Time = new DateTime(1970,1,1,0,0,0,0).AddMilliseconds(long.Parse(data["time"].ToString().Split(new char[] { '.' })[0])).ToLocalTime();
-                        if (data.ContainsKey("type")) message.Type = data["type"] as string;
-                        if (data.ContainsKey("body")) message.Body = data["body"] as string;
-                        if (data.ContainsKey("otr")) message.OTR = true.Equals(data["otr"]);
-
-                        mcb(message);
-                    } else {
-                        ecb("Invalid JSON");
-                    }
+                cipher => {
+                    ParseMessage(cipher, mcb, ecb);
                 },
-                ecb
+                ecb,
+                true
             );
         }
 
