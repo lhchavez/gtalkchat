@@ -72,8 +72,19 @@ namespace gtalkchat
 
         public void LoadRoster() 
         {
-            var contacts = gtalk.GetRoster(c => { }, e => { });
-            ContactsListBox.ItemsSource = contacts;
+            gtalk.GetRoster(
+                roster => 
+                {
+                    var online = (from r in roster where r.Online select r).ToList();
+                    Dispatcher.BeginInvoke(() => 
+                    {
+                        OnlineContactsListBox.ItemsSource = online;
+                        AllContactsListBox.ItemsSource = roster;
+                    });
+                }, 
+                e => { }
+            );
+            
         }
     }
 }

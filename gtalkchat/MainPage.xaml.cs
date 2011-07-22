@@ -49,7 +49,7 @@ namespace gtalkchat {
                     settings["auth"] = ProtectedData.Protect(Encoding.UTF8.GetBytes(token), null);
                     settings.Save();
 
-                    NavigationService.Navigate(new Uri("/Chat.xaml", UriKind.Relative));
+                    NavigationService.Navigate(new Uri("/ContactList.xaml", UriKind.Relative));
                 });
             });
         }
