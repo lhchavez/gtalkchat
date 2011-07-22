@@ -6,14 +6,12 @@ namespace gtalkchat {
     class AESUtility {
         private string password;
         private Aes aes;
-        private readonly static string Base64 = "'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-/";
+        private readonly static string Base64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-/";
 
         public AESUtility(string password) {
             this.password = password;
 
             this.aes = new AesManaged();
-
-            this.aes.KeySize = 256;
         }
 
         public string Decipher(string cipherText) {

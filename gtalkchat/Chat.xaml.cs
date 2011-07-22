@@ -137,7 +137,7 @@ namespace gtalkchat {
         }
 
         private void GetOfflineMessages() {
-            gtalk.MessageQueue(DisplayMessage, error => Dispatcher.BeginInvoke(() => MessageBox.Show(error)));
+            gtalk.MessageQueue(DisplayMessage, error => Dispatcher.BeginInvoke(() => MessageBox.Show(error)), () => { });
         }
 
         private void send_Click(object sender, RoutedEventArgs e) {

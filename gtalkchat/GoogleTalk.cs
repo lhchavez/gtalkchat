@@ -19,7 +19,8 @@ namespace gtalkchat {
         private AESUtility Aes;
         public delegate void WriteDataCallback(StreamWriter sw);
         public delegate void SuccessCallback(string data);
-        public delegate void RosterCallback(Contact roster);
+        public delegate void RosterCallback(List<Contact> roster);
+        public delegate void FinishedCallback();
         public delegate void MessageCallback(Message message);
         public delegate void ErrorCallback(string error);
 
@@ -45,7 +46,8 @@ namespace gtalkchat {
                     this.Token = data;
                     scb(data);
                 },
-                ecb
+                ecb,
+                null
             );
         }
 
@@ -59,7 +61,8 @@ namespace gtalkchat {
                     this.Aes = new AESUtility(data);
                     scb(data);
                 },
-                ecb
+                ecb,
+                null
             );
         }
 
@@ -70,7 +73,8 @@ namespace gtalkchat {
                     sw.Write("token=" + HttpUtility.UrlEncode(this.Token) + "&to=" + HttpUtility.UrlEncode(to) + "&body=" + HttpUtility.UrlEncode(body));
                 },
                 scb,
-                ecb
+                ecb,
+                null
             );
         }
 
@@ -82,7 +86,8 @@ namespace gtalkchat {
                     sw.Write(data);
                 },
                 scb,
-                ecb
+                ecb,
+                null
             );
         }
 
@@ -93,12 +98,13 @@ namespace gtalkchat {
                     sw.Write("token=" + HttpUtility.UrlEncode(this.Token));
                 },
                 scb,
-                ecb
+                ecb,
+                null
             );
         }
 
-        public ObservableCollection<Contact> GetRoster(RosterCallback rcb, ErrorCallback ecb) {
-            var o = new ObservableCollection<Contact>();
+        public void GetRoster(RosterCallback rcb, ErrorCallback ecb) {
+            var o = new List<Contact>();
 
             Send(
                 "/roster",
@@ -127,10 +133,9 @@ namespace gtalkchat {
                     }
                 },
                 ecb,
+                () => rcb(o),
                 true
             );
-
-            return o;
         }
 
         public void ParseMessage(string cipher, MessageCallback mcb, ErrorCallback ecb) {
@@ -156,7 +161,7 @@ namespace gtalkchat {
             }
         }
 
-        public void MessageQueue(MessageCallback mcb, ErrorCallback ecb) {
+        public void MessageQueue(MessageCallback mcb, ErrorCallback ecb, FinishedCallback fcb) {
             Send(
                 "/messagequeue",
                 sw => {
@@ -166,15 +171,16 @@ namespace gtalkchat {
                     ParseMessage(cipher, mcb, ecb);
                 },
                 ecb,
+                fcb,
                 true
             );
         }
 
-        private void Send(string uri, WriteDataCallback wdcb, SuccessCallback scb, ErrorCallback ecb) {
-            Send(uri, wdcb, scb, ecb, false);
+        private void Send(string uri, WriteDataCallback wdcb, SuccessCallback scb, ErrorCallback ecb, FinishedCallback fcb) {
+            Send(uri, wdcb, scb, ecb, fcb, false);
         }
 
-        private void Send(string uri, WriteDataCallback wdcb, SuccessCallback scb, ErrorCallback ecb, bool lines) {
+        private void Send(string uri, WriteDataCallback wdcb, SuccessCallback scb, ErrorCallback ecb, FinishedCallback fcb, bool lines) {
             var req = HttpWebRequest.CreateHttp("https://gtalkjsonproxy.lhchavez.com" + uri);
 
             req.ContentType = "application/x-www-form-urlencoded";
@@ -203,6 +209,10 @@ namespace gtalkchat {
                                 }
                             } else {
                                 scb(sr.ReadToEnd());
+                            }
+
+                            if (fcb != null) {
+                                fcb();
                             }
                         }
                     } catch (WebException e) {
