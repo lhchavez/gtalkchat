@@ -28,11 +28,13 @@
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <TextBlock Height="30" HorizontalAlignment="Left" Margin="12,6,0,0" Name="usernameLabel" Text="username" VerticalAlignment="Top" />
-            <TextBox Height="72" HorizontalAlignment="Left" Margin="0,42,0,0" Name="username" Text="" VerticalAlignment="Top" Width="450" />
-            <TextBlock Height="30" HorizontalAlignment="Left" Margin="12,120,0,0" Name="passwordLabel" Text="password" VerticalAlignment="Top" />
-            <PasswordBox Height="72" HorizontalAlignment="Left" Margin="6,156,0,0" Name="password" VerticalAlignment="Top" Width="444" />
-            <Button Content="login" Height="72" HorizontalAlignment="Left" Margin="12,238,0,0" Name="login" VerticalAlignment="Top" Width="438" Click="login_Click"/>
+            <StackPanel>
+                <TextBlock Name="usernameLabel" Text="username" Style="{StaticResource PhoneTextNormalStyle}" />
+                <TextBox Name="username" />
+                <TextBlock Name="passwordLabel" Text="password" Style="{StaticResource PhoneTextNormalStyle}" />
+                <PasswordBox Name="password" />
+                <Button Content="login" Name="login" Click="login_Click"/>
+            </StackPanel>
         </Grid>
     </Grid>
  

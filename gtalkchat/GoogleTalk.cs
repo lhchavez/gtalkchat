@@ -23,23 +23,6 @@ namespace gtalkchat {
         public delegate void MessageCallback(Message message);
         public delegate void ErrorCallback(string error);
 
-        public struct Message {
-            public string From;
-            public DateTime Time;
-            public string Type;
-            public string Body;
-            public bool OTR;
-        };
-
-        public struct Contact {
-            public string JID;
-            public bool Online;
-            public string Name;
-            public string Show;
-            public string Status;
-            public string Photo;
-        };
-
         public GoogleTalk(string Username, string Auth, SuccessCallback scb, ErrorCallback ecb) {
             Login(Username, Auth, scb, ecb);
         }
