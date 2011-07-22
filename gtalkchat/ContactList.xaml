@@ -13,6 +13,12 @@
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait"  Orientation="Portrait"
     shell:SystemTray.IsVisible="True">
+    
+    <phone:PhoneApplicationPage.Resources>
+        <DataTemplate x:Key="ContactTemplate">
+            <TextBlock Style="{StaticResource PhoneTextLargeStyle}" Text="{Binding Name}" />
+        </DataTemplate>
+    </phone:PhoneApplicationPage.Resources>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
@@ -21,15 +27,15 @@
             <!--Pivot item one-->
             <controls:PivotItem Header="online">
                 <Grid>
-                    <ListBox Name="ContactsListBox">
-                        
-                    </ListBox>
+                    <ListBox Name="OnlineContactsListBox" ItemTemplate="{StaticResource ContactTemplate}" />
                 </Grid>
             </controls:PivotItem>
 
             <!--Pivot item two-->
             <controls:PivotItem Header="all">
-                <Grid/>
+                <Grid>
+                    <ListBox Name="AllContactsListBox" ItemTemplate="{StaticResource ContactTemplate}" />
+                </Grid>
             </controls:PivotItem>
         </controls:Pivot>
     </Grid>
