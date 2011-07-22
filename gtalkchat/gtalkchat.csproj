@@ -49,6 +49,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Phone" />
+    <Reference Include="Microsoft.Phone.Controls, Version=7.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Phone.Interop" />
     <Reference Include="System.Windows" />
     <Reference Include="system" />
@@ -66,6 +67,9 @@
       <DependentUpon>Chat.xaml</DependentUpon>
     </Compile>
     <Compile Include="Contact.cs" />
+    <Compile Include="ContactList.xaml.cs">
+      <DependentUpon>ContactList.xaml</DependentUpon>
+    </Compile>
     <Compile Include="GoogleTalk.cs" />
     <Compile Include="JSON.cs" />
     <Compile Include="MainPage.xaml.cs">
@@ -81,6 +85,10 @@
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
     <Page Include="Chat.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ContactList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

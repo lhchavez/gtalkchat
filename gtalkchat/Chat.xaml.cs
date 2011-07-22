@@ -130,7 +130,7 @@ namespace gtalkchat {
             });
         }
 
-        private void DisplayMessage(GoogleTalk.Message message) {
+        private void DisplayMessage(Message message) {
             Dispatcher.BeginInvoke(() => {
                 chatLog.Text += String.Format("{0} on {1}: {2}\n", message.From, message.Time, message.Body);
             });
