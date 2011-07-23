@@ -50,6 +50,10 @@ namespace gtalkchat {
                 pushChannel.HttpNotificationReceived += new EventHandler<HttpNotificationEventArgs>(PushChannel_HttpNotificationReceived);
             }
 
+            if (!pushChannel.IsShellTileBound) {
+                pushChannel.BindToShellTile();
+            }
+
             settings = IsolatedStorageSettings.ApplicationSettings;
         }
 
