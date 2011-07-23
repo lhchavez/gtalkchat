@@ -17,8 +17,17 @@ namespace gtalkchat {
     public class GoogleTalk {
         private string Token;
         private AESUtility Aes;
+
+        private enum ReceiveMode {
+            Blob,
+            SingleString,
+            Lines
+        };
+
         public delegate void WriteDataCallback(StreamWriter sw);
         public delegate void SuccessCallback(string data);
+        public delegate void BinarySuccessCallback(byte[] data);
+        public delegate void ContactCallback(Contact contact);
         public delegate void RosterCallback(List<Contact> roster);
         public delegate void FinishedCallback();
         public delegate void MessageCallback(Message message);
@@ -39,13 +48,13 @@ namespace gtalkchat {
         private void Login(string Username, string Auth, SuccessCallback scb, ErrorCallback ecb) {
             Send(
                 "/login",
-                sw => {
-                    sw.Write("username=" + HttpUtility.UrlEncode(Username) + "&auth=" + HttpUtility.UrlEncode(Auth));
-                },
+                ReceiveMode.SingleString,
+                sw => sw.Write("username=" + HttpUtility.UrlEncode(Username) + "&auth=" + HttpUtility.UrlEncode(Auth)),
                 data => {
                     this.Token = data;
                     scb(data);
                 },
+                null,
                 ecb,
                 null
             );
@@ -54,6 +63,7 @@ namespace gtalkchat {
         public void GetKey(SuccessCallback scb, ErrorCallback ecb) {
             Send(
                 "/key",
+                ReceiveMode.SingleString,
                 sw => {
                     sw.Write("token=" + HttpUtility.UrlEncode(this.Token));
                 },
@@ -61,6 +71,7 @@ namespace gtalkchat {
                     this.Aes = new AESUtility(data);
                     scb(data);
                 },
+                null,
                 ecb,
                 null
             );
@@ -69,10 +80,10 @@ namespace gtalkchat {
         public void SendMessage(string to, string body, SuccessCallback scb, ErrorCallback ecb) {
             Send(
                 "/message",
-                sw => {
-                    sw.Write("token=" + HttpUtility.UrlEncode(this.Token) + "&to=" + HttpUtility.UrlEncode(to) + "&body=" + HttpUtility.UrlEncode(body));
-                },
+                ReceiveMode.SingleString,
+                sw => sw.Write("token=" + HttpUtility.UrlEncode(this.Token) + "&to=" + HttpUtility.UrlEncode(to) + "&body=" + HttpUtility.UrlEncode(body)),
                 scb,
+                null,
                 ecb,
                 null
             );
@@ -81,11 +92,13 @@ namespace gtalkchat {
         public void Register(string url, SuccessCallback scb, ErrorCallback ecb) {
             Send(
                 "/register",
+                ReceiveMode.SingleString,
                 sw => {
                     string data = "token=" + HttpUtility.UrlEncode(this.Token) + "&url=" + HttpUtility.UrlEncode(url);
                     sw.Write(data);
                 },
                 scb,
+                null,
                 ecb,
                 null
             );
@@ -94,10 +107,10 @@ namespace gtalkchat {
         public void Logout(SuccessCallback scb, ErrorCallback ecb) {
             Send(
                 "/logout",
-                sw => {
-                    sw.Write("token=" + HttpUtility.UrlEncode(this.Token));
-                },
+                ReceiveMode.SingleString,
+                sw => sw.Write("token=" + HttpUtility.UrlEncode(this.Token)),
                 scb,
+                null,
                 ecb,
                 null
             );
@@ -108,34 +121,114 @@ namespace gtalkchat {
 
             Send(
                 "/roster",
+                ReceiveMode.Lines,
+                sw => sw.Write("token=" + HttpUtility.UrlEncode(this.Token)),
+                line => ParseContact(line, false, contact => o.Add(contact), ecb),
+                null,
+                ecb,
+                () => rcb(o)
+            );
+        }
+
+        public void GetPhoto(string jid, BinarySuccessCallback bcb, ErrorCallback ecb) {
+            var o = new List<Contact>();
+
+            Send(
+                "/photo",
+                ReceiveMode.Blob,
+                sw => sw.Write("token=" + HttpUtility.UrlEncode(this.Token) + "&jid" + HttpUtility.UrlEncode(jid)),
+                null,
+                bcb,
+                ecb,
+                null
+            );
+        }
+
+        public void MessageQueue(MessageCallback mcb, ErrorCallback ecb, FinishedCallback fcb) {
+            Send(
+                "/messagequeue",
+                ReceiveMode.Lines,
                 sw => {
                     sw.Write("token=" + HttpUtility.UrlEncode(this.Token));
                 },
-                line => {
-                    bool success = true;
-
-                    var json = JSON.JsonDecode(line, ref success);
-
-                    if (success && json is Dictionary<string, object>) {
-                        var data = json as Dictionary<string, object>;
-
-                        var roster = new Contact();
-
-                        roster.JID = data["jid"] as string;
-                        roster.Online = !data.ContainsKey("type") || !"unavailable".Equals(data["type"] as string);
-                        if (data.ContainsKey("name")) roster.Name = data["name"] as string;
-                        if (data.ContainsKey("show")) roster.Show = data["show"] as string;
-                        if (data.ContainsKey("photo")) roster.Photo = data["photo"] as string;
-
-                        o.Add(roster);
-                    } else {
-                        ecb("Invalid JSON");
-                    }
+                cipher => {
+                    ParseMessage(cipher, mcb, ecb);
                 },
+                null,
                 ecb,
-                () => rcb(o),
-                true
+                fcb
             );
+        }
+
+        private void Send(string uri, ReceiveMode mode, WriteDataCallback wdcb, SuccessCallback scb, BinarySuccessCallback bcb, ErrorCallback ecb, FinishedCallback fcb) {
+            var req = HttpWebRequest.CreateHttp("https://gtalkjsonproxy.lhchavez.com" + uri);
+
+            req.ContentType = "application/x-www-form-urlencoded";
+            req.Method = "POST";
+
+            req.BeginGetRequestStream(ar => {
+                using (var requestStream = req.EndGetRequestStream(ar)) {
+                    using (var sr = new StreamWriter(requestStream)) {
+                        wdcb(sr);
+                    }
+                }
+
+                req.BeginGetResponse(a => {
+                    try {
+                        var response = req.EndGetResponse(a) as HttpWebResponse;
+
+                        var responseStream = response.GetResponseStream();
+
+                        if (mode == ReceiveMode.Blob) {
+                            byte[] data = new byte[response.ContentLength];
+
+                            responseStream.BeginRead(data, 0, (int)response.ContentLength, result => {
+                                if (result.IsCompleted) {
+                                    bcb(data);
+                                } else {
+                                    ecb("Incomplete response");
+                                }
+                            }, null);
+                        } else {
+                            using (var sr = new StreamReader(responseStream)) {
+                                switch (mode) {
+                                    case ReceiveMode.Lines:
+                                        string line;
+
+                                        while ((line = sr.ReadLine()) != null) {
+                                            if (line.Length > 0) {
+                                                scb(line);
+                                            }
+                                        }
+
+                                        break;
+                                    case ReceiveMode.SingleString:
+                                        scb(sr.ReadToEnd());
+
+                                        break;
+                                }
+
+                                if (fcb != null) {
+                                    fcb();
+                                }
+                            }
+                        }
+                    } catch (WebException e) {
+                        var response = e.Response as HttpWebResponse;
+
+                        try {
+                            using (var responseStream = response.GetResponseStream()) {
+                                using (var sr = new StreamReader(responseStream)) {
+                                    ecb(sr.ReadToEnd());
+                                }
+                            }
+                        } catch (Exception ex) {
+                            // What is wrong with this platform?!
+                            ecb(ex.Message + "\n" + e.Message);
+                        }
+                    }
+                }, null);
+            }, null);
         }
 
         public void ParseMessage(string cipher, MessageCallback mcb, ErrorCallback ecb) {
@@ -161,76 +254,26 @@ namespace gtalkchat {
             }
         }
 
-        public void MessageQueue(MessageCallback mcb, ErrorCallback ecb, FinishedCallback fcb) {
-            Send(
-                "/messagequeue",
-                sw => {
-                    sw.Write("token=" + HttpUtility.UrlEncode(this.Token));
-                },
-                cipher => {
-                    ParseMessage(cipher, mcb, ecb);
-                },
-                ecb,
-                fcb,
-                true
-            );
-        }
+        public void ParseContact(string cipher, bool ciphered, ContactCallback mcb, ErrorCallback ecb) {
+            bool success = true;
 
-        private void Send(string uri, WriteDataCallback wdcb, SuccessCallback scb, ErrorCallback ecb, FinishedCallback fcb) {
-            Send(uri, wdcb, scb, ecb, fcb, false);
-        }
+            var json = JSON.JsonDecode(ciphered ? Aes.Decipher(cipher) : cipher, ref success);
 
-        private void Send(string uri, WriteDataCallback wdcb, SuccessCallback scb, ErrorCallback ecb, FinishedCallback fcb, bool lines) {
-            var req = HttpWebRequest.CreateHttp("https://gtalkjsonproxy.lhchavez.com" + uri);
+            if (success && json is Dictionary<string, object>) {
+                var data = json as Dictionary<string, object>;
 
-            req.ContentType = "application/x-www-form-urlencoded";
-            req.Method = "POST";
+                var contact = new Contact();
 
-            req.BeginGetRequestStream(ar => {
-                using (var requestStream = req.EndGetRequestStream(ar)) {
-                    using (var sr = new StreamWriter(requestStream)) {
-                        wdcb(sr);
-                    }
-                }
+                contact.JID = data["jid"] as string;
+                contact.Online = !data.ContainsKey("type") || !"unavailable".Equals(data["type"] as string);
+                if (data.ContainsKey("name")) contact.Name = data["name"] as string;
+                if (data.ContainsKey("show")) contact.Show = data["show"] as string;
+                if (data.ContainsKey("photo")) contact.Photo = data["photo"] as string;
 
-                req.BeginGetResponse(a => {
-                    try {
-                        var response = req.EndGetResponse(a) as HttpWebResponse;
-
-                        var responseStream = response.GetResponseStream();
-                        using (var sr = new StreamReader(responseStream)) {
-                            if (lines) {
-                                string line;
-
-                                while ((line = sr.ReadLine()) != null) {
-                                    if (line.Length > 0) {
-                                        scb(line);
-                                    }
-                                }
-                            } else {
-                                scb(sr.ReadToEnd());
-                            }
-
-                            if (fcb != null) {
-                                fcb();
-                            }
-                        }
-                    } catch (WebException e) {
-                        var response = e.Response as HttpWebResponse;
-
-                        try {
-                            using (var responseStream = response.GetResponseStream()) {
-                                using (var sr = new StreamReader(responseStream)) {
-                                    ecb(sr.ReadToEnd());
-                                }
-                            }
-                        } catch (Exception ex) {
-                            // What is wrong with this platform?!
-                            ecb(ex.Message + "\n" + e.Message);
-                        }
-                    }
-                }, null);
-            }, null);
+                mcb(contact);
+            } else {
+                ecb("Invalid JSON");
+            }
         }
     }
 }

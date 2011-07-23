@@ -136,6 +136,12 @@ namespace gtalkchat {
             });
         }
 
+        private void DisplayContact(Contact contact) {
+            Dispatcher.BeginInvoke(() => {
+                chatLog.Text += String.Format("{0} on {1}: {2}\n", contact.JID, contact.Online, contact.Show);
+            });
+        }
+
         private void GetOfflineMessages() {
             gtalk.MessageQueue(DisplayMessage, error => Dispatcher.BeginInvoke(() => MessageBox.Show(error)), () => { });
         }
@@ -180,8 +186,10 @@ namespace gtalkchat {
                 string line;
 
                 while ((line = reader.ReadLine()) != null) {
-                    if (line.Length > 0) {
-                        gtalk.ParseMessage(line, DisplayMessage, error => Dispatcher.BeginInvoke(() => MessageBox.Show(error)));
+                    if (line.StartsWith("msg:")) {
+                        gtalk.ParseMessage(line.Substring(4), DisplayMessage, error => Dispatcher.BeginInvoke(() => MessageBox.Show(error)));
+                    } else if (line.StartsWith("pre:")) {
+                        gtalk.ParseContact(line.Substring(4), true, DisplayContact, error => Dispatcher.BeginInvoke(() => MessageBox.Show(error)));
                     }
                 }
             }

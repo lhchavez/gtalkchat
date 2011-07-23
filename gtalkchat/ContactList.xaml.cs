@@ -73,16 +73,26 @@ namespace gtalkchat
         public void LoadRoster() 
         {
             gtalk.GetRoster(
-                roster => 
-                {
+                roster => {
                     var online = (from r in roster where r.Online select r).ToList();
-                    Dispatcher.BeginInvoke(() => 
-                    {
+                    Dispatcher.BeginInvoke(() => {
                         OnlineContactsListBox.ItemsSource = online;
                         AllContactsListBox.ItemsSource = roster;
                     });
-                }, 
-                e => { }
+                },
+                e => {
+                    if (e.StartsWith("404")) {
+                        // your token has expired. You'll have to re-login.
+
+                        Dispatcher.BeginInvoke(() => {
+                            settings.Remove("token");
+                            settings.Save();
+
+                            MessageBox.Show("Your authentication token has expired. Would you kindly try again?");
+                            NavigationService.GoBack();
+                        });
+                    }
+                }
             );
             
         }
