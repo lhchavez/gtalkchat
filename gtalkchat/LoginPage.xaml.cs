@@ -16,27 +16,33 @@ using System.Windows.Threading;
 using System.Security.Cryptography;
 using System.IO.IsolatedStorage;
 
-namespace gtalkchat {
-    public partial class MainPage : PhoneApplicationPage {
+namespace gtalkchat
+{
+    public partial class LoginPage : PhoneApplicationPage
+    {
         public delegate void LoginCallback(string token);
         private IsolatedStorageSettings settings;
 
         // Constructor
-        public MainPage() {
+        public LoginPage()
+        {
             InitializeComponent();
 
             settings = IsolatedStorageSettings.ApplicationSettings;
 
             if (settings.Contains("username")) username.Text = settings["username"] as string;
-            if (settings.Contains("password")) {
+            if (settings.Contains("password"))
+            {
                 var passBytes = ProtectedData.Unprotect(settings["password"] as byte[], null);
                 password.Password = Encoding.UTF8.GetString(passBytes, 0, passBytes.Length);
             }
         }
 
-        private void login_Click(object sender, RoutedEventArgs e) {
-            if (settings.Contains("username") && settings["username"] == username.Text && (settings.Contains("auth") || settings.Contains("token"))) {
-                NavigationService.Navigate(new Uri("/Chat.xaml", UriKind.Relative));
+        private void login_Click(object sender, RoutedEventArgs e)
+        {
+            if (settings.Contains("username") && ((string)settings["username"]) == username.Text && (settings.Contains("auth") || settings.Contains("token")))
+            {
+                NavigationService.GoBack();
                 return;
             }
 
@@ -44,17 +50,20 @@ namespace gtalkchat {
             settings["password"] = ProtectedData.Protect(Encoding.UTF8.GetBytes(password.Password), null);
             settings.Save();
 
-            GoogleLogin(username.Text, password.Password, token => {
-                Dispatcher.BeginInvoke(() => {
+            GoogleLogin(username.Text, password.Password, token =>
+            {
+                Dispatcher.BeginInvoke(() =>
+                {
                     settings["auth"] = ProtectedData.Protect(Encoding.UTF8.GetBytes(token), null);
                     settings.Save();
 
-                    NavigationService.Navigate(new Uri("/ContactList.xaml", UriKind.Relative));
+                    NavigationService.GoBack();
                 });
             });
         }
 
-        public void GoogleLogin(string username, string password, LoginCallback callback) {
+        public void GoogleLogin(string username, string password, LoginCallback callback)
+        {
             var data = Encoding.UTF8.GetBytes(
                 "accountType=HOSTED_OR_GOOGLE" +
                 "&Email=" + HttpUtility.UrlEncode(username) +
@@ -70,34 +79,46 @@ namespace gtalkchat {
             req.AllowReadStreamBuffering = true;
             req.Headers["Content-Length"] = data.Length.ToString();
 
-            req.BeginGetRequestStream(ar => {
-                using (var requestStream = req.EndGetRequestStream(ar)) {
+            req.BeginGetRequestStream(ar =>
+            {
+                using (var requestStream = req.EndGetRequestStream(ar))
+                {
                     requestStream.Write(data, 0, data.Length);
                 }
 
-                req.BeginGetResponse(a => {
-                    try {
+                req.BeginGetResponse(a =>
+                {
+                    try
+                    {
                         var response = req.EndGetResponse(a) as HttpWebResponse;
 
                         var responseStream = response.GetResponseStream();
-                        using (var sr = new StreamReader(responseStream)) {
+                        using (var sr = new StreamReader(responseStream))
+                        {
                             string line;
 
-                            while (!(line = sr.ReadLine()).StartsWith("Auth="));
+                            while (!(line = sr.ReadLine()).StartsWith("Auth=")) ;
 
                             callback(line.Split(new char[] { '=' })[1]);
                         }
-                    } catch (WebException e) {
+                    }
+                    catch (WebException e)
+                    {
                         var response = e.Response as HttpWebResponse;
 
-                        try {
-                            using (var responseStream = response.GetResponseStream()) {
-                                using (var sr = new StreamReader(responseStream)) {
+                        try
+                        {
+                            using (var responseStream = response.GetResponseStream())
+                            {
+                                using (var sr = new StreamReader(responseStream))
+                                {
                                     string message = "Authentication error:\n" + sr.ReadToEnd();
                                     Dispatcher.BeginInvoke(() => MessageBox.Show(message));
                                 }
                             }
-                        } catch (Exception ex) {
+                        }
+                        catch (Exception ex)
+                        {
                             // What is wrong with this platform?!
                             Dispatcher.BeginInvoke(() => MessageBox.Show("Authentication error:\n" + ex.Message + "\n" + e.Message));
                         }

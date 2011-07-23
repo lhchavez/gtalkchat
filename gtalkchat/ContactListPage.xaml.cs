@@ -17,19 +17,19 @@ using System.Collections.ObjectModel;
 
 namespace gtalkchat
 {
-    public partial class ContactList : PhoneApplicationPage
+    public partial class ContactListPage : PhoneApplicationPage
     {
         private IsolatedStorageSettings settings;
         private GoogleTalk gtalk;
 
-        public ContactList()
+        public ContactListPage()
         {
             InitializeComponent();
 
             settings = IsolatedStorageSettings.ApplicationSettings;
         }
 
-        protected override void  OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
+        protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
 
@@ -39,18 +39,18 @@ namespace gtalkchat
                 gtalk = new GoogleTalk(Encoding.UTF8.GetString(tokenBytes, 0, tokenBytes.Length));
                 LoadRoster();
             }
-            else
+            else if (settings.Contains("auth"))
             {
                 var authBytes = ProtectedData.Unprotect(settings["auth"] as byte[], null);
                 gtalk = new GoogleTalk(
-                    settings["username"] as string, 
-                    Encoding.UTF8.GetString(authBytes, 0, authBytes.Length), 
+                    settings["username"] as string,
+                    Encoding.UTF8.GetString(authBytes, 0, authBytes.Length),
                     token =>
                     {
                         settings["token"] = ProtectedData.Protect(Encoding.UTF8.GetBytes(token), null);
                         settings.Save();
                         LoadRoster();
-                    }, 
+                    },
                     error =>
                     {
                         Dispatcher.BeginInvoke(() =>
@@ -68,28 +68,39 @@ namespace gtalkchat
                     }
                 );
             }
+            else
+            {
+                // No token or auth, load login page
+                NavigationService.Navigate(new Uri("/LoginPage.xaml", UriKind.Relative));
+            }
         }
 
         public void LoadRoster() 
         {
             gtalk.GetRoster(
-                roster => {
-                    var online = (from r in roster where r.Online select r).ToList();
-                    Dispatcher.BeginInvoke(() => {
+                roster => 
+                {
+                    var all = roster.ToObservableCollection();
+                    var online = roster.Where(r => r.Online).ToObservableCollection();
+                    Dispatcher.BeginInvoke(() => 
+                    {
                         OnlineContactsListBox.ItemsSource = online;
-                        AllContactsListBox.ItemsSource = roster;
+                        AllContactsListBox.ItemsSource = all;
                     });
                 },
-                e => {
-                    if (e.StartsWith("404")) {
-                        // your token has expired. You'll have to re-login.
+                e => 
+                {
+                    if (e.StartsWith("404")) 
+                    {
+                        // Your token has expired. You'll have to re-login.
 
-                        Dispatcher.BeginInvoke(() => {
+                        Dispatcher.BeginInvoke(() => 
+                        {
                             settings.Remove("token");
                             settings.Save();
 
-                            MessageBox.Show("Your authentication token has expired. Would you kindly try again?");
-                            NavigationService.GoBack();
+                            MessageBox.Show("Your authentication token has expired. Try logging in again.");
+                            NavigationService.Navigate(new Uri("/LoginPage.xaml", UriKind.Relative));
                         });
                     }
                 }
