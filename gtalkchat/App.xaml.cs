@@ -1,18 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+﻿using System.IO.IsolatedStorage;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
-using System.IO.IsolatedStorage;
 
 namespace gtalkchat
 {
@@ -24,11 +14,13 @@ namespace gtalkchat
         /// <returns>The root frame of the Phone Application.</returns>
         public PhoneApplicationFrame RootFrame { get; private set; }
 
-        public GoogleTalk GtalkClient { get; set; }
+        public GoogleTalk GtalkClient { get; private set; }
 
         public PushHelper PushHelper { get; set; }
 
         public IsolatedStorageSettings Settings { get; set; }
+
+        public GoogleTalkHelper GtalkHelper { get; set; }
 
         public static App Current { get { return (App) Application.Current; } }
 
@@ -73,6 +65,16 @@ namespace gtalkchat
         private void Application_Launching(object sender, LaunchingEventArgs e)
         {
             Settings = IsolatedStorageSettings.ApplicationSettings;
+            PushHelper = new PushHelper();
+            GtalkClient = new GoogleTalk();
+
+            GtalkHelper = new GoogleTalkHelper();
+
+            GtalkHelper.MessageReceived += message =>
+                RootFrame.Dispatcher.BeginInvoke(
+                    () => MessageBox.Show(message.Body ?? "(null)"));
+
+            PushHelper.RegisterPushNotifications();
         }
 
         // Code to execute when the application is activated (brought to foreground)
@@ -80,18 +82,30 @@ namespace gtalkchat
         private void Application_Activated(object sender, ActivatedEventArgs e)
         {
             Settings = IsolatedStorageSettings.ApplicationSettings;
+            PushHelper = new PushHelper();
+            GtalkClient = new GoogleTalk();
+
+            GtalkHelper = new GoogleTalkHelper();
+
+            GtalkHelper.MessageReceived += message =>
+                RootFrame.Dispatcher.BeginInvoke(
+                    () => MessageBox.Show(message.Body ?? "(null)"));
+
+            PushHelper.RegisterPushNotifications();
         }
 
         // Code to execute when the application is deactivated (sent to background)
         // This code will not execute when the application is closing
         private void Application_Deactivated(object sender, DeactivatedEventArgs e)
         {
+            Settings.Save();
         }
 
         // Code to execute when the application is closing (eg, user hit Back)
         // This code will not execute when the application is deactivated
         private void Application_Closing(object sender, ClosingEventArgs e)
         {
+            Settings.Save();
         }
 
         // Code to execute if a navigation fails

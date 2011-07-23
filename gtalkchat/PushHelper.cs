@@ -31,6 +31,8 @@ namespace gtalkchat
 
         public void RegisterPushNotifications()
         {
+            pushChannel = HttpNotificationChannel.Find(channelName);
+
             // If the channel was not found, then create a new connection to the push service.
             if (pushChannel == null)
             {
@@ -56,6 +58,26 @@ namespace gtalkchat
             {
                 pushChannel.BindToShellTile();
             }
+
+            if (UriUpdated != null && pushChannel.ChannelUri != null) {
+                UriUpdated(pushChannel.ChannelUri.ToString());
+            }
+        }
+
+        #endregion
+
+        #region Public Properties
+
+        public string PushChannelUri
+        {
+            get
+            {
+                if (pushChannel.ChannelUri == null) {
+                    return null;
+                } else {
+                    return pushChannel.ChannelUri.ToString();
+                }
+            }
         }
 
         #endregion
@@ -65,7 +87,7 @@ namespace gtalkchat
         /// Holds the push channel that is created or found.
         private static HttpNotificationChannel pushChannel;
 
-        private static string channelName = "GtalkChatChannel";
+        private const string channelName = "GtalkChatChannel";
 
         #endregion
 
@@ -90,11 +112,11 @@ namespace gtalkchat
 
         private void PushChannel_HttpNotificationReceived(object sender, HttpNotificationEventArgs e)
         {
-            using (System.IO.StreamReader reader = new System.IO.StreamReader(e.Notification.Body))
+            using (var reader = new System.IO.StreamReader(e.Notification.Body))
             {
-                string data = reader.ReadToEnd();
+                var data = reader.ReadToEnd();
 
-                if (RawNotificationReceived != null)
+                if(RawNotificationReceived != null)
                 {
                     RawNotificationReceived(data);
                 }

@@ -74,6 +74,7 @@
     </Compile>
     <Compile Include="Extensions.cs" />
     <Compile Include="GoogleTalk.cs" />
+    <Compile Include="GoogleTalkHelper.cs" />
     <Compile Include="JSON.cs" />
     <Compile Include="LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>

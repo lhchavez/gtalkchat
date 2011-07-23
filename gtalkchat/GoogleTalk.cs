@@ -1,22 +1,14 @@
 ﻿using System;
 using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
 using System.IO;
 using Procurios.Public;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 
 namespace gtalkchat {
     public class GoogleTalk {
         private string Token;
         private AESUtility Aes;
+        public bool LoggedIn { get; private set; }
 
         private enum ReceiveMode {
             Blob,
@@ -26,26 +18,27 @@ namespace gtalkchat {
 
         public delegate void WriteDataCallback(StreamWriter sw);
         public delegate void SuccessCallback(string data);
-        public delegate void BinarySuccessCallback(byte[] data);
+        public delegate void BinarySuccessCallback(String contentType, byte[] data);
         public delegate void ContactCallback(Contact contact);
         public delegate void RosterCallback(List<Contact> roster);
         public delegate void FinishedCallback();
         public delegate void MessageCallback(Message message);
         public delegate void ErrorCallback(string error);
 
-        public GoogleTalk(string Username, string Auth, SuccessCallback scb, ErrorCallback ecb) {
-            Login(Username, Auth, scb, ecb);
+        public GoogleTalk() {
+            this.LoggedIn = false;
         }
 
-        public GoogleTalk(string Token) {
+        public void SetToken(string Token) {
             this.Token = Token;
+            this.LoggedIn = true;
         }
 
         public void SetKey(string key) {
             this.Aes = new AESUtility(key);
         }
 
-        private void Login(string Username, string Auth, SuccessCallback scb, ErrorCallback ecb) {
+        public void Login(string Username, string Auth, SuccessCallback scb, ErrorCallback ecb) {
             Send(
                 "/login",
                 ReceiveMode.SingleString,
@@ -161,6 +154,10 @@ namespace gtalkchat {
         }
 
         private void Send(string uri, ReceiveMode mode, WriteDataCallback wdcb, SuccessCallback scb, BinarySuccessCallback bcb, ErrorCallback ecb, FinishedCallback fcb) {
+            if (!this.LoggedIn && !uri.Equals("/login")) {
+                throw new InvalidOperationException("Not logged in");
+            }
+
             var req = HttpWebRequest.CreateHttp("https://gtalkjsonproxy.lhchavez.com" + uri);
 
             req.ContentType = "application/x-www-form-urlencoded";
@@ -184,7 +181,7 @@ namespace gtalkchat {
 
                             responseStream.BeginRead(data, 0, (int)response.ContentLength, result => {
                                 if (result.IsCompleted) {
-                                    bcb(data);
+                                    bcb(response.ContentType, data);
                                 } else {
                                     ecb("Incomplete response");
                                 }
@@ -215,6 +212,10 @@ namespace gtalkchat {
                         }
                     } catch (WebException e) {
                         var response = e.Response as HttpWebResponse;
+
+                        if (response.StatusCode == HttpStatusCode.Forbidden) {
+                            this.LoggedIn = false;
+                        }
 
                         try {
                             using (var responseStream = response.GetResponseStream()) {

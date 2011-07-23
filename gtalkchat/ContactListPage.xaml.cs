@@ -21,6 +21,7 @@ namespace gtalkchat
     {
         private IsolatedStorageSettings settings;
         private GoogleTalk gtalk;
+        private GoogleTalkHelper gtalkHelper;
 
         public ContactListPage()
         {
@@ -28,52 +29,19 @@ namespace gtalkchat
 
             settings = App.Current.Settings;
             gtalk = App.Current.GtalkClient;
+            gtalkHelper = App.Current.GtalkHelper;
+
+            if (gtalkHelper.Connected) {
+                LoadRoster();
+            }
+            gtalkHelper.Connect += LoadRoster;
         }
 
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
 
-            if (settings.Contains("token"))
-            {
-                var tokenBytes = ProtectedData.Unprotect(settings["token"] as byte[], null);
-                gtalk = new GoogleTalk(Encoding.UTF8.GetString(tokenBytes, 0, tokenBytes.Length));
-                LoadRoster();
-            }
-            else if (settings.Contains("auth"))
-            {
-                var authBytes = ProtectedData.Unprotect(settings["auth"] as byte[], null);
-                gtalk = new GoogleTalk(
-                    settings["username"] as string,
-                    Encoding.UTF8.GetString(authBytes, 0, authBytes.Length),
-                    token =>
-                    {
-                        settings["token"] = ProtectedData.Protect(Encoding.UTF8.GetBytes(token), null);
-                        settings.Save();
-                        LoadRoster();
-                    },
-                    error =>
-                    {
-                        Dispatcher.BeginInvoke(() =>
-                        {
-                            if (error.StartsWith("401"))
-                            {
-                                // stale auth token. get a new one and we should be all happy again.
-                                settings.Remove("auth");
-                                settings.Save();
-                            }
-
-                            MessageBox.Show(error);
-                            NavigationService.Navigate(new Uri("/LoginPage.xaml", UriKind.Relative));
-                        });
-                    }
-                );
-            }
-            else
-            {
-                // No token or auth, load login page
-                NavigationService.Navigate(new Uri("/LoginPage.xaml", UriKind.Relative));
-            }
+            gtalkHelper.LoginIfNeeded();
         }
 
         public void LoadRoster() 
@@ -91,7 +59,7 @@ namespace gtalkchat
                 },
                 e => 
                 {
-                    if (e.StartsWith("404")) 
+                    if (e.StartsWith("403")) 
                     {
                         // Your token has expired. You'll have to re-login.
 
