@@ -12,24 +12,24 @@ using Microsoft.Phone.Notification;
 
 namespace gtalkchat
 {
-    public static class PushHelper
+    public class PushHelper
     {
         #region Public Events
 
         public delegate void UriUpdatedEventHandler(string uri);
-        public static event UriUpdatedEventHandler UriUpdated;
+        public event UriUpdatedEventHandler UriUpdated;
 
         public delegate void ErrorEventHandler(NotificationChannelErrorEventArgs e);
-        public static event ErrorEventHandler Error;
+        public event ErrorEventHandler Error;
 
         public delegate void RawNotificationReceivedEventHandler(string data);
-        public static event RawNotificationReceivedEventHandler RawNotificationReceived;
+        public event RawNotificationReceivedEventHandler RawNotificationReceived;
 
         #endregion
 
         #region Public Methods
 
-        public static void RegisterPushNotifications()
+        public void RegisterPushNotifications()
         {
             // If the channel was not found, then create a new connection to the push service.
             if (pushChannel == null)
@@ -71,7 +71,7 @@ namespace gtalkchat
 
         #region Private Methods
 
-        private static void PushChannel_ChannelUriUpdated(object sender, NotificationChannelUriEventArgs e)
+        private void PushChannel_ChannelUriUpdated(object sender, NotificationChannelUriEventArgs e)
         {
             if (UriUpdated != null)
             {
@@ -79,7 +79,7 @@ namespace gtalkchat
             }
         }
 
-        private static void PushChannel_ErrorOccurred(object sender, NotificationChannelErrorEventArgs e)
+        private void PushChannel_ErrorOccurred(object sender, NotificationChannelErrorEventArgs e)
         {
             // Error handling logic for your particular application would be here.
             if (Error != null)
@@ -88,7 +88,7 @@ namespace gtalkchat
             }
         }
 
-        private static void PushChannel_HttpNotificationReceived(object sender, HttpNotificationEventArgs e)
+        private void PushChannel_HttpNotificationReceived(object sender, HttpNotificationEventArgs e)
         {
             using (System.IO.StreamReader reader = new System.IO.StreamReader(e.Notification.Body))
             {

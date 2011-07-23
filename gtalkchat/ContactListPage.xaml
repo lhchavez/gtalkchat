@@ -27,14 +27,14 @@
             <!--Pivot item one-->
             <controls:PivotItem Header="online">
                 <Grid>
-                    <ListBox Name="OnlineContactsListBox" ItemTemplate="{StaticResource ContactTemplate}" />
+                    <ListBox Name="OnlineContactsListBox" ItemTemplate="{StaticResource ContactTemplate}" SelectionChanged="ContactsListBox_SelectionChanged" />
                 </Grid>
             </controls:PivotItem>
 
             <!--Pivot item two-->
             <controls:PivotItem Header="all">
                 <Grid>
-                    <ListBox Name="AllContactsListBox" ItemTemplate="{StaticResource ContactTemplate}" />
+                    <ListBox Name="AllContactsListBox" ItemTemplate="{StaticResource ContactTemplate}" SelectionChanged="ContactsListBox_SelectionChanged" />
                 </Grid>
             </controls:PivotItem>
         </controls:Pivot>

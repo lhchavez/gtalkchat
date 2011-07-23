@@ -26,7 +26,8 @@ namespace gtalkchat
         {
             InitializeComponent();
 
-            settings = IsolatedStorageSettings.ApplicationSettings;
+            settings = App.Current.Settings;
+            gtalk = App.Current.GtalkClient;
         }
 
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
@@ -63,7 +64,7 @@ namespace gtalkchat
                             }
 
                             MessageBox.Show(error);
-                            NavigationService.GoBack();
+                            NavigationService.Navigate(new Uri("/LoginPage.xaml", UriKind.Relative));
                         });
                     }
                 );
@@ -106,6 +107,14 @@ namespace gtalkchat
                 }
             );
             
+        }
+
+        private void ContactsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.AddedItems.Count > 0)
+            {
+                NavigationService.Navigate(new Uri("/ChatPage.xaml", UriKind.Relative));
+            }
         }
     }
 }

@@ -12,6 +12,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using System.IO.IsolatedStorage;
 
 namespace gtalkchat
 {
@@ -22,6 +23,14 @@ namespace gtalkchat
         /// </summary>
         /// <returns>The root frame of the Phone Application.</returns>
         public PhoneApplicationFrame RootFrame { get; private set; }
+
+        public GoogleTalk GtalkClient { get; set; }
+
+        public PushHelper PushHelper { get; set; }
+
+        public IsolatedStorageSettings Settings { get; set; }
+
+        public static App Current { get { return (App) Application.Current; } }
 
         /// <summary>
         /// Constructor for the Application object.
@@ -63,12 +72,14 @@ namespace gtalkchat
         // This code will not execute when the application is reactivated
         private void Application_Launching(object sender, LaunchingEventArgs e)
         {
+            Settings = IsolatedStorageSettings.ApplicationSettings;
         }
 
         // Code to execute when the application is activated (brought to foreground)
         // This code will not execute when the application is first launched
         private void Application_Activated(object sender, ActivatedEventArgs e)
         {
+            Settings = IsolatedStorageSettings.ApplicationSettings;
         }
 
         // Code to execute when the application is deactivated (sent to background)
