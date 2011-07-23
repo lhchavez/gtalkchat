@@ -30,27 +30,31 @@ namespace gtalkchat
 
             settings = IsolatedStorageSettings.ApplicationSettings;
 
-            if (settings.Contains("username")) username.Text = settings["username"] as string;
+            if (settings.Contains("username"))
+            {
+                Username.Text = settings["username"] as string;
+            }
+
             if (settings.Contains("password"))
             {
                 var passBytes = ProtectedData.Unprotect(settings["password"] as byte[], null);
-                password.Password = Encoding.UTF8.GetString(passBytes, 0, passBytes.Length);
+                Password.Password = Encoding.UTF8.GetString(passBytes, 0, passBytes.Length);
             }
         }
 
-        private void login_Click(object sender, RoutedEventArgs e)
+        private void Login_Click(object sender, EventArgs e)
         {
-            if (settings.Contains("username") && ((string)settings["username"]) == username.Text && (settings.Contains("auth") || settings.Contains("token")))
+            if (settings.Contains("username") && ((string)settings["username"]) == Username.Text && (settings.Contains("auth") || settings.Contains("token")))
             {
                 NavigationService.GoBack();
                 return;
             }
 
-            settings["username"] = username.Text;
-            settings["password"] = ProtectedData.Protect(Encoding.UTF8.GetBytes(password.Password), null);
+            settings["username"] = Username.Text;
+            settings["password"] = ProtectedData.Protect(Encoding.UTF8.GetBytes(Password.Password), null);
             settings.Save();
 
-            GoogleLogin(username.Text, password.Password, token =>
+            GoogleLogin(Username.Text, Password.Password, token =>
             {
                 Dispatcher.BeginInvoke(() =>
                 {
