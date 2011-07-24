@@ -1,30 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.IO.IsolatedStorage;
 using System.Linq;
-using System.Net;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
-using System.Security.Cryptography;
-using System.Text;
-using System.IO.IsolatedStorage;
-using System.Collections.ObjectModel;
 
-namespace gtalkchat
-{
-    public partial class ContactListPage : PhoneApplicationPage
-    {
-        private IsolatedStorageSettings settings;
-        private GoogleTalk gtalk;
-        private GoogleTalkHelper gtalkHelper;
+namespace gtalkchat {
+    public partial class ContactListPage : PhoneApplicationPage {
+        private readonly IsolatedStorageSettings settings;
+        private readonly GoogleTalk gtalk;
+        private readonly GoogleTalkHelper gtalkHelper;
 
-        public ContactListPage()
-        {
+        public ContactListPage() {
             InitializeComponent();
 
             settings = App.Current.Settings;
@@ -37,34 +24,27 @@ namespace gtalkchat
             gtalkHelper.Connect += LoadRoster;
         }
 
-        protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
-        {
+        protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e) {
             base.OnNavigatedTo(e);
 
             gtalkHelper.LoginIfNeeded();
         }
 
-        public void LoadRoster() 
-        {
+        public void LoadRoster() {
             gtalk.GetRoster(
-                roster => 
-                {
+                roster => {
                     var all = roster.ToObservableCollection();
                     var online = roster.Where(r => r.Online).ToObservableCollection();
-                    Dispatcher.BeginInvoke(() => 
-                    {
+                    Dispatcher.BeginInvoke(() => {
                         OnlineContactsListBox.ItemsSource = online;
                         AllContactsListBox.ItemsSource = all;
                     });
                 },
-                e => 
-                {
-                    if (e.StartsWith("403")) 
-                    {
+                e => {
+                    if (e.StartsWith("403")) {
                         // Your token has expired. You'll have to re-login.
 
-                        Dispatcher.BeginInvoke(() => 
-                        {
+                        Dispatcher.BeginInvoke(() => {
                             settings.Remove("token");
                             settings.Save();
 
@@ -74,13 +54,10 @@ namespace gtalkchat
                     }
                 }
             );
-            
         }
 
-        private void ContactsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (e.AddedItems.Count > 0)
-            {
+        private void ContactsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            if (e.AddedItems.Count > 0) {
                 NavigationService.Navigate(new Uri("/ChatPage.xaml", UriKind.Relative));
             }
         }

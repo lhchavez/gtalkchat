@@ -3,44 +3,34 @@ using System.Collections.ObjectModel;
 using System;
 using System.Linq;
 
-namespace gtalkchat
-{
-    public static class Extensions
-    {
-        public static ObservableCollection<T> ToObservableCollection<T>(this IEnumerable<T> collection)
-        {
+namespace gtalkchat {
+    public static class Extensions {
+        public static ObservableCollection<T> ToObservableCollection<T>(this IEnumerable<T> collection) {
             var o = new ObservableCollection<T>();
 
-            foreach (T item in collection)
-            {
+            foreach (T item in collection) {
                 o.Add(item);
             }
 
             return o;
         }
 
-        public static void Sort<T>(this ObservableCollection<T> collection)
-        {
+        public static void Sort<T>(this ObservableCollection<T> collection) {
             collection.Sort(null);
         }
 
-        public static void Sort<T>(this ObservableCollection<T> collection, Comparison<T> comparison)
-        {
+        public static void Sort<T>(this ObservableCollection<T> collection, Comparison<T> comparison) {
             List<T> sorted = collection.ToList();
 
-            if (comparison != null)
-            {
+            if (comparison != null) {
                 sorted.Sort(comparison);
-            }
-            else
-            {
+            } else {
                 sorted.Sort();
             }
 
             collection.Clear();
 
-            foreach (T item in sorted)
-            {
+            foreach (T item in sorted) {
                 collection.Add(item);
             }
         }

@@ -6,8 +6,8 @@ using System.Collections.Generic;
 
 namespace gtalkchat {
     public class GoogleTalk {
-        private string Token;
-        private AESUtility Aes;
+        private string token;
+        private AesUtility aes;
         public bool LoggedIn { get; private set; }
 
         private enum ReceiveMode {
@@ -17,34 +17,41 @@ namespace gtalkchat {
         };
 
         public delegate void WriteDataCallback(StreamWriter sw);
+
         public delegate void SuccessCallback(string data);
+
         public delegate void BinarySuccessCallback(String contentType, byte[] data);
+
         public delegate void ContactCallback(Contact contact);
+
         public delegate void RosterCallback(List<Contact> roster);
+
         public delegate void FinishedCallback();
+
         public delegate void MessageCallback(Message message);
+
         public delegate void ErrorCallback(string error);
 
         public GoogleTalk() {
-            this.LoggedIn = false;
+            LoggedIn = false;
         }
 
-        public void SetToken(string Token) {
-            this.Token = Token;
-            this.LoggedIn = true;
+        public void SetToken(string token) {
+            this.token = token;
+            LoggedIn = true;
         }
 
         public void SetKey(string key) {
-            this.Aes = new AESUtility(key);
+            aes = new AesUtility(key);
         }
 
-        public void Login(string Username, string Auth, SuccessCallback scb, ErrorCallback ecb) {
+        public void Login(string username, string auth, SuccessCallback scb, ErrorCallback ecb) {
             Send(
                 "/login",
                 ReceiveMode.SingleString,
-                sw => sw.Write("username=" + HttpUtility.UrlEncode(Username) + "&auth=" + HttpUtility.UrlEncode(Auth)),
+                sw => sw.Write("username=" + HttpUtility.UrlEncode(username) + "&auth=" + HttpUtility.UrlEncode(auth)),
                 data => {
-                    this.Token = data;
+                    token = data;
                     scb(data);
                 },
                 null,
@@ -57,11 +64,9 @@ namespace gtalkchat {
             Send(
                 "/key",
                 ReceiveMode.SingleString,
-                sw => {
-                    sw.Write("token=" + HttpUtility.UrlEncode(this.Token));
-                },
+                sw => sw.Write("token=" + HttpUtility.UrlEncode(token)),
                 data => {
-                    this.Aes = new AESUtility(data);
+                    aes = new AesUtility(data);
                     scb(data);
                 },
                 null,
@@ -74,7 +79,10 @@ namespace gtalkchat {
             Send(
                 "/message",
                 ReceiveMode.SingleString,
-                sw => sw.Write("token=" + HttpUtility.UrlEncode(this.Token) + "&to=" + HttpUtility.UrlEncode(to) + "&body=" + HttpUtility.UrlEncode(body)),
+                sw =>
+                sw.Write(
+                    "token=" + HttpUtility.UrlEncode(token) + "&to=" + HttpUtility.UrlEncode(to) + "&body=" +
+                    HttpUtility.UrlEncode(body)),
                 scb,
                 null,
                 ecb,
@@ -87,7 +95,7 @@ namespace gtalkchat {
                 "/register",
                 ReceiveMode.SingleString,
                 sw => {
-                    string data = "token=" + HttpUtility.UrlEncode(this.Token) + "&url=" + HttpUtility.UrlEncode(url);
+                    string data = "token=" + HttpUtility.UrlEncode(token) + "&url=" + HttpUtility.UrlEncode(url);
                     sw.Write(data);
                 },
                 scb,
@@ -101,7 +109,7 @@ namespace gtalkchat {
             Send(
                 "/logout",
                 ReceiveMode.SingleString,
-                sw => sw.Write("token=" + HttpUtility.UrlEncode(this.Token)),
+                sw => sw.Write("token=" + HttpUtility.UrlEncode(token)),
                 scb,
                 null,
                 ecb,
@@ -115,8 +123,8 @@ namespace gtalkchat {
             Send(
                 "/roster",
                 ReceiveMode.Lines,
-                sw => sw.Write("token=" + HttpUtility.UrlEncode(this.Token)),
-                line => ParseContact(line, false, contact => o.Add(contact), ecb),
+                sw => sw.Write("token=" + HttpUtility.UrlEncode(token)),
+                line => ParseContact(line, false, o.Add, ecb),
                 null,
                 ecb,
                 () => rcb(o)
@@ -124,12 +132,10 @@ namespace gtalkchat {
         }
 
         public void GetPhoto(string jid, BinarySuccessCallback bcb, ErrorCallback ecb) {
-            var o = new List<Contact>();
-
             Send(
                 "/photo",
                 ReceiveMode.Blob,
-                sw => sw.Write("token=" + HttpUtility.UrlEncode(this.Token) + "&jid" + HttpUtility.UrlEncode(jid)),
+                sw => sw.Write("token=" + HttpUtility.UrlEncode(token) + "&jid" + HttpUtility.UrlEncode(jid)),
                 null,
                 bcb,
                 ecb,
@@ -141,24 +147,22 @@ namespace gtalkchat {
             Send(
                 "/messagequeue",
                 ReceiveMode.Lines,
-                sw => {
-                    sw.Write("token=" + HttpUtility.UrlEncode(this.Token));
-                },
-                cipher => {
-                    ParseMessage(cipher, mcb, ecb);
-                },
+                sw => sw.Write("token=" + HttpUtility.UrlEncode(token)),
+                cipher => ParseMessage(cipher, mcb, ecb),
                 null,
                 ecb,
                 fcb
             );
         }
 
-        private void Send(string uri, ReceiveMode mode, WriteDataCallback wdcb, SuccessCallback scb, BinarySuccessCallback bcb, ErrorCallback ecb, FinishedCallback fcb) {
-            if (!this.LoggedIn && !uri.Equals("/login")) {
+        private void Send(
+            string uri, ReceiveMode mode, WriteDataCallback wdcb, SuccessCallback scb, BinarySuccessCallback bcb,
+            ErrorCallback ecb, FinishedCallback fcb) {
+            if (!LoggedIn && !uri.Equals("/login")) {
                 throw new InvalidOperationException("Not logged in");
             }
 
-            var req = HttpWebRequest.CreateHttp("https://gtalkjsonproxy.lhchavez.com" + uri);
+            var req = WebRequest.CreateHttp("https://gtalkjsonproxy.lhchavez.com" + uri);
 
             req.ContentType = "application/x-www-form-urlencoded";
             req.Method = "POST";
@@ -177,15 +181,21 @@ namespace gtalkchat {
                         var responseStream = response.GetResponseStream();
 
                         if (mode == ReceiveMode.Blob) {
-                            byte[] data = new byte[response.ContentLength];
+                            var data = new byte[response.ContentLength];
 
-                            responseStream.BeginRead(data, 0, (int)response.ContentLength, result => {
-                                if (result.IsCompleted) {
-                                    bcb(response.ContentType, data);
-                                } else {
-                                    ecb("Incomplete response");
-                                }
-                            }, null);
+                            responseStream.BeginRead(
+                                data,
+                                0,
+                                (int) response.ContentLength,
+                                result => {
+                                    if (result.IsCompleted) {
+                                        bcb(response.ContentType, data);
+                                    } else {
+                                        ecb("Incomplete response");
+                                    }
+                                },
+                                null
+                            );
                         } else {
                             using (var sr = new StreamReader(responseStream)) {
                                 switch (mode) {
@@ -235,8 +245,8 @@ namespace gtalkchat {
         public void ParseMessage(string cipher, MessageCallback mcb, ErrorCallback ecb) {
             bool success = true;
 
-            var line = Aes.Decipher(cipher);
-            var json = JSON.JsonDecode(line, ref success);
+            var line = aes.Decipher(cipher);
+            var json = Json.JsonDecode(line, ref success);
 
             if (success && json is Dictionary<string, object>) {
                 var data = json as Dictionary<string, object>;
@@ -244,7 +254,10 @@ namespace gtalkchat {
                 var message = new Message();
 
                 message.From = data["from"] as string;
-                message.Time = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddMilliseconds(long.Parse(data["time"].ToString().Split(new char[] { '.' })[0])).ToLocalTime();
+                message.Time =
+                    new DateTime(1970, 1, 1, 0, 0, 0, 0).AddMilliseconds(
+                        long.Parse(data["time"].ToString().Split(new[] {'.'})[0])
+                    ).ToLocalTime();
                 if (data.ContainsKey("type")) message.Type = data["type"] as string;
                 if (data.ContainsKey("body")) message.Body = data["body"] as string;
                 if (data.ContainsKey("otr")) message.OTR = true.Equals(data["otr"]);
@@ -258,7 +271,7 @@ namespace gtalkchat {
         public void ParseContact(string cipher, bool ciphered, ContactCallback mcb, ErrorCallback ecb) {
             bool success = true;
 
-            var json = JSON.JsonDecode(ciphered ? Aes.Decipher(cipher) : cipher, ref success);
+            var json = Json.JsonDecode(ciphered ? aes.Decipher(cipher) : cipher, ref success);
 
             if (success && json is Dictionary<string, object>) {
                 var data = json as Dictionary<string, object>;

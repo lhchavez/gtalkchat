@@ -1,14 +1,14 @@
 ﻿using System;
 using System.IO.IsolatedStorage;
 using System.Windows;
+using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 
-namespace gtalkchat
-{
+namespace gtalkchat {
     public partial class ChatPage : PhoneApplicationPage {
-        private IsolatedStorageSettings settings;
-        private GoogleTalk gtalk;
-        private GoogleTalkHelper gtalkHelper;
+        private readonly GoogleTalk gtalk;
+        private readonly GoogleTalkHelper gtalkHelper;
+        private readonly IsolatedStorageSettings settings;
 
         public ChatPage() {
             InitializeComponent();
@@ -19,7 +19,7 @@ namespace gtalkchat
             gtalkHelper.MessageReceived += DisplayMessage;
         }
 
-        protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e) {
+        protected override void OnNavigatedTo(NavigationEventArgs e) {
             base.OnNavigatedTo(e);
 
             if (NavigationContext.QueryString.ContainsKey("from")) {
@@ -30,12 +30,13 @@ namespace gtalkchat
         }
 
         private void DisplayMessage(Message message) {
-            Dispatcher.BeginInvoke(() => {
-                chatLog.Text += String.Format("{0} on {1}: {2}\n", message.From, message.Time, message.Body);
-            });
+            Dispatcher.BeginInvoke(
+                () => { chatLog.Text += String.Format("{0} on {1}: {2}\n", message.From, message.Time, message.Body); });
         }
 
+        // ReSharper disable InconsistentNaming
         private void send_Click(object sender, RoutedEventArgs e) {
+            // ReSharper restore InconsistentNaming
             send.IsEnabled = false;
             to.IsEnabled = false;
             body.IsEnabled = false;

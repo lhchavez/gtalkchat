@@ -1,4 +1,5 @@
 ﻿//Copyright (c) Microsoft Corporation.  All rights reserved.
+
 using System;
 using System.Text;
 
@@ -11,22 +12,23 @@ using System.Text;
 // **************************************************************
 
 // Simple struct for the (a,b,c,d) which is used to compute the mesage digest.    
-struct ABCDStruct {
+internal struct AbcdStruct {
     public uint A;
     public uint B;
     public uint C;
     public uint D;
 }
 
-public sealed class MD5Core {
+public static class Md5Core {
     //Prevent CSC from adding a default public constructor
-    private MD5Core() { }
 
     public static byte[] GetHash(string input, Encoding encoding) {
         if (null == input)
-            throw new System.ArgumentNullException("input", "Unable to calculate hash over null input data");
+            throw new ArgumentNullException("input", "Unable to calculate hash over null input data");
         if (null == encoding)
-            throw new System.ArgumentNullException("encoding", "Unable to calculate hash over a string without a default encoding. Consider using the GetHash(string) overload to use UTF8 Encoding");
+            throw new ArgumentNullException(
+                "encoding",
+                "Unable to calculate hash over a string without a default encoding. Consider using the GetHash(string) overload to use UTF8 Encoding");
 
         byte[] target = encoding.GetBytes(input);
 
@@ -39,7 +41,7 @@ public sealed class MD5Core {
 
     public static string GetHashString(byte[] input) {
         if (null == input)
-            throw new System.ArgumentNullException("input", "Unable to calculate hash over null input data");
+            throw new ArgumentNullException("input", "Unable to calculate hash over null input data");
 
         string retval = BitConverter.ToString(GetHash(input));
         retval = retval.Replace("-", "");
@@ -49,9 +51,12 @@ public sealed class MD5Core {
 
     public static string GetHashString(string input, Encoding encoding) {
         if (null == input)
-            throw new System.ArgumentNullException("input", "Unable to calculate hash over null input data");
+            throw new ArgumentNullException("input", "Unable to calculate hash over null input data");
         if (null == encoding)
-            throw new System.ArgumentNullException("encoding", "Unable to calculate hash over a string without a default encoding. Consider using the GetHashString(string) overload to use UTF8 Encoding");
+            throw new ArgumentNullException(
+                "encoding",
+                "Unable to calculate hash over a string without a default encoding. Consider using the GetHashString(string) overload to use UTF8 Encoding"
+            );
 
         byte[] target = encoding.GetBytes(input);
 
@@ -68,10 +73,10 @@ public sealed class MD5Core {
 
     public static byte[] GetHash(byte[] input, int startIndex, int length) {
         if (null == input)
-            throw new System.ArgumentNullException("input", "Unable to calculate hash over null input data");
+            throw new ArgumentNullException("input", "Unable to calculate hash over null input data");
 
         //Intitial values defined in RFC 1321
-        ABCDStruct abcd = new ABCDStruct();
+        AbcdStruct abcd = new AbcdStruct();
         abcd.A = 0x67452301;
         abcd.B = 0xefcdab89;
         abcd.C = 0x98badcfe;
@@ -81,17 +86,17 @@ public sealed class MD5Core {
         int endIndex = startIndex + length;
 
         while (startIndex <= endIndex - 64) {
-            MD5Core.GetHashBlock(input, ref abcd, startIndex);
+            GetHashBlock(input, ref abcd, startIndex);
             startIndex += 64;
         }
 
         // The final data block. 
-        return MD5Core.GetHashFinalBlock(input, startIndex, endIndex - startIndex, abcd, (Int64)length * 8);
+        return GetHashFinalBlock(input, startIndex, endIndex - startIndex, abcd, (Int64) length * 8);
     }
 
-    internal static byte[] GetHashFinalBlock(byte[] input, int ibStart, int cbSize, ABCDStruct ABCD, Int64 len) {
-        byte[] working = new byte[64];
-        byte[] length = BitConverter.GetBytes(len);
+    internal static byte[] GetHashFinalBlock(byte[] input, int ibStart, int cbSize, AbcdStruct abcd, Int64 len) {
+        var working = new byte[64];
+        var length = BitConverter.GetBytes(len);
 
         //Padding is a single bit 1, followed by the number of 0s required to make size congruent to 448 modulo 512. Step 1 of RFC 1321  
         //The CLR ensures that our buffer is 0-assigned, we don't need to explicitly set it. This is why it ends up being quicker to just
@@ -102,20 +107,19 @@ public sealed class MD5Core {
         //We have enough room to store the length in this chunk
         if (cbSize <= 56) {
             Array.Copy(length, 0, working, 56, 8);
-            GetHashBlock(working, ref ABCD, 0);
-        } else  //We need an aditional chunk to store the length
-        {
-            GetHashBlock(working, ref ABCD, 0);
+            GetHashBlock(working, ref abcd, 0);
+        } else { //We need an aditional chunk to store the length
+            GetHashBlock(working, ref abcd, 0);
             //Create an entirely new chunk due to the 0-assigned trick mentioned above, to avoid an extra function call clearing the array
             working = new byte[64];
             Array.Copy(length, 0, working, 56, 8);
-            GetHashBlock(working, ref ABCD, 0);
+            GetHashBlock(working, ref abcd, 0);
         }
         byte[] output = new byte[16];
-        Array.Copy(BitConverter.GetBytes(ABCD.A), 0, output, 0, 4);
-        Array.Copy(BitConverter.GetBytes(ABCD.B), 0, output, 4, 4);
-        Array.Copy(BitConverter.GetBytes(ABCD.C), 0, output, 8, 4);
-        Array.Copy(BitConverter.GetBytes(ABCD.D), 0, output, 12, 4);
+        Array.Copy(BitConverter.GetBytes(abcd.A), 0, output, 0, 4);
+        Array.Copy(BitConverter.GetBytes(abcd.B), 0, output, 4, 4);
+        Array.Copy(BitConverter.GetBytes(abcd.C), 0, output, 8, 4);
+        Array.Copy(BitConverter.GetBytes(abcd.D), 0, output, 12, 4);
         return output;
     }
 
@@ -126,12 +130,13 @@ public sealed class MD5Core {
     //    C = 0x98badcfe;
     //    D = 0x10325476;
     */
-    internal static void GetHashBlock(byte[] input, ref ABCDStruct ABCDValue, int ibStart) {
+
+    internal static void GetHashBlock(byte[] input, ref AbcdStruct abcdValue, int ibStart) {
         uint[] temp = Converter(input, ibStart);
-        uint a = ABCDValue.A;
-        uint b = ABCDValue.B;
-        uint c = ABCDValue.C;
-        uint d = ABCDValue.D;
+        uint a = abcdValue.A;
+        uint b = abcdValue.B;
+        uint c = abcdValue.C;
+        uint d = abcdValue.D;
 
         a = r1(a, b, c, d, temp[0], 7, 0xd76aa478);
         d = r1(d, a, b, c, temp[1], 12, 0xe8c7b756);
@@ -201,10 +206,10 @@ public sealed class MD5Core {
         c = r4(c, d, a, b, temp[2], 15, 0x2ad7d2bb);
         b = r4(b, c, d, a, temp[9], 21, 0xeb86d391);
 
-        ABCDValue.A = unchecked(a + ABCDValue.A);
-        ABCDValue.B = unchecked(b + ABCDValue.B);
-        ABCDValue.C = unchecked(c + ABCDValue.C);
-        ABCDValue.D = unchecked(d + ABCDValue.D);
+        abcdValue.A = unchecked(a + abcdValue.A);
+        abcdValue.B = unchecked(b + abcdValue.B);
+        abcdValue.C = unchecked(c + abcdValue.C);
+        abcdValue.D = unchecked(d + abcdValue.D);
         return;
     }
 
@@ -243,15 +248,15 @@ public sealed class MD5Core {
     //Convert input array into array of UInts
     private static uint[] Converter(byte[] input, int ibStart) {
         if (null == input)
-            throw new System.ArgumentNullException("input", "Unable convert null array to array of uInts");
+            throw new ArgumentNullException("input", "Unable convert null array to array of uInts");
 
-        uint[] result = new uint[16];
+        var result = new uint[16];
 
         for (int i = 0; i < 16; i++) {
-            result[i] = (uint)input[ibStart + i * 4];
-            result[i] += (uint)input[ibStart + i * 4 + 1] << 8;
-            result[i] += (uint)input[ibStart + i * 4 + 2] << 16;
-            result[i] += (uint)input[ibStart + i * 4 + 3] << 24;
+            result[i] =         input[ibStart + i * 4];
+            result[i] += (uint) input[ibStart + i * 4 + 1] << 8;
+            result[i] += (uint) input[ibStart + i * 4 + 2] << 16;
+            result[i] += (uint) input[ibStart + i * 4 + 3] << 24;
         }
 
         return result;
