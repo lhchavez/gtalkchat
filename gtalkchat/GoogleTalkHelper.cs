@@ -125,20 +125,22 @@ namespace gtalkchat {
         }
 
         public void ShowToast(Message m) {
-            App.Current.RootFrame.Dispatcher.BeginInvoke(() => {
-                ToastPrompt t = new ToastPrompt();
-                Contact c = App.Current.Roster[m.From];
-                t.Title = c != null ? c.NameOrEmail : m.From;
-                t.Message = m.Body;
-                t.ImageSource = new BitmapImage(new Uri("/ApplicationIcon.png", UriKind.RelativeOrAbsolute));
-                t.Show();
+            if (m.Body != null && m.Body != string.Empty) {
+                App.Current.RootFrame.Dispatcher.BeginInvoke(() => {
+                    ToastPrompt t = new ToastPrompt();
+                    Contact c = App.Current.Roster[m.From];
+                    t.Title = c != null ? c.NameOrEmail : m.From;
+                    t.Message = m.Body;
+                    t.ImageSource = new BitmapImage(new Uri("/ApplicationIcon.png", UriKind.RelativeOrAbsolute));
+                    t.Show();
 
-                t.Completed += (s, ev) => {
-                    if (ev.PopUpResult == PopUpResult.Ok) {
-                        App.Current.RootFrame.Navigate(new Uri("/ChatPage.xaml?from=" + m.From, UriKind.Relative));
-                    }
-                };
-            });
+                    t.Completed += (s, ev) => {
+                        if (ev.PopUpResult == PopUpResult.Ok) {
+                            App.Current.RootFrame.Navigate(new Uri("/ChatPage.xaml?from=" + m.From, UriKind.Relative));
+                        }
+                    };
+                });
+            }
         }
 
         public void UriUpdated(string uri) {
