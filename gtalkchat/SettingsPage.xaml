@@ -11,7 +11,7 @@
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
-    SupportedOrientations="Portrait"  Orientation="Portrait"
+    SupportedOrientations="PortraitOrLandscape"  Orientation="Portrait"
     shell:SystemTray.IsVisible="True">
 
     <!--LayoutRoot is the root grid where all page content is placed-->
@@ -28,50 +28,52 @@
             <!--Pivot item two-->
             <controls:PivotItem Header="about">
                 <Grid>
-                    <RichTextBox VerticalAlignment="Top" FontSize="{StaticResource PhoneFontSizeMedium}">
-                        <Paragraph>
-                            <Run Text="GChat 0.1" FontSize="{StaticResource PhoneFontSizeLarge}" />
-                        </Paragraph>
-                        
-                        <Paragraph>
-                            <Run Text="" />
-                        </Paragraph>
-                        
-                        <Paragraph>
-                            <Run Text="Backend &amp; Server Development" />
-                        </Paragraph>
-                        <Paragraph>
-                            <Hyperlink Click="Luis_Click">Luis Héctor Chávez</Hyperlink>
-                        </Paragraph>
+                    <ScrollViewer>
+                        <RichTextBox VerticalAlignment="Top" FontSize="{StaticResource PhoneFontSizeMedium}">
+                            <Paragraph>
+                                <Run Text="GChat 0.1" FontSize="{StaticResource PhoneFontSizeLarge}" />
+                            </Paragraph>
 
-                        <Paragraph>
-                            <Run Text="" />
-                        </Paragraph>
+                            <Paragraph>
+                                <Run Text="" />
+                            </Paragraph>
 
-                        <Paragraph>
-                            <Run Text="Frontend Development &amp; UI Design" />
-                        </Paragraph>
-                        <Paragraph>
-                            <Hyperlink Click="Juliana_Click">Juliana Peña</Hyperlink>
-                        </Paragraph>
-                        
-                        <Paragraph>
-                            <Run Text="" />
-                        </Paragraph>
-                        
-                        <Paragraph>
-                            <Run Text="Open source! " />
-                            <Hyperlink Click="Github_Click">Get the code at GitHub</Hyperlink> 
-                        </Paragraph>
+                            <Paragraph>
+                                <Run Text="Backend &amp; Server Development" />
+                            </Paragraph>
+                            <Paragraph>
+                                <Hyperlink Click="Luis_Click">Luis Héctor Chávez</Hyperlink>
+                            </Paragraph>
 
-                        <Paragraph>
-                            <Run Text="" />
-                        </Paragraph>
+                            <Paragraph>
+                                <Run Text="" />
+                            </Paragraph>
 
-                        <Paragraph>
-                            <Run Text="This is a third party app and is not endorsed or supported by Google." />
-                        </Paragraph>
-                    </RichTextBox>
+                            <Paragraph>
+                                <Run Text="Frontend Development &amp; UI Design" />
+                            </Paragraph>
+                            <Paragraph>
+                                <Hyperlink Click="Juliana_Click">Juliana Peña</Hyperlink>
+                            </Paragraph>
+
+                            <Paragraph>
+                                <Run Text="" />
+                            </Paragraph>
+
+                            <Paragraph>
+                                <Run Text="Open source! " />
+                                <Hyperlink Click="Github_Click">Get the code at GitHub</Hyperlink>
+                            </Paragraph>
+
+                            <Paragraph>
+                                <Run Text="" />
+                            </Paragraph>
+
+                            <Paragraph>
+                                <Run Text="This is a third party app and is not endorsed or supported by Google." />
+                            </Paragraph>
+                        </RichTextBox>
+                    </ScrollViewer>
                 </Grid>
             </controls:PivotItem>
         </controls:Pivot>

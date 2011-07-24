@@ -23,14 +23,13 @@ namespace gtalkchat {
                 Dispatcher.BeginInvoke(() => {
                     OnlineContactsListBox.ItemsSource = App.Current.Roster.GetOnlineContacts();
                 });
-
-            gtalkHelper.MessageReceived += gtalkHelper.ShowToast;
         }
 
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e) {
             base.OnNavigatedTo(e);
 
             gtalkHelper.LoginIfNeeded();
+            gtalkHelper.MessageReceived += gtalkHelper.ShowToast;
         }
 
         protected override void OnNavigatedFrom(System.Windows.Navigation.NavigationEventArgs e) {
