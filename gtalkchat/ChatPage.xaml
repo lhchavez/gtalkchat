@@ -28,41 +28,48 @@
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <ScrollViewer
-                Name="Scroller"
-                Height="379"
-                HorizontalAlignment="Left"
-                Margin="12,6,0,0"
-                VerticalAlignment="Top"
-                Width="438"
-                HorizontalScrollBarVisibility="Disabled"
-                VerticalScrollBarVisibility="Auto">
-                <TextBlock
-                    Name="chatLog"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch"
-                    MinWidth="100"
-                    Width="{Binding ElementName=Scroller, Path=ViewportWidth}"
-                    TextWrapping="Wrap" />
-            </ScrollViewer>
-            
-            <TextBox Height="138" HorizontalAlignment="Left" Margin="9,469,0,0" Name="body" Text="" VerticalAlignment="Top" Width="374" TextWrapping="Wrap" />
-            <Button Content="O" Height="132" HorizontalAlignment="Left" Margin="377,469,0,0" Name="send" VerticalAlignment="Top" Width="73" Click="send_Click" />
-            <TextBox Height="72" HorizontalAlignment="Left" Margin="37,391,0,0" Name="to" Text="" VerticalAlignment="Top" Width="413" />
-            <TextBlock Height="30" HorizontalAlignment="Left" Margin="12,408,0,0" Name="toLabel" Text="to" VerticalAlignment="Top" />
+        	<Grid.RowDefinitions>
+        		<RowDefinition/>
+        		<RowDefinition Height="Auto"/>
+        	</Grid.RowDefinitions>
+        	
+            <ScrollViewer Margin="12,0,12,0" Grid.RowSpan="2">
+            	<StackPanel>
+            		<Grid Margin="0,12,100,12">
+            			<Grid.RowDefinitions>
+            				<RowDefinition Height="20" />
+            				<RowDefinition Height="Auto" />
+						</Grid.RowDefinitions>
+						<Path Data="M0,0 L1,1 L0,1" Fill="{StaticResource PhoneAccentBrush}" HorizontalAlignment="Left" Margin="12,0,0,0" Stretch="Fill" UseLayoutRounding="False" Width="20"/>
+						<Grid Grid.Row="1">
+							<Grid.RowDefinitions>
+	            				<RowDefinition Height="Auto" />
+								<RowDefinition Height="Auto" />
+							</Grid.RowDefinitions>
+							<Rectangle Grid.RowSpan="2" Fill="{StaticResource PhoneAccentBrush}" />
+							<TextBlock Text="Hello world this is long text" Foreground="White" Margin="12,12,12,0" />
+							<TextBlock Grid.Row="1" Text="Wed, 6:51pm" Foreground="#99FFFFFF" HorizontalAlignment="Right" Margin="12,0,12,12" />
+						</Grid>
+					</Grid>
+					
+            		<Grid Margin="100,12,0,12">
+            			<Grid.RowDefinitions>
+            				<RowDefinition Height="Auto" />
+							<RowDefinition Height="20" />
+						</Grid.RowDefinitions>
+						<Grid>
+							<Grid.RowDefinitions>
+	            				<RowDefinition Height="Auto" />
+								<RowDefinition Height="Auto" />
+							</Grid.RowDefinitions>
+							<Rectangle Grid.RowSpan="2" Fill="{StaticResource PhoneAccentBrush}" Opacity="0.7" />
+							<TextBlock Text="Hello world this is long text" Foreground="White" Margin="12,12,12,0" />
+							<TextBlock Grid.Row="1" Text="Wed, 6:51pm" Foreground="#99FFFFFF" HorizontalAlignment="Right" Margin="12,0,12,12" />
+						</Grid>
+						<Path Data="M0,0 L1,1 L1,0" Fill="{StaticResource PhoneAccentBrush}" HorizontalAlignment="Right" Margin="0,0,12,0" Grid.Row="1" Stretch="Fill" UseLayoutRounding="False" Width="20" Opacity="0.7"/>
+					</Grid>
+				</StackPanel>
+			</ScrollViewer>
         </Grid>
     </Grid>
- 
-    <!--Sample code showing usage of ApplicationBar-->
-    <!--<phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar_button1.png" Text="Button 1"/>
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar_button2.png" Text="Button 2"/>
-            <shell:ApplicationBar.MenuItems>
-                <shell:ApplicationBarMenuItem Text="MenuItem 1"/>
-                <shell:ApplicationBarMenuItem Text="MenuItem 2"/>
-            </shell:ApplicationBar.MenuItems>
-        </shell:ApplicationBar>
-    </phone:PhoneApplicationPage.ApplicationBar>-->
-
 </phone:PhoneApplicationPage>
