@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Security.Cryptography;
@@ -6,9 +7,7 @@ using System.Text;
 using System.Windows;
 using Microsoft.Phone.Shell;
 using Coding4Fun.Phone.Controls;
-using System.Windows.Threading;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 
 namespace gtalkchat {
     public class GoogleTalkHelper {
@@ -176,12 +175,39 @@ namespace gtalkchat {
                 gtalk.ParseMessage(
                     data.Substring(4),
                     message => {
+                        if (message.Body != null) {
+                            List<Message> chatLog = ChatLog(message.From);
+
+                            lock (chatLog) {
+                                if (chatLog.Count >= 10) {
+                                    chatLog.RemoveAt(0);
+                                }
+                                chatLog.Add(message);
+                            }
+                        }
+
                         if (MessageReceived != null) {
                             MessageReceived(message);
                         }
                     },
                     error => App.Current.RootFrame.Dispatcher.BeginInvoke(() => MessageBox.Show(error))
                 );
+            }
+        }
+
+        public List<Message> ChatLog(string username) {
+            if(username.Contains("/")) {
+                username = username.Substring(0, username.IndexOf('/'));
+            }
+
+            var chatLog = settings["chatlog"] as Dictionary<string, List<Message>>;
+
+            lock (chatLog) {
+                if (!chatLog.ContainsKey(username)) {
+                    chatLog.Add(username, new List<Message>());
+                }
+
+                return chatLog[username];
             }
         }
 
@@ -243,6 +269,17 @@ namespace gtalkchat {
         private void GetOfflineMessages() {
             gtalk.MessageQueue(
                 message => {
+                    if (message.Body != null) {
+                        List<Message> chatLog = ChatLog(message.From);
+
+                        lock (chatLog) {
+                            if (chatLog.Count >= 10) {
+                                chatLog.RemoveAt(0);
+                            }
+                            chatLog.Add(message);
+                        }
+                    }
+
                     if (MessageReceived != null) {
                         MessageReceived(message);
                     }

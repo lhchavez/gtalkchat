@@ -1,4 +1,5 @@
-﻿using System.IO.IsolatedStorage;
+﻿using System.Collections.Generic;
+using System.IO.IsolatedStorage;
 using System.Windows;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
@@ -67,6 +68,10 @@ namespace gtalkchat {
             GtalkClient = new GoogleTalk();
             Roster = new Roster();
 
+            if(!Settings.Contains("chatlog")) {
+                Settings["chatlog"] = new Dictionary<string,List<Message>>();
+            }
+
             GtalkHelper = new GoogleTalkHelper();
 
             PushHelper.RegisterPushNotifications();
@@ -79,6 +84,10 @@ namespace gtalkchat {
             PushHelper = new PushHelper();
             GtalkClient = new GoogleTalk();
             Roster = new Roster();
+
+            if (!Settings.Contains("chatlog")) {
+                Settings["chatlog"] = new Dictionary<string, List<Message>>();
+            }
 
             GtalkHelper = new GoogleTalkHelper();
             

@@ -63,6 +63,8 @@ namespace gtalkchat {
 
         public bool Typing { get; set; }
 
+        public bool Outbound { get; set; }
+
         #endregion
 
         #region INotifyPropertyChanged Members
