@@ -103,14 +103,14 @@
 								</VisualStateGroup>
 							</VisualStateManager.VisualStateGroups>
 							<Border x:Name="EnabledBorder" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
-								<Grid Name="InputBubbleGrid" Grid.Row="1" Margin="112,0,12,0">
+								<Grid Name="InputBubbleGrid" Grid.Row="1">
 									<Grid.RowDefinitions>
 										<RowDefinition Height="Auto" />
 										<RowDefinition Height="16" />
 									</Grid.RowDefinitions>
 									<Grid>
 										<Rectangle x:Name="BubbleBackground" Grid.RowSpan="2" Fill="{StaticResource PhoneTextBoxBrush}" Opacity="0.7" />
-										<ContentControl x:Name="ContentElement" BorderThickness="0" HorizontalContentAlignment="Stretch" Margin="12,6,12,6" Padding="{TemplateBinding Padding}" Foreground="{TemplateBinding Foreground}" VerticalContentAlignment="Stretch"/>
+										<ContentControl x:Name="ContentElement" BorderThickness="0" HorizontalContentAlignment="Stretch" Margin="12,6,12,6" Foreground="{TemplateBinding Foreground}" VerticalContentAlignment="Stretch"/>
 									</Grid>
 									<Path Name="BubblePoint" Data="M0,0 L1,1 L1,0" Fill="{StaticResource PhoneTextBoxBrush}" HorizontalAlignment="Right" Margin="0,0,12,0" Grid.Row="1" Stretch="Fill" UseLayoutRounding="False" Width="20" Opacity="0.7"/>
 								</Grid>
@@ -150,7 +150,7 @@
             	</StackPanel>
 			</ScrollViewer>
 			
-			<TextBox KeyUp="MessageText_KeyUp" Name="MessageText" InputScope="Chat" Margin="0,12,0,0"  Grid.Row="2" TextWrapping="Wrap" FontSize="{StaticResource PhoneFontSizeNormal}" Background="{x:Null}" BorderBrush="{x:Null}" Style="{StaticResource InputBubbleStyle}" />
+			<TextBox KeyUp="MessageText_KeyUp" Margin="110,12,12,9" Name="MessageText" InputScope="Chat" Grid.Row="2" TextWrapping="Wrap" FontSize="{StaticResource PhoneFontSizeNormal}" Background="{x:Null}" BorderBrush="{x:Null}" Style="{StaticResource InputBubbleStyle}" />
         </Grid>
     </Grid>
 
