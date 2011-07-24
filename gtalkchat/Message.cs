@@ -6,7 +6,6 @@ namespace gtalkchat {
         #region Public Properties
 
         private string from;
-
         public string From {
             get { return from; }
             set {
@@ -18,7 +17,6 @@ namespace gtalkchat {
         }
 
         private DateTime time;
-
         public DateTime Time {
             get { return time; }
             set {
@@ -30,7 +28,6 @@ namespace gtalkchat {
         }
 
         private string type;
-
         public string Type {
             get { return type; }
             set {
@@ -42,7 +39,6 @@ namespace gtalkchat {
         }
 
         private string body;
-
         public string Body {
             get { return body; }
             set {
@@ -54,13 +50,23 @@ namespace gtalkchat {
         }
 
         private bool otr;
-
         public bool OTR {
             get { return otr; }
             set {
                 if (value != otr) {
                     otr = value;
                     Changed("OTR");
+                }
+            }
+        }
+
+        private bool typing;
+        public bool Typing {
+            get { return typing; }
+            set {
+                if (value != typing) {
+                    typing = value;
+                    Changed("Typing");
                 }
             }
         }
