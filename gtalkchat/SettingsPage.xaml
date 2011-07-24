@@ -1,0 +1,92 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="gtalkchat.SettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait"  Orientation="Portrait"
+    shell:SystemTray.IsVisible="True">
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+        <!--Pivot Control-->
+        <controls:Pivot Title="GCHAT">
+            <!--Pivot item one-->
+            <controls:PivotItem Header="settings">
+                <StackPanel>
+                    <Button Content="Log out" Click="Logout_Click" />
+                </StackPanel>
+            </controls:PivotItem>
+
+            <!--Pivot item two-->
+            <controls:PivotItem Header="about">
+                <Grid>
+                    <RichTextBox VerticalAlignment="Top" FontSize="{StaticResource PhoneFontSizeMedium}">
+                        <Paragraph>
+                            <Run Text="GChat 0.1" FontSize="{StaticResource PhoneFontSizeLarge}" />
+                        </Paragraph>
+                        
+                        <Paragraph>
+                            <Run Text="" />
+                        </Paragraph>
+                        
+                        <Paragraph>
+                            <Run Text="Backend &amp; Server Development" />
+                        </Paragraph>
+                        <Paragraph>
+                            <Hyperlink Click="Luis_Click">Luis Héctor Chávez</Hyperlink>
+                        </Paragraph>
+
+                        <Paragraph>
+                            <Run Text="" />
+                        </Paragraph>
+
+                        <Paragraph>
+                            <Run Text="Frontend Development &amp; UI Design" />
+                        </Paragraph>
+                        <Paragraph>
+                            <Hyperlink Click="Juliana_Click">Juliana Peña</Hyperlink>
+                        </Paragraph>
+                        
+                        <Paragraph>
+                            <Run Text="" />
+                        </Paragraph>
+                        
+                        <Paragraph>
+                            <Run Text="Open source! " />
+                            <Hyperlink Click="Github_Click">Get the code at GitHub</Hyperlink> 
+                        </Paragraph>
+
+                        <Paragraph>
+                            <Run Text="" />
+                        </Paragraph>
+
+                        <Paragraph>
+                            <Run Text="This is a third party app and is not endorsed or supported by Google." />
+                        </Paragraph>
+                    </RichTextBox>
+                </Grid>
+            </controls:PivotItem>
+        </controls:Pivot>
+    </Grid>
+
+    <!--Sample code showing usage of ApplicationBar-->
+    <!--<phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
+            <shell:ApplicationBarIconButton x:Name="appbar_button1" IconUri="/Images/appbar_button1.png" Text="Button 1"/>
+            <shell:ApplicationBarIconButton x:Name="appbar_button2" IconUri="/Images/appbar_button2.png" Text="Button 2"/>
+            <shell:ApplicationBar.MenuItems>
+                <shell:ApplicationBarMenuItem x:Name="menuItem1" Text="MenuItem 1"/>
+                <shell:ApplicationBarMenuItem x:Name="menuItem2" Text="MenuItem 2"/>
+            </shell:ApplicationBar.MenuItems>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>-->
+
+</phone:PhoneApplicationPage>

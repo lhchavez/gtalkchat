@@ -36,5 +36,9 @@ namespace gtalkchat {
                 NavigationService.Navigate(new Uri("/ChatPage.xaml?from=" + to, UriKind.Relative));
             }
         }
+
+        private void SettingsButton_Click(object sender, EventArgs e) {
+            NavigationService.Navigate(new Uri("/SettingsPage.xaml", UriKind.Relative));
+        }
     }
 }

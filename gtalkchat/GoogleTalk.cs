@@ -228,7 +228,7 @@ namespace gtalkchat {
                     } catch (WebException e) {
                         var response = (HttpWebResponse)e.Response;
 
-                        if (response.StatusCode == HttpStatusCode.Forbidden) {
+                        if (response == null || response.StatusCode == HttpStatusCode.Forbidden) {
                             LoggedIn = false;
                         }
 
