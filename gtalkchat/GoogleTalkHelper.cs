@@ -152,7 +152,11 @@ namespace gtalkchat {
             if (data.StartsWith("msg:")) {
                 gtalk.ParseMessage(
                     data.Substring(4),
-                    message => MessageReceived.Invoke(message),
+                    message => {
+                        if (MessageReceived != null) {
+                            MessageReceived(message);
+                        }
+                    },
                     error => App.Current.RootFrame.Dispatcher.BeginInvoke(() => MessageBox.Show(error))
                 );
             }
@@ -198,7 +202,7 @@ namespace gtalkchat {
 
                     Connected = true;
                     if (Connect != null) {
-                        Connect.Invoke();
+                        Connect();
                     }
                 },
                 error => {
@@ -264,7 +268,7 @@ namespace gtalkchat {
                         }
 
                         if (RosterUpdated != null) {
-                            RosterUpdated.Invoke();
+                            RosterUpdated();
                         }
                     }
                 ),
