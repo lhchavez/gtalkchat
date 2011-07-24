@@ -18,8 +18,8 @@ namespace gtalkchat {
             OnlineContactsListBox.ItemsSource = App.Current.Roster.GetOnlineContacts();
 
             gtalkHelper.RosterUpdated += () =>
-                Dispatcher.BeginInvoke(
-                    () => OnlineContactsListBox.ItemsSource = App.Current.Roster.GetOnlineContacts()
+                Dispatcher.BeginInvoke( () => 
+                    OnlineContactsListBox.ItemsSource = App.Current.Roster.GetOnlineContacts()
                 );
         }
 

@@ -11,6 +11,7 @@ namespace gtalkchat {
         }
 
         public new void Add(Contact item) {
+            base.Add(item);
             contacts.Add(GetEmail(item.JID), item);
         }
 

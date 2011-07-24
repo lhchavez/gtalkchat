@@ -25,7 +25,7 @@ namespace gtalkchat {
 
             if (NavigationContext.QueryString.ContainsKey("from")) {
                 to = NavigationContext.QueryString["from"];
-                PageTitle.Text = to;
+                PageTitle.Text = App.Current.Roster[to].Name;
             }
 
             gtalkHelper.LoginIfNeeded();
