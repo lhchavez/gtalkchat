@@ -61,9 +61,7 @@ namespace gtalkchat {
             }
         }
 
-        public bool Typing {
-            get { return Body == null; }
-        }
+        public bool Typing { get; set; }
 
         #endregion
 

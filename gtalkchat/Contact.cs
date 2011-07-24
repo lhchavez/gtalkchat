@@ -87,7 +87,11 @@ namespace gtalkchat {
 
         public Uri PhotoUri {
             get {
-                return new Uri("https://gtalkjsonproxy.lhchavez.com/images/" + HttpUtility.UrlEncode(Photo));
+                if (Photo == null || Photo.Length != 32) {
+                    return new Uri("https://gtalkjsonproxy.lhchavez.com/images/00000000000000000000000000000000");
+                } else {
+                    return new Uri("https://gtalkjsonproxy.lhchavez.com/images/" + HttpUtility.UrlEncode(Photo));
+                }
             }
         }
 

@@ -41,25 +41,27 @@ namespace gtalkchat {
             Dispatcher.BeginInvoke(() => {
                 if (message.Typing) {
                     TypingStatus.Visibility = Visibility.Visible;
-                    
                 } else {
                     TypingStatus.Visibility = Visibility.Collapsed;
 
-                    var bubble = new ReceivedChatBubble();
-                    bubble.Text = message.Body;
-                    bubble.TimeStamp = message.Time.ToString("t");
+                    if (message.Body != null) {
+                        var bubble = new ReceivedChatBubble();
+                        bubble.Text = message.Body;
+                        bubble.TimeStamp = message.Time.ToString("t");
 
-                    MessageList.Children.Add(bubble);
+                        MessageList.Children.Add(bubble);
 
-                    MessageList.UpdateLayout();
-                    Scroller.UpdateLayout();
-                    Scroller.ScrollToVerticalOffset(Scroller.ExtentHeight);
+                        MessageList.UpdateLayout();
+                        Scroller.UpdateLayout();
+                        Scroller.ScrollToVerticalOffset(Scroller.ExtentHeight);
+                    }
                 }
             });
         }
 
         private void SendButton_Click(object sender, EventArgs e) {
-            
+            if (MessageText.Text.Length == 0) return;
+
             gtalk.SendMessage(to, MessageText.Text, data => Dispatcher.BeginInvoke(() => {
                 var bubble = new SentChatBubble();
                 bubble.Text = MessageText.Text;

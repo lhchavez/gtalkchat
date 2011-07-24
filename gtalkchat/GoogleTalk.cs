@@ -266,6 +266,7 @@ namespace gtalkchat {
                 if (data.ContainsKey("type")) message.Type = data["type"] as string;
                 if (data.ContainsKey("body")) message.Body = data["body"] as string;
                 if (data.ContainsKey("otr")) message.OTR = true.Equals(data["otr"]);
+                if (data.ContainsKey("typing")) message.Typing = true.Equals(data["typing"]);
 
                 mcb(message);
             } else {
