@@ -63,6 +63,7 @@ namespace gtalkchat {
                 if (value != show) {
                     show = value;
                     Changed("Show");
+                    Changed("Status");
                 }
             }
         }
@@ -91,6 +92,24 @@ namespace gtalkchat {
                     return new Uri("https://gtalkjsonproxy.lhchavez.com/images/00000000000000000000000000000000");
                 } else {
                     return new Uri("https://gtalkjsonproxy.lhchavez.com/images/" + HttpUtility.UrlEncode(Photo));
+                }
+            }
+        }
+
+        public string Status {
+            get {
+                if (show == null || show == string.Empty) {
+                    if (online) {
+                        return "online";
+                    } else {
+                        return "offline";
+                    }
+                } else if (show == "dnd") {
+                    return "do not disturb";
+                } else if (show == "xa") {
+                    return "extended away";
+                } else {
+                    return show;
                 }
             }
         }
