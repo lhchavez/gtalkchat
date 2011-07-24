@@ -58,7 +58,9 @@ namespace gtalkchat {
 
         private void ContactsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             if (e.AddedItems.Count > 0) {
-                NavigationService.Navigate(new Uri("/ChatPage.xaml", UriKind.Relative));
+                var to = (e.AddedItems[0] as Contact).JID;
+                (sender as ListBox).SelectedIndex = -1;
+                NavigationService.Navigate(new Uri("/ChatPage.xaml?from=" + to, UriKind.Relative));
             }
         }
     }

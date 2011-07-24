@@ -188,7 +188,9 @@ namespace gtalkchat {
                     GetOfflineMessages();
 
                     Connected = true;
-                    Connect.Invoke();
+                    if (Connect != null) {
+                        Connect();
+                    }
                 },
                 error => {
                     App.Current.RootFrame.Dispatcher.BeginInvoke(() => MessageBox.Show(error));
@@ -204,7 +206,11 @@ namespace gtalkchat {
 
         private void GetOfflineMessages() {
             gtalk.MessageQueue(
-                message => MessageReceived.Invoke(message),
+                message => {
+                    if (MessageReceived != null) {
+                        MessageReceived(message);
+                    }
+                },
                 error => {
                     App.Current.RootFrame.Dispatcher.BeginInvoke(() => MessageBox.Show(error));
 

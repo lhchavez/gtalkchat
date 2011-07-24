@@ -11,8 +11,9 @@
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
-    mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
+    mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True">
+    
 	<phone:PhoneApplicationPage.Resources>
 		<ControlTemplate x:Key="PhoneDisabledTextBoxTemplate" TargetType="TextBox">
 			<ContentControl x:Name="ContentElement" BorderThickness="0" HorizontalContentAlignment="Stretch" Margin="{StaticResource PhoneTextBoxInnerMargin}" Padding="{TemplateBinding Padding}" VerticalContentAlignment="Stretch"/>
@@ -144,17 +145,19 @@
         		<RowDefinition Height="Auto"/>
         	</Grid.RowDefinitions>
         	
-            <ScrollViewer Margin="12,0,12,0" Grid.RowSpan="2">
+            <ScrollViewer Name="Scroller" Margin="12,0,12,0">
             	<StackPanel Name="MessageList">
-                    <local:ReceivedChatBubble Text="Hello!" TimeStamp="Wed, 6:51pm"/>
-                    <local:ReceivedChatBubble Text="Hello world this is really really long long text!" TimeStamp="Wed, 6:53pm"/>
-                    <local:SentChatBubble Text="Hello you!" TimeStamp="Wed, 6:56pm"/>
-                    <local:SentChatBubble Text="Hello you!" TimeStamp="Wed, 6:56pm"/>
-                    <local:ReceivedChatBubble Text="Hello!" TimeStamp="Wed, 6:51pm"/>
             	</StackPanel>
 			</ScrollViewer>
 			
-			<TextBox Grid.Row="2" Text="" TextWrapping="Wrap" FontSize="{StaticResource PhoneFontSizeNormal}" Background="{x:Null}" BorderBrush="{x:Null}" Style="{StaticResource InputBubbleStyle}" />
+			<TextBox KeyUp="MessageText_KeyUp" Name="MessageText" InputScope="Chat" Margin="0,12,0,0"  Grid.Row="2" TextWrapping="Wrap" FontSize="{StaticResource PhoneFontSizeNormal}" Background="{x:Null}" BorderBrush="{x:Null}" Style="{StaticResource InputBubbleStyle}" />
         </Grid>
     </Grid>
+
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar>
+            <shell:ApplicationBarIconButton x:Name="SendButton" IconUri="/icons/appbar.next.rest.png" Text="send" Click="SendButton_Click"/>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
+
 </phone:PhoneApplicationPage>

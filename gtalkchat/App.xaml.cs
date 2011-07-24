@@ -66,10 +66,6 @@ namespace gtalkchat {
 
             GtalkHelper = new GoogleTalkHelper();
 
-            GtalkHelper.MessageReceived += message =>
-                                           RootFrame.Dispatcher.BeginInvoke(
-                                               () => MessageBox.Show(message.Body ?? "(null)"));
-
             PushHelper.RegisterPushNotifications();
         }
 
@@ -81,11 +77,7 @@ namespace gtalkchat {
             GtalkClient = new GoogleTalk();
 
             GtalkHelper = new GoogleTalkHelper();
-
-            GtalkHelper.MessageReceived += message =>
-                                           RootFrame.Dispatcher.BeginInvoke(
-                                               () => MessageBox.Show(message.Body ?? "(null)"));
-
+            
             PushHelper.RegisterPushNotifications();
         }
 
