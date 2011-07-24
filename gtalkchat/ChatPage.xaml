@@ -142,6 +142,7 @@
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
         	<Grid.RowDefinitions>
         		<RowDefinition/>
+                <RowDefinition Height="Auto"/>
         		<RowDefinition Height="Auto"/>
         	</Grid.RowDefinitions>
         	
@@ -149,6 +150,8 @@
             	<StackPanel Name="MessageList">
             	</StackPanel>
 			</ScrollViewer>
+            
+            <TextBlock Name="TypingStatus" Visibility="Collapsed" Grid.Row="1" Style="{StaticResource PhoneTextNormalStyle}" />
 			
 			<TextBox KeyUp="MessageText_KeyUp" Margin="110,12,12,9" Name="MessageText" InputScope="Chat" Grid.Row="2" TextWrapping="Wrap" FontSize="{StaticResource PhoneFontSizeNormal}" Background="{x:Null}" BorderBrush="{x:Null}" Style="{StaticResource InputBubbleStyle}" />
         </Grid>

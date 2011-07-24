@@ -25,11 +25,9 @@ namespace gtalkchat {
 
             if (NavigationContext.QueryString.ContainsKey("from")) {
                 to = NavigationContext.QueryString["from"];
-                if (App.Current.Roster.Contains(to)) {
-                    PageTitle.Text = App.Current.Roster[to].NameOrEmail ?? to;
-                } else {
-                    PageTitle.Text = to;
-                }
+                string displayName = App.Current.Roster.Contains(to) ? (App.Current.Roster[to].NameOrEmail ?? to) : to;
+                PageTitle.Text = displayName;
+                TypingStatus.Text = displayName + " is typing...";
             }
 
             gtalkHelper.LoginIfNeeded();
@@ -41,15 +39,22 @@ namespace gtalkchat {
 
         private void DisplayMessage(Message message) {
             Dispatcher.BeginInvoke(() => {
-                var bubble = new ReceivedChatBubble();
-                bubble.Text = message.Body;
-                bubble.TimeStamp = message.Time.ToString("t");
+                if (message.Typing) {
+                    TypingStatus.Visibility = Visibility.Visible;
+                    
+                } else {
+                    TypingStatus.Visibility = Visibility.Collapsed;
 
-                MessageList.Children.Add(bubble);
+                    var bubble = new ReceivedChatBubble();
+                    bubble.Text = message.Body;
+                    bubble.TimeStamp = message.Time.ToString("t");
 
-                MessageList.UpdateLayout();
-                Scroller.UpdateLayout();
-                Scroller.ScrollToVerticalOffset(Scroller.ExtentHeight);
+                    MessageList.Children.Add(bubble);
+
+                    MessageList.UpdateLayout();
+                    Scroller.UpdateLayout();
+                    Scroller.ScrollToVerticalOffset(Scroller.ExtentHeight);
+                }
             });
         }
 
