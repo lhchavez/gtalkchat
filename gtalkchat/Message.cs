@@ -45,6 +45,7 @@ namespace gtalkchat {
                 if (value != body) {
                     body = value;
                     Changed("Body");
+                    Changed("Typing");
                 }
             }
         }
@@ -60,15 +61,8 @@ namespace gtalkchat {
             }
         }
 
-        private bool typing;
         public bool Typing {
-            get { return typing; }
-            set {
-                if (value != typing) {
-                    typing = value;
-                    Changed("Typing");
-                }
-            }
+            get { return Body == null; }
         }
 
         #endregion
