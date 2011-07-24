@@ -26,7 +26,7 @@ namespace gtalkchat {
             if (NavigationContext.QueryString.ContainsKey("from")) {
                 to = NavigationContext.QueryString["from"];
                 if (App.Current.Roster.Contains(to)) {
-                    PageTitle.Text = App.Current.Roster[to].Name ?? to;
+                    PageTitle.Text = App.Current.Roster[to].NameOrEmail ?? to;
                 } else {
                     PageTitle.Text = to;
                 }

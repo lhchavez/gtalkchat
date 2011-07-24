@@ -16,7 +16,16 @@
     
     <phone:PhoneApplicationPage.Resources>
         <DataTemplate x:Key="ContactTemplate">
-            <TextBlock Style="{StaticResource PhoneTextLargeStyle}" Text="{Binding Name}" />
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                <Grid Width="50" Height="50" VerticalAlignment="Center">
+                    <Rectangle Fill="{StaticResource PhoneChromeBrush}" />
+                    <Image Source="http://lhchavez.com/img.bin" />
+                </Grid>
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Style="{StaticResource PhoneTextLargeStyle}" Text="{Binding NameOrEmail}" />
+                    <TextBlock Style="{StaticResource PhoneTextNormalStyle}" Text="{Binding Show}" />
+                </StackPanel>
+            </StackPanel>
         </DataTemplate>
     </phone:PhoneApplicationPage.Resources>
 
@@ -26,14 +35,14 @@
         <controls:Pivot Title="GCHAT">
             <!--Pivot item one-->
             <controls:PivotItem Header="online">
-                <Grid>
+                <Grid Margin="12,0,12,0">
                     <ListBox Name="OnlineContactsListBox" ItemTemplate="{StaticResource ContactTemplate}" SelectionChanged="ContactsListBox_SelectionChanged" />
                 </Grid>
             </controls:PivotItem>
 
             <!--Pivot item two-->
             <controls:PivotItem Header="all">
-                <Grid>
+                <Grid Margin="12,0,12,0">
                     <ListBox Name="AllContactsListBox" ItemTemplate="{StaticResource ContactTemplate}" SelectionChanged="ContactsListBox_SelectionChanged" />
                 </Grid>
             </controls:PivotItem>

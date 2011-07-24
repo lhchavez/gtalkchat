@@ -77,6 +77,12 @@ namespace gtalkchat {
             }
         }
 
+        public string NameOrEmail {
+            get {
+                return Name ?? Email;
+            }
+        }
+
         #endregion
 
         #region INotifyPropertyChanged Members
