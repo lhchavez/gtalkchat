@@ -31,9 +31,9 @@ namespace gtalkchat {
         private readonly IsolatedStorageSettings settings;
         private readonly GoogleTalk gtalk;
         private readonly PushHelper pushHelper;
-        private bool hasToken = false;
-        private bool hasUri = false;
-        private string registeredUri = null;
+        private bool hasToken;
+        private bool hasUri;
+        private string registeredUri;
 
         #endregion
 
@@ -94,6 +94,21 @@ namespace gtalkchat {
                     }
                 );
             }
+        }
+
+        public void Logout() {
+            Connected = false;
+
+            settings.Remove("token");
+            settings.Remove("auth");
+
+            if (gtalk.LoggedIn) {
+                gtalk.Logout(data => { }, error => { });
+            }
+
+            App.Current.RootFrame.Dispatcher.BeginInvoke(
+                () => App.Current.RootFrame.Navigate(new Uri("/LoginPage.xaml", UriKind.Relative))
+            );
         }
 
         public void UriUpdated(string uri) {

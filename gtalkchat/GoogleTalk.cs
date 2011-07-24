@@ -52,6 +52,7 @@ namespace gtalkchat {
                 sw => sw.Write("username=" + HttpUtility.UrlEncode(username) + "&auth=" + HttpUtility.UrlEncode(auth)),
                 data => {
                     token = data;
+                    LoggedIn = true;
                     scb(data);
                 },
                 null,
@@ -176,7 +177,7 @@ namespace gtalkchat {
 
                 req.BeginGetResponse(a => {
                     try {
-                        var response = req.EndGetResponse(a) as HttpWebResponse;
+                        var response = (HttpWebResponse)req.EndGetResponse(a);
 
                         var responseStream = response.GetResponseStream();
 
@@ -221,10 +222,10 @@ namespace gtalkchat {
                             }
                         }
                     } catch (WebException e) {
-                        var response = e.Response as HttpWebResponse;
+                        var response = (HttpWebResponse)e.Response;
 
                         if (response.StatusCode == HttpStatusCode.Forbidden) {
-                            this.LoggedIn = false;
+                            LoggedIn = false;
                         }
 
                         try {
