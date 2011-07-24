@@ -114,6 +114,15 @@ namespace gtalkchat {
             }
         }
 
+        private int unread = 1;
+        public int UnreadCount {
+            get { return unread; }
+            set {
+                unread = value;
+                Changed("UnreadCount");
+            }
+        }
+
         #endregion
 
         #region INotifyPropertyChanged Members
