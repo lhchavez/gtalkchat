@@ -18,6 +18,10 @@ namespace gtalkchat {
 
         public event ConnectEventHandler Connect;
 
+        public delegate void RosterUpdatedEventHandler();
+
+        public event RosterUpdatedEventHandler RosterUpdated;
+
         #endregion
 
         #region Public Properties
@@ -47,6 +51,7 @@ namespace gtalkchat {
             pushHelper.UriUpdated += UriUpdated;
             pushHelper.RawNotificationReceived += RawNotificationReceived;
             Connected = false;
+            Connect += LoadRoster;
         }
 
         public void LoginIfNeeded() {
@@ -234,6 +239,45 @@ namespace gtalkchat {
                 };
                 tileToFind.Update(newTileData);
             });
+        }
+
+        public void LoadRoster() {
+            gtalk.GetRoster(
+                roster => App.Current.RootFrame.Dispatcher.BeginInvoke(
+                    () => {
+                        foreach (var contact in roster) {
+                            if (App.Current.Roster.Contains(contact.Email)) {
+                                var original =
+                                    App.Current.Roster[contact.Email];
+
+                                original.JID = contact.JID;
+                                original.Name = contact.Name ??
+                                                original.Name;
+                                original.Online = contact.Online;
+                                original.Photo = contact.Photo ??
+                                                 original.Photo;
+                                original.Show = contact.Show ??
+                                                original.Show;
+                            } else {
+                                App.Current.Roster.Add(contact);
+                            }
+                        }
+
+                        if (RosterUpdated != null) {
+                            RosterUpdated.Invoke();
+                        }
+                    }
+                ),
+                error => {
+                    App.Current.RootFrame.Dispatcher.BeginInvoke(() => MessageBox.Show(error));
+
+                    if (error.StartsWith("403")) {
+                        settings.Remove("token");
+
+                        LoginIfNeeded();
+                    }
+                }
+            );
         }
 
         #endregion

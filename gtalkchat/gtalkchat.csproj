@@ -89,6 +89,7 @@
     <Compile Include="SentChatBubble.xaml.cs">
       <DependentUpon>SentChatBubble.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Roster.cs" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">

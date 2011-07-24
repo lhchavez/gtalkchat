@@ -16,6 +16,19 @@ namespace gtalkchat {
             }
         }
 
+        private string email;
+        public string Email {
+            get {
+                if(email == null) {
+                    email = jID;
+                    if(email.Contains("/")) {
+                        email = email.Substring(0, email.IndexOf('/'));
+                    }
+                }
+                return email;
+            }
+        }
+
         private bool online;
 
         public bool Online {

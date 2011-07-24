@@ -20,6 +20,8 @@ namespace gtalkchat {
 
         public GoogleTalkHelper GtalkHelper { get; set; }
 
+        public Roster Roster { get; set; }
+
         public new static App Current {
             get { return (App) Application.Current; }
         }
@@ -63,6 +65,7 @@ namespace gtalkchat {
             Settings = IsolatedStorageSettings.ApplicationSettings;
             PushHelper = new PushHelper();
             GtalkClient = new GoogleTalk();
+            Roster = new Roster();
 
             GtalkHelper = new GoogleTalkHelper();
 
@@ -75,6 +78,7 @@ namespace gtalkchat {
             Settings = IsolatedStorageSettings.ApplicationSettings;
             PushHelper = new PushHelper();
             GtalkClient = new GoogleTalk();
+            Roster = new Roster();
 
             GtalkHelper = new GoogleTalkHelper();
             
