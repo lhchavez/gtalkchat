@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel;
+using System;
+using System.Net;
 
 namespace gtalkchat {
     public class Contact : INotifyPropertyChanged {
@@ -12,6 +14,8 @@ namespace gtalkchat {
                 if (value != jID) {
                     jID = value;
                     Changed("JID");
+                    Changed("Email");
+                    Changed("NameOrEmail");
                 }
             }
         }
@@ -30,7 +34,6 @@ namespace gtalkchat {
         }
 
         private bool online;
-
         public bool Online {
             get { return online; }
             set {
@@ -42,19 +45,18 @@ namespace gtalkchat {
         }
 
         private string name;
-
         public string Name {
             get { return name; }
             set {
                 if (value != name) {
                     name = value;
                     Changed("Name");
+                    Changed("NameOrEmail");
                 }
             }
         }
 
         private string show;
-
         public string Show {
             get { return show; }
             set {
@@ -66,13 +68,13 @@ namespace gtalkchat {
         }
 
         private string photo;
-
         public string Photo {
             get { return photo; }
             set {
                 if (value != photo) {
                     photo = value;
                     Changed("Photo");
+                    Changed("PhotoUri");
                 }
             }
         }
@@ -80,6 +82,12 @@ namespace gtalkchat {
         public string NameOrEmail {
             get {
                 return Name ?? Email;
+            }
+        }
+
+        public Uri PhotoUri {
+            get {
+                return new Uri("https://gtalkjsonproxy.lhchavez.com/images/" + HttpUtility.UrlEncode(Photo));
             }
         }
 

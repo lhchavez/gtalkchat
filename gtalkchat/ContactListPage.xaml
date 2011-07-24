@@ -19,7 +19,7 @@
             <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                 <Grid Width="50" Height="50" VerticalAlignment="Center">
                     <Rectangle Fill="{StaticResource PhoneChromeBrush}" />
-                    <Image Source="http://lhchavez.com/img.bin" />
+                    <Image Source="{Binding PhotoUri}" />
                 </Grid>
                 <StackPanel Orientation="Vertical">
                     <TextBlock Style="{StaticResource PhoneTextLargeStyle}" Text="{Binding NameOrEmail}" />
