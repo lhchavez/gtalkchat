@@ -192,7 +192,9 @@ namespace gtalkchat {
                     GetOfflineMessages();
 
                     Connected = true;
-                    Connect.Invoke();
+                    if (Connect != null) {
+                        Connect.Invoke();
+                    }
                 },
                 error => {
                     App.Current.RootFrame.Dispatcher.BeginInvoke(() => MessageBox.Show(error));
