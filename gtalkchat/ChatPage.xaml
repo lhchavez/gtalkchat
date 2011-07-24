@@ -159,7 +159,7 @@
 
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar>
-            <shell:ApplicationBarIconButton x:Name="SendButton" IconUri="/icons/appbar.next.rest.png" Text="send" Click="SendButton_Click"/>
+            <shell:ApplicationBarIconButton x:Name="SendButton" IconUri="/icons/appbar.send.text.rest.png" Text="send" Click="SendButton_Click"/>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 
