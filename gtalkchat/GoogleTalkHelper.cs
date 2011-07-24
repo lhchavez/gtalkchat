@@ -5,6 +5,10 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Windows;
 using Microsoft.Phone.Shell;
+using Coding4Fun.Phone.Controls;
+using System.Windows.Threading;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 
 namespace gtalkchat {
     public class GoogleTalkHelper {
@@ -118,6 +122,23 @@ namespace gtalkchat {
             App.Current.RootFrame.Dispatcher.BeginInvoke(
                 () => App.Current.RootFrame.Navigate(new Uri("/LoginPage.xaml", UriKind.Relative))
             );
+        }
+
+        public void ShowToast(Message m) {
+            App.Current.RootFrame.Dispatcher.BeginInvoke(() => {
+                ToastPrompt t = new ToastPrompt();
+                Contact c = App.Current.Roster[m.From];
+                t.Title = c != null ? c.NameOrEmail : m.From;
+                t.Message = m.Body;
+                t.ImageSource = new BitmapImage(new Uri("/ApplicationIcon.png", UriKind.RelativeOrAbsolute));
+                t.Show();
+
+                t.Completed += (s, ev) => {
+                    if (ev.PopUpResult == PopUpResult.Ok) {
+                        App.Current.RootFrame.Navigate(new Uri("/ChatPage.xaml?from=" + m.From, UriKind.Relative));
+                    }
+                };
+            });
         }
 
         public void UriUpdated(string uri) {

@@ -20,7 +20,13 @@ namespace gtalkchat {
         }
 
         public Contact this[string jid] {
-            get { return contacts[GetEmail(jid)]; }
+            get {
+                if (Contains(jid)) {
+                    return contacts[GetEmail(jid)];
+                } else {
+                    return null;
+                }
+            }
             set { contacts[GetEmail(jid)] = value; }
         }
 

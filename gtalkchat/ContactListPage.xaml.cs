@@ -4,6 +4,8 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using Microsoft.Phone.Controls;
+using Coding4Fun.Phone.Controls;
+using System.Windows.Media.Imaging;
 
 namespace gtalkchat {
     public partial class ContactListPage : PhoneApplicationPage {
@@ -18,15 +20,23 @@ namespace gtalkchat {
             OnlineContactsListBox.ItemsSource = App.Current.Roster.GetOnlineContacts();
 
             gtalkHelper.RosterUpdated += () =>
-                Dispatcher.BeginInvoke( () => 
-                    OnlineContactsListBox.ItemsSource = App.Current.Roster.GetOnlineContacts()
-                );
+                Dispatcher.BeginInvoke(() => {
+                    OnlineContactsListBox.ItemsSource = App.Current.Roster.GetOnlineContacts();
+                });
+
+            gtalkHelper.MessageReceived += gtalkHelper.ShowToast;
         }
 
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e) {
             base.OnNavigatedTo(e);
 
             gtalkHelper.LoginIfNeeded();
+        }
+
+        protected override void OnNavigatedFrom(System.Windows.Navigation.NavigationEventArgs e) {
+            base.OnNavigatedFrom(e);
+
+            gtalkHelper.MessageReceived -= gtalkHelper.ShowToast;
         }
 
         private void ContactsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {

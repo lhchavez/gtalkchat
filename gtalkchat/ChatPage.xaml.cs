@@ -37,9 +37,17 @@ namespace gtalkchat {
             Scroller.ScrollToVerticalOffset(Scroller.ExtentHeight);
         }
 
+        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e) {
+            base.OnNavigatingFrom(e);
+
+            gtalkHelper.MessageReceived -= DisplayMessage;
+        }
+
         private void DisplayMessage(Message message) {
             Dispatcher.BeginInvoke(() => {
-                if (message.Typing) {
+                if (message.From != to) {
+                    gtalkHelper.ShowToast(message);
+                } else if (message.Typing) {
                     TypingStatus.Visibility = Visibility.Visible;
                 } else {
                     TypingStatus.Visibility = Visibility.Collapsed;
