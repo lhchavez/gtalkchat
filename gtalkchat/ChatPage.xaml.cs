@@ -23,29 +23,34 @@ namespace gtalkchat {
             base.OnNavigatedTo(e);
 
             if (NavigationContext.QueryString.ContainsKey("from")) {
-                to.Text = NavigationContext.QueryString["from"];
+                //to.Text = NavigationContext.QueryString["from"];
             }
 
             gtalkHelper.LoginIfNeeded();
         }
 
         private void DisplayMessage(Message message) {
-            Dispatcher.BeginInvoke(
-                () => { chatLog.Text += String.Format("{0} on {1}: {2}\n", message.From, message.Time, message.Body); });
+            Dispatcher.BeginInvoke(() => {
+                var bubble = new ReceivedChatBubble();
+                bubble.Text = message.Body;
+                bubble.TimeStamp = message.Time.ToString("t");
+
+                MessageList.Children.Add(bubble);
+            });
         }
 
         // ReSharper disable InconsistentNaming
         private void send_Click(object sender, RoutedEventArgs e) {
             // ReSharper restore InconsistentNaming
-            send.IsEnabled = false;
-            to.IsEnabled = false;
-            body.IsEnabled = false;
+            //send.IsEnabled = false;
+            //to.IsEnabled = false;
+            //body.IsEnabled = false;
 
-            gtalk.SendMessage(to.Text, body.Text, data => Dispatcher.BeginInvoke(() => {
-                body.Text = "";
-                send.IsEnabled = true;
-                to.IsEnabled = true;
-                body.IsEnabled = true;
+            gtalk.SendMessage(/*to.Text, body.Text*/ null, null, data => Dispatcher.BeginInvoke(() => {
+                //body.Text = "";
+                //send.IsEnabled = true;
+                //to.IsEnabled = true;
+                //body.IsEnabled = true;
             }), error => {
                 if (error.StartsWith("403")) {
                     settings.Remove("token");
@@ -54,9 +59,9 @@ namespace gtalkchat {
 
                 Dispatcher.BeginInvoke(() => {
                     MessageBox.Show(error);
-                    send.IsEnabled = true;
-                    to.IsEnabled = true;
-                    body.IsEnabled = true;
+                    //send.IsEnabled = true;
+                    //to.IsEnabled = true;
+                    //body.IsEnabled = true;
                 });
             });
         }
