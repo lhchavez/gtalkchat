@@ -111,7 +111,11 @@ namespace gtalkchat {
                 "/logout",
                 ReceiveMode.SingleString,
                 sw => sw.Write("token=" + HttpUtility.UrlEncode(token)),
-                scb,
+                data => {
+                    token = null;
+                    LoggedIn = false;
+                    scb(data);
+                },
                 null,
                 ecb,
                 null

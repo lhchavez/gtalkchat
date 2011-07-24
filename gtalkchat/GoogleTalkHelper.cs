@@ -102,6 +102,10 @@ namespace gtalkchat {
             settings.Remove("token");
             settings.Remove("auth");
 
+            hasToken = false;
+            hasUri = false;
+            registeredUri = null;
+
             if (gtalk.LoggedIn) {
                 gtalk.Logout(data => { }, error => { });
             }
@@ -189,7 +193,7 @@ namespace gtalkchat {
 
                     Connected = true;
                     if (Connect != null) {
-                        Connect();
+                        Connect.Invoke();
                     }
                 },
                 error => {
