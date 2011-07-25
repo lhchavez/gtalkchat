@@ -62,7 +62,6 @@ namespace gtalkchat {
             pushHelper.UriUpdated += UriUpdated;
             pushHelper.RawNotificationReceived += RawNotificationReceived;
             Connected = false;
-            Connect += LoadRoster;
         }
 
         public void LoginIfNeeded() {
@@ -435,6 +434,11 @@ namespace gtalkchat {
                 }
 
                 var contact = App.Current.Roster[email];
+
+                if(contact == null) {
+                    // TODO: only for sanity-of-mind-purposes. MUST remove eventually
+                    return;
+                }
 
                 if(contact.JID != message.From) {
                     App.Current.RootFrame.Dispatcher.BeginInvoke(() => contact.JID = message.From);

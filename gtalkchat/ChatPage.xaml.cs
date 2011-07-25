@@ -187,6 +187,17 @@ namespace gtalkchat {
                     unread[email] = 0;
                 }
 
+                Uri url = GetPinUri();
+                ShellTile existing = ShellTile.ActiveTiles.FirstOrDefault(x => x.NavigationUri == url);
+
+                if (existing != null) {
+                    existing.Update(
+                        new StandardTileData {
+                            Count = 0
+                        }
+                    );
+                }
+
                 var contact = App.Current.Roster[email];
 
                 if (contact != null) {
