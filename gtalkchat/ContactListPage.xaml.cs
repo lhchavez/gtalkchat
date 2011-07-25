@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using Microsoft.Phone.Controls;
 using Coding4Fun.Phone.Controls;
 using System.Windows.Media.Imaging;
+using System.Windows.Data;
 
 namespace gtalkchat {
     public partial class ContactListPage : PhoneApplicationPage {
@@ -48,6 +49,23 @@ namespace gtalkchat {
 
         private void SettingsButton_Click(object sender, EventArgs e) {
             NavigationService.Navigate(new Uri("/SettingsPage.xaml", UriKind.Relative));
+        }
+    }
+
+    public class NumberToVisibilityConverter : IValueConverter {
+
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture) {
+            int val = (int)value;
+
+            if (val == 0) {
+                return Visibility.Collapsed;
+            } else {
+                return Visibility.Visible;
+            }
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture) {
+            throw new NotImplementedException();
         }
     }
 }

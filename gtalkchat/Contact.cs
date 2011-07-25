@@ -114,7 +114,7 @@ namespace gtalkchat {
             }
         }
 
-        private int unread = 1;
+        private int unread;
         public int UnreadCount {
             get { return unread; }
             set {

@@ -5,6 +5,7 @@
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
+    xmlns:local="clr-namespace:gtalkchat"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696"
@@ -15,6 +16,8 @@
     shell:SystemTray.IsVisible="True">
     
     <phone:PhoneApplicationPage.Resources>
+        <local:NumberToVisibilityConverter x:Key="NumberToVisibilityConverter" />
+        
         <DataTemplate x:Key="ContactTemplate">
             <Grid Margin="0,0,0,6">
                 <Grid.ColumnDefinitions>
@@ -27,8 +30,12 @@
                     <RowDefinition Height="25" />
                 </Grid.RowDefinitions>
 
-                <Rectangle Fill="{StaticResource PhoneChromeBrush}" Height="60" Grid.RowSpan="2"  />
+                <Rectangle Fill="{StaticResource PhoneChromeBrush}" Height="60" Grid.RowSpan="2"/>
                 <Image Source="{Binding PhotoUri}" Height="60" Grid.RowSpan="2" />
+                <Grid Width="Auto" Height="Auto" Margin="0,5,0,0" HorizontalAlignment="Right" VerticalAlignment="Top" Visibility="{Binding UnreadCount, Converter={StaticResource NumberToVisibilityConverter}}">
+                    <Rectangle Fill="{StaticResource PhoneAccentBrush}" Grid.RowSpan="2" />
+                    <TextBlock Text="{Binding UnreadCount}" Foreground="White" Margin="6,0" FontSize="18" />
+                </Grid>
                 
                 <TextBlock Grid.Column="2" Grid.Row="0" Style="{StaticResource PhoneTextLargeStyle}" Margin="12,0,0,0" Text="{Binding NameOrEmail}" />
                 <TextBlock Grid.Column="2" Grid.Row="1" Style="{StaticResource PhoneTextSubtleStyle}" Text="{Binding Status}" />
