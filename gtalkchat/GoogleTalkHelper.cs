@@ -331,14 +331,20 @@ namespace gtalkchat {
                     chatLog.Add(message);
                 }
 
+                var email = message.From;
+
+                if (email.Contains("/")) {
+                    email = email.Substring(0, email.IndexOf('/'));
+                }
+
+                var contact = App.Current.Roster[email];
+
+                if(contact.JID != message.From) {
+                    App.Current.RootFrame.Dispatcher.BeginInvoke(() => contact.JID = message.From);
+                }
+
                 if (App.Current.CurrentChat == null || message.From.IndexOf(App.Current.CurrentChat) != 0) {
                     var unread = settings["unread"] as Dictionary<string, int>;
-
-                    var email = message.From;
-
-                    if (email.Contains("/")) {
-                        email = email.Substring(0, email.IndexOf('/'));
-                    }
 
                     int unreadCount = 1;
 
@@ -349,8 +355,6 @@ namespace gtalkchat {
                             unreadCount = ++unread[email];
                         }
                     }
-
-                    var contact = App.Current.Roster[email];
 
                     if (contact != null) {
                         App.Current.RootFrame.Dispatcher.BeginInvoke(() => contact.UnreadCount = unreadCount);

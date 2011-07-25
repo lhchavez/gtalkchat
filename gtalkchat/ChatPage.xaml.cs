@@ -114,6 +114,8 @@ namespace gtalkchat {
                 } else {
                     TypingStatus.Visibility = Visibility.Collapsed;
 
+                    to = message.From;
+
                     if (message.Body != null) {
                         var bubble = new ReceivedChatBubble();
                         bubble.Text = message.Body;
