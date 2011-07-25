@@ -51,6 +51,11 @@ namespace gtalkchat {
         private void SettingsButton_Click(object sender, EventArgs e) {
             NavigationService.Navigate(new Uri("/SettingsPage.xaml", UriKind.Relative));
         }
+
+        private void RefreshButton_Click(object sender, EventArgs e) {
+            ProgressBar.Visibility = Visibility.Visible;
+            gtalkHelper.LoadRoster();
+        }
     }
 
     public class NumberToVisibilityConverter : IValueConverter {
