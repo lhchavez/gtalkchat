@@ -23,7 +23,6 @@ namespace gtalkchat {
             gtalkHelper.RosterUpdated += () =>
                 Dispatcher.BeginInvoke(() => {
                     ProgressBar.Visibility = Visibility.Collapsed;
-                    ProgressBar.IsIndeterminate = false;
                     OnlineContactsListBox.ItemsSource = App.Current.Roster.GetOnlineContacts();
                 });
         }
@@ -55,7 +54,6 @@ namespace gtalkchat {
 
         private void RefreshButton_Click(object sender, EventArgs e) {
             ProgressBar.Visibility = Visibility.Visible;
-            ProgressBar.IsIndeterminate = true;
             gtalkHelper.LoadRoster();
         }
     }
