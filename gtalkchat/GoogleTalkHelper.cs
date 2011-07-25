@@ -48,7 +48,7 @@ namespace gtalkchat {
         private bool hasToken;
         private bool hasUri;
         private string registeredUri;
-        private static readonly Regex linkRegex = new Regex("(https?://)?[a-z0-9.-]+\\.([0-9]{1,3}|[a-z]{2,4})(/?[-a-z0-9+&@#\\/%?=~_|!:,.;]*[-a-z0-9+&@#\\/%=~_|])");
+        private static readonly Regex linkRegex = new Regex("(https?://)?(([0-9]{1-3}\\.[0-9]{1-3}\\.[0-9]{1-3}\\.[0-9]{1-3})|([a-z0-9.-]+\\.[a-z]{2,4}))(/[-a-z0-9+&@#\\/%?=~_|!:,.;]*[-a-z0-9+&@#\\/%=~_|])?", RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
 
         #endregion
 
