@@ -33,6 +33,10 @@ namespace gtalkchat {
 
         public bool Connected { get; private set; }
 
+        public bool RosterLoaded { get; private set; }
+
+        private bool offlineMessagesDownloaded;
+
         #endregion
 
         #region Private Fields
@@ -276,7 +280,7 @@ namespace gtalkchat {
             gtalk.Register(
                 uri,
                 data => {
-                    GetOfflineMessages();
+                    LoadRoster();
 
                     Connected = true;
                     if (Connect != null) {
@@ -349,6 +353,12 @@ namespace gtalkchat {
 
                         if (RosterUpdated != null) {
                             RosterUpdated();
+                        }
+                        RosterLoaded = true;
+
+                        if(!offlineMessagesDownloaded) {
+                            offlineMessagesDownloaded = true;
+                            GetOfflineMessages();
                         }
                     }
                 ),

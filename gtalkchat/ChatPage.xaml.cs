@@ -38,64 +38,16 @@ namespace gtalkchat {
                 }
 
                 App.Current.CurrentChat = email;
-
-                Dispatcher.BeginInvoke(() => {
-
-                    string displayName = email;
-                    if (App.Current.Roster.Contains(to)) {
-                        displayName = App.Current.Roster[to].NameOrEmail;
-                    }
-
-                    PageTitle.Text = displayName.ToUpper();
-                    TypingStatus.Text = displayName + " is typing...";
-
-                    if (IsPinned()) {
-                        (ApplicationBar.Buttons[1] as ApplicationBarIconButton).IsEnabled = false;
-                    }
-
-                    chatLog = gtalkHelper.ChatLog(to);
-
-                    MessageList.Children.Clear();
-
-                    lock (chatLog) {
-                        foreach (var message in chatLog) {
-                            UserControl bubble;
-
-                            if (message.Outbound) {
-                                bubble = new SentChatBubble();
-
-                                (bubble as SentChatBubble).Text = message.Body;
-                                (bubble as SentChatBubble).TimeStamp = message.Time.ToString("t");
-                            } else {
-                                bubble = new ReceivedChatBubble();
-
-                                (bubble as ReceivedChatBubble).Text = message.Body;
-                                (bubble as ReceivedChatBubble).TimeStamp = message.Time.ToString("t");
-                            }
-
-                            MessageList.Children.Add(bubble);
-                        }
-                    }
-
-                    MessageList.UpdateLayout();
-                    Scroller.UpdateLayout();
-                    Scroller.ScrollToVerticalOffset(Scroller.ExtentHeight);
-
-                    var unread = settings["unread"] as Dictionary<string, int>;
-                    lock (unread) {
-                        unread[email] = 0;
-                    }
-
-                    var contact = App.Current.Roster[email];
-
-                    if (contact != null) {
-                        contact.UnreadCount = 0;
-                    }
-                });
             }
 
-            gtalkHelper.LoginIfNeeded();
+            if (gtalkHelper.RosterLoaded) {
+                Initialize();
+            } else {
+                gtalkHelper.RosterUpdated += Initialize;
+            }
+
             gtalkHelper.MessageReceived += DisplayMessage;
+            gtalkHelper.LoginIfNeeded();
 
             ScrollToBottom();
         }
@@ -181,6 +133,63 @@ namespace gtalkchat {
             if (e.Key == System.Windows.Input.Key.Enter) {
                 SendButton_Click(sender, e);
             }
+        }
+
+        private void Initialize() {
+            gtalkHelper.RosterUpdated -= Initialize;
+
+            Dispatcher.BeginInvoke(() => {
+                string displayName = email;
+                if (App.Current.Roster.Contains(to)) {
+                    displayName = App.Current.Roster[to].NameOrEmail;
+                }
+
+                PageTitle.Text = displayName.ToUpper();
+                TypingStatus.Text = displayName + " is typing...";
+
+                if (IsPinned()) {
+                    (ApplicationBar.Buttons[1] as ApplicationBarIconButton).IsEnabled = false;
+                }
+
+                chatLog = gtalkHelper.ChatLog(to);
+
+                MessageList.Children.Clear();
+
+                lock (chatLog) {
+                    foreach (var message in chatLog) {
+                        UserControl bubble;
+
+                        if (message.Outbound) {
+                            bubble = new SentChatBubble();
+
+                            (bubble as SentChatBubble).Text = message.Body;
+                            (bubble as SentChatBubble).TimeStamp = message.Time.ToString("t");
+                        } else {
+                            bubble = new ReceivedChatBubble();
+
+                            (bubble as ReceivedChatBubble).Text = message.Body;
+                            (bubble as ReceivedChatBubble).TimeStamp = message.Time.ToString("t");
+                        }
+
+                        MessageList.Children.Add(bubble);
+                    }
+                }
+
+                MessageList.UpdateLayout();
+                Scroller.UpdateLayout();
+                Scroller.ScrollToVerticalOffset(Scroller.ExtentHeight);
+
+                var unread = settings["unread"] as Dictionary<string, int>;
+                lock (unread) {
+                    unread[email] = 0;
+                }
+
+                var contact = App.Current.Roster[email];
+
+                if (contact != null) {
+                    contact.UnreadCount = 0;
+                }
+            });
         }
 
         private void ScrollToBottom() {
