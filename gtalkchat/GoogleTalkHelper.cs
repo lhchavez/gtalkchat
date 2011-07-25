@@ -8,8 +8,9 @@ using System.Windows;
 using Microsoft.Phone.Shell;
 using Coding4Fun.Phone.Controls;
 using System.Windows.Media.Imaging;
-using System.Windows.Resources;
 using System.Net;
+using System.Windows.Documents;
+using System.Text.RegularExpressions;
 
 namespace gtalkchat {
     public class GoogleTalkHelper {
@@ -47,6 +48,7 @@ namespace gtalkchat {
         private bool hasToken;
         private bool hasUri;
         private string registeredUri;
+        private static readonly Regex linkRegex = new Regex("(https?://)?[a-z0-9.-]+\\.([0-9]{1,3}|[a-z]{2,4})(/?[-a-z0-9+&@#\\/%?=~_|!:,.;]*[-a-z0-9+&@#\\/%=~_|])");
 
         #endregion
 
@@ -242,6 +244,40 @@ namespace gtalkchat {
                     }
                 }, null);
             }
+        }
+
+        public static List<Inline> Linkify(string message) {
+            var list = new List<Inline>();
+
+            int last = 0;
+
+            foreach (Match m in linkRegex.Matches(message)) {
+                if (m.Index > last) {
+                    list.Add(
+                        new Run {
+                            Text = message.Substring(last, m.Index)
+                        }
+                    );
+                }
+
+                list.Add(
+                    new Hyperlink {
+                        NavigateUri = new Uri(m.Groups[0].Value)
+                    }
+                );
+
+                last = m.Index + m.Length;
+            }
+
+            if (last != message.Length) {
+                list.Add(
+                    new Run {
+                        Text = message.Substring(last)
+                    }
+                );
+            }
+
+            return list;
         }
 
         #endregion
