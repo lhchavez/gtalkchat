@@ -38,6 +38,9 @@ namespace gtalkchat {
                 }
 
                 App.Current.CurrentChat = email;
+
+                // TODO: make this optional
+                to = email;
             }
 
             if (gtalkHelper.RosterLoaded) {

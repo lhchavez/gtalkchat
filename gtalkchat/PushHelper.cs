@@ -26,7 +26,7 @@ namespace gtalkchat {
 
             // If the channel was not found, then create a new connection to the push service.
             if (pushChannel == null) {
-                pushChannel = new HttpNotificationChannel(channelName);
+                pushChannel = new HttpNotificationChannel(channelName, "gtalkjsonproxy.lhchavez.com");
 
                 // Register for all the events before attempting to open the channel.
                 pushChannel.ChannelUriUpdated += PushChannel_ChannelUriUpdated;
@@ -43,8 +43,7 @@ namespace gtalkchat {
             }
 
             if (!pushChannel.IsShellTileBound) {
-                var uris = new System.Collections.ObjectModel.Collection<Uri> { new Uri("https://gtalkjsonproxy.lhchavez.com") };
-                pushChannel.BindToShellTile(uris);
+                pushChannel.BindToShellTile();
             }
 
             if (UriUpdated != null && pushChannel.ChannelUri != null) {
