@@ -138,13 +138,13 @@
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,0,0">
         	<Grid.RowDefinitions>
         		<RowDefinition/>
         	</Grid.RowDefinitions>
         	
-            <ScrollViewer Name="Scroller" Margin="12,0,12,0" VerticalAlignment="Bottom">
-                <StackPanel>
+            <ScrollViewer Name="Scroller" Margin="12,0,0,0" VerticalAlignment="Bottom">
+                <StackPanel Margin="0,0,24,0">
                     <StackPanel Name="MessageList">
                     </StackPanel>
                     <TextBlock Name="TypingStatus" Visibility="Collapsed" Grid.Row="1" FontSize="{StaticResource PhoneFontSizeNormal}" />
