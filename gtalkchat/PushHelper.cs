@@ -1,4 +1,5 @@
 ﻿using Microsoft.Phone.Notification;
+using System;
 
 namespace gtalkchat {
     public class PushHelper {
@@ -42,7 +43,8 @@ namespace gtalkchat {
             }
 
             if (!pushChannel.IsShellTileBound) {
-                pushChannel.BindToShellTile();
+                var uris = new System.Collections.ObjectModel.Collection<Uri> { new Uri("https://gtalkjsonproxy.lhchavez.com") };
+                pushChannel.BindToShellTile(uris);
             }
 
             if (UriUpdated != null && pushChannel.ChannelUri != null) {

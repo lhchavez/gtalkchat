@@ -6,6 +6,8 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using System.Collections.Generic;
 using System.Windows.Controls;
+using System.Net;
+using System.Linq;
 
 namespace gtalkchat {
     public partial class ChatPage : PhoneApplicationPage {
@@ -31,58 +33,61 @@ namespace gtalkchat {
                 to = NavigationContext.QueryString["from"];
                 email = to;
 
-                if(email.Contains("/")) {
+                if (email.Contains("/")) {
                     email = email.Substring(0, email.IndexOf('/'));
                 }
 
                 App.Current.CurrentChat = email;
 
-                string displayName = App.Current.Roster.Contains(to) ? (App.Current.Roster[to].NameOrEmail ?? to) : to;
-                PageTitle.Text = displayName;
-                TypingStatus.Text = displayName + " is typing...";
+                Dispatcher.BeginInvoke(() => {
 
-                chatLog = gtalkHelper.ChatLog(to);
+                    string displayName = App.Current.Roster.Contains(to) ? (App.Current.Roster[to].NameOrEmail ?? to) : to;
+                    PageTitle.Text = displayName;
+                    TypingStatus.Text = displayName + " is typing...";
 
-                Dispatcher.BeginInvoke(
-                    () => {
-                        MessageList.Children.Clear();
+                    if (IsPinned()) {
+                        (ApplicationBar.Buttons[1] as ApplicationBarIconButton).IsEnabled = false;
+                    }
 
-                        lock (chatLog) {
-                            foreach (var message in chatLog) {
-                                UserControl bubble;
+                    chatLog = gtalkHelper.ChatLog(to);
 
-                                if (message.Outbound) {
-                                    bubble = new SentChatBubble();
+                    MessageList.Children.Clear();
 
-                                    (bubble as SentChatBubble).Text = message.Body;
-                                    (bubble as SentChatBubble).TimeStamp = message.Time.ToString("t");
-                                } else {
-                                    bubble = new ReceivedChatBubble();
+                    lock (chatLog) {
+                        foreach (var message in chatLog) {
+                            UserControl bubble;
 
-                                    (bubble as ReceivedChatBubble).Text = message.Body;
-                                    (bubble as ReceivedChatBubble).TimeStamp = message.Time.ToString("t");
-                                }
+                            if (message.Outbound) {
+                                bubble = new SentChatBubble();
 
-                                MessageList.Children.Add(bubble);
+                                (bubble as SentChatBubble).Text = message.Body;
+                                (bubble as SentChatBubble).TimeStamp = message.Time.ToString("t");
+                            } else {
+                                bubble = new ReceivedChatBubble();
+
+                                (bubble as ReceivedChatBubble).Text = message.Body;
+                                (bubble as ReceivedChatBubble).TimeStamp = message.Time.ToString("t");
                             }
-                        }
 
-                        MessageList.UpdateLayout();
-                        Scroller.UpdateLayout();
-                        Scroller.ScrollToVerticalOffset(Scroller.ExtentHeight);
-
-                        var unread = settings["unread"] as Dictionary<string, int>;
-                        lock (unread) {
-                            unread[email] = 0;
-                        }
-
-                        var contact = App.Current.Roster[email];
-
-                        if (contact != null) {
-                            contact.UnreadCount = 0;
+                            MessageList.Children.Add(bubble);
                         }
                     }
-                );
+
+                    MessageList.UpdateLayout();
+                    Scroller.UpdateLayout();
+                    Scroller.ScrollToVerticalOffset(Scroller.ExtentHeight);
+
+                    var unread = settings["unread"] as Dictionary<string, int>;
+                    lock (unread) {
+                        unread[email] = 0;
+                    }
+
+                    var contact = App.Current.Roster[email];
+
+                    if (contact != null) {
+                        contact.UnreadCount = 0;
+                    }
+                });
             }
 
             gtalkHelper.LoginIfNeeded();
@@ -127,8 +132,8 @@ namespace gtalkchat {
         private void SendButton_Click(object sender, EventArgs e) {
             if (MessageText.Text.Length == 0) return;
 
-            lock(chatLog) {
-                if(chatLog.Count >= 10) {
+            lock (chatLog) {
+                if (chatLog.Count >= 10) {
                     chatLog.RemoveAt(0);
                 }
                 chatLog.Add(new Message {
@@ -165,6 +170,36 @@ namespace gtalkchat {
         private void MessageText_KeyUp(object sender, System.Windows.Input.KeyEventArgs e) {
             if (e.Key == System.Windows.Input.Key.Enter) {
                 SendButton_Click(sender, e);
+            }
+        }
+
+        private Uri GetPinUri() {
+            return new Uri("/ChatPage.xaml?from=" + HttpUtility.UrlEncode(email), UriKind.Relative);
+        }
+
+        private bool IsPinned() {
+            Uri url = GetPinUri();
+            ShellTile existing = ShellTile.ActiveTiles.FirstOrDefault(x => x.NavigationUri == url);
+
+            return existing != null;
+        }
+
+        private void PinButton_Click(object sender, EventArgs e) {
+            if (!IsPinned()) {
+                Contact contact = App.Current.Roster[email];
+                StandardTileData tile;
+
+                if (contact != null) {
+                    tile = new StandardTileData {
+                        Title = contact.NameOrEmail
+                    };
+                } else {
+                    tile = new StandardTileData {
+                        Title = email
+                    };
+                }
+
+                ShellTile.Create(GetPinUri(), tile);
             }
         }
     }
