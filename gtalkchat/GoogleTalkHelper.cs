@@ -279,6 +279,8 @@ namespace gtalkchat {
             gtalk.GetRoster(
                 roster => App.Current.RootFrame.Dispatcher.BeginInvoke(
                     () => {
+                        var unread = settings["unread"] as Dictionary<string, int>;
+
                         foreach (var contact in roster) {
                             if (App.Current.Roster.Contains(contact.Email)) {
                                 var original =
@@ -293,6 +295,10 @@ namespace gtalkchat {
                                 original.Show = contact.Show ??
                                                 original.Show;
                             } else {
+                                if (unread.ContainsKey(contact.Email)) {
+                                    contact.UnreadCount = unread[contact.Email];
+                                }
+
                                 App.Current.Roster.Add(contact);
                             }
                         }

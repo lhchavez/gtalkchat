@@ -73,10 +73,10 @@ namespace gtalkchat {
 
                         var unread = settings["unread"] as Dictionary<string, int>;
                         lock (unread) {
-                            unread["email"] = 0;
+                            unread[email] = 0;
                         }
 
-                        var contact = App.Current.Roster["email"];
+                        var contact = App.Current.Roster[email];
 
                         if (contact != null) {
                             contact.UnreadCount = 0;
