@@ -46,7 +46,7 @@ namespace gtalkchat {
                         displayName = App.Current.Roster[to].NameOrEmail;
                     }
 
-                    PageTitle.Text = displayName;
+                    PageTitle.Text = displayName.ToUpper();
                     TypingStatus.Text = displayName + " is typing...";
 
                     if (IsPinned()) {
@@ -97,8 +97,7 @@ namespace gtalkchat {
             gtalkHelper.LoginIfNeeded();
             gtalkHelper.MessageReceived += DisplayMessage;
 
-            MessageList.UpdateLayout();
-            Scroller.ScrollToVerticalOffset(Scroller.ExtentHeight);
+            ScrollToBottom();
         }
 
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e) {
@@ -115,6 +114,7 @@ namespace gtalkchat {
                     gtalkHelper.ShowToast(message);
                 } else if (message.Typing) {
                     TypingStatus.Visibility = Visibility.Visible;
+                    ScrollToBottom();
                 } else {
                     TypingStatus.Visibility = Visibility.Collapsed;
 
@@ -127,9 +127,7 @@ namespace gtalkchat {
 
                         MessageList.Children.Add(bubble);
 
-                        MessageList.UpdateLayout();
-                        Scroller.UpdateLayout();
-                        Scroller.ScrollToVerticalOffset(Scroller.ExtentHeight);
+                        ScrollToBottom();
                     }
                 }
             });
@@ -174,9 +172,16 @@ namespace gtalkchat {
         }
 
         private void MessageText_KeyUp(object sender, System.Windows.Input.KeyEventArgs e) {
+            ScrollToBottom();
             if (e.Key == System.Windows.Input.Key.Enter) {
                 SendButton_Click(sender, e);
             }
+        }
+
+        private void ScrollToBottom() {
+            MessageList.UpdateLayout();
+            Scroller.UpdateLayout();
+            Scroller.ScrollToVerticalOffset(Scroller.ExtentHeight);
         }
 
         private Uri GetPinUri() {
