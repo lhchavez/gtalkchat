@@ -174,22 +174,7 @@ namespace gtalkchat {
             if (data.StartsWith("msg:")) {
                 gtalk.ParseMessage(
                     data.Substring(4),
-                    message => {
-                        if (message.Body != null) {
-                            List<Message> chatLog = ChatLog(message.From);
-
-                            lock (chatLog) {
-                                if (chatLog.Count >= 10) {
-                                    chatLog.RemoveAt(0);
-                                }
-                                chatLog.Add(message);
-                            }
-                        }
-
-                        if (MessageReceived != null) {
-                            MessageReceived(message);
-                        }
-                    },
+                    NotifyMessageReceived,
                     error => App.Current.RootFrame.Dispatcher.BeginInvoke(() => MessageBox.Show(error))
                 );
             }
@@ -268,22 +253,7 @@ namespace gtalkchat {
 
         private void GetOfflineMessages() {
             gtalk.MessageQueue(
-                message => {
-                    if (message.Body != null) {
-                        List<Message> chatLog = ChatLog(message.From);
-
-                        lock (chatLog) {
-                            if (chatLog.Count >= 10) {
-                                chatLog.RemoveAt(0);
-                            }
-                            chatLog.Add(message);
-                        }
-                    }
-
-                    if (MessageReceived != null) {
-                        MessageReceived(message);
-                    }
-                },
+                NotifyMessageReceived,
                 error => {
                     App.Current.RootFrame.Dispatcher.BeginInvoke(() => MessageBox.Show(error));
 
@@ -342,6 +312,49 @@ namespace gtalkchat {
                     }
                 }
             );
+        }
+
+        private void NotifyMessageReceived(Message message) {
+            if (message.Body != null) {
+                List<Message> chatLog = ChatLog(message.From);
+
+                lock (chatLog) {
+                    if (chatLog.Count >= 10) {
+                        chatLog.RemoveAt(0);
+                    }
+                    chatLog.Add(message);
+                }
+
+                if (App.Current.CurrentChat == null || message.From.IndexOf(App.Current.CurrentChat) != 0) {
+                    var unread = settings["unread"] as Dictionary<string, int>;
+
+                    var email = message.From;
+
+                    if (email.Contains("/")) {
+                        email = email.Substring(0, email.IndexOf('/'));
+                    }
+
+                    int unreadCount = 1;
+
+                    lock (unread) {
+                        if (!unread.ContainsKey(email)) {
+                            unread.Add(email, 1);
+                        } else {
+                            unreadCount = ++unread[email];
+                        }
+                    }
+
+                    var contact = App.Current.Roster[email];
+
+                    if (contact != null) {
+                        App.Current.RootFrame.Dispatcher.BeginInvoke(() => contact.UnreadCount = unreadCount);
+                    }
+                }
+            }
+
+            if (MessageReceived != null) {
+                MessageReceived(message);
+            }
         }
 
         #endregion

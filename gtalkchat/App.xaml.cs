@@ -23,6 +23,8 @@ namespace gtalkchat {
 
         public Roster Roster { get; set; }
 
+        public string CurrentChat { get; set; }
+
         public new static App Current {
             get { return (App) Application.Current; }
         }
@@ -71,6 +73,9 @@ namespace gtalkchat {
             if(!Settings.Contains("chatlog")) {
                 Settings["chatlog"] = new Dictionary<string,List<Message>>();
             }
+            if (!Settings.Contains("unread")) {
+                Settings["unread"] = new Dictionary<string, int>();
+            }
 
             GtalkHelper = new GoogleTalkHelper();
 
@@ -87,6 +92,9 @@ namespace gtalkchat {
 
             if (!Settings.Contains("chatlog")) {
                 Settings["chatlog"] = new Dictionary<string, List<Message>>();
+            }
+            if (!Settings.Contains("unread")) {
+                Settings["unread"] = new Dictionary<string, int>();
             }
 
             GtalkHelper = new GoogleTalkHelper();

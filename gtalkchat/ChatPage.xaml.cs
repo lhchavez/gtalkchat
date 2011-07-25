@@ -35,6 +35,8 @@ namespace gtalkchat {
                     email = email.Substring(0, email.IndexOf('/'));
                 }
 
+                App.Current.CurrentChat = email;
+
                 string displayName = App.Current.Roster.Contains(to) ? (App.Current.Roster[to].NameOrEmail ?? to) : to;
                 PageTitle.Text = displayName;
                 TypingStatus.Text = displayName + " is typing...";
@@ -68,6 +70,17 @@ namespace gtalkchat {
                         MessageList.UpdateLayout();
                         Scroller.UpdateLayout();
                         Scroller.ScrollToVerticalOffset(Scroller.ExtentHeight);
+
+                        var unread = settings["unread"] as Dictionary<string, int>;
+                        lock (unread) {
+                            unread["email"] = 0;
+                        }
+
+                        var contact = App.Current.Roster["email"];
+
+                        if (contact != null) {
+                            contact.UnreadCount = 0;
+                        }
                     }
                 );
             }
@@ -83,6 +96,8 @@ namespace gtalkchat {
             base.OnNavigatingFrom(e);
 
             gtalkHelper.MessageReceived -= DisplayMessage;
+
+            App.Current.CurrentChat = null;
         }
 
         private void DisplayMessage(Message message) {
