@@ -1,18 +1,43 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Collections.Specialized;
 
 namespace gtalkchat {
-    public class Roster : ObservableCollection<Contact> {
+    public class Roster : List<Contact>, INotifyCollectionChanged {
+        private bool notify;
+        public bool Notify {
+            get { return notify; }
+            set {
+                if(!notify && value && pendingNotify && CollectionChanged != null) {
+                    CollectionChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+                }
+                pendingNotify = false;
+                notify = value;
+            }
+        }
+
+        public event NotifyCollectionChangedEventHandler CollectionChanged;
+
         private readonly Dictionary<string, Contact> contacts;
+        private bool pendingNotify;
 
         public Roster() {
             contacts = new Dictionary<string, Contact>();
+            Notify = true;
         }
 
         public new void Add(Contact item) {
             base.Add(item);
             contacts.Add(GetEmail(item.JID), item);
+
+            if (Notify) {
+                if (CollectionChanged != null) {
+                    CollectionChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, item, Count - 1));
+                }
+            } else {
+                pendingNotify = true;
+            }
         }
 
         public bool Contains(string jid) {
@@ -34,7 +59,7 @@ namespace gtalkchat {
             return this.Where(r => r.Online).ToObservableCollection();
         }
 
-        private string GetEmail(string jid) {
+        private static string GetEmail(string jid) {
             var email = jid;
 
             if (email.Contains("/")) {

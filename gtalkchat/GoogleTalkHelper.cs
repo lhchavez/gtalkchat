@@ -371,6 +371,8 @@ namespace gtalkchat {
                     () => {
                         var unread = settings["unread"] as Dictionary<string, int>;
 
+                        App.Current.Roster.Notify = false;
+
                         foreach (var contact in roster) {
                             if (App.Current.Roster.Contains(contact.Email)) {
                                 var original =
@@ -392,11 +394,12 @@ namespace gtalkchat {
                                 App.Current.Roster.Add(contact);
                             }
                         }
+                        App.Current.Roster.Notify = true;
 
+                        RosterLoaded = true;
                         if (RosterUpdated != null) {
                             RosterUpdated();
                         }
-                        RosterLoaded = true;
 
                         if(!offlineMessagesDownloaded) {
                             offlineMessagesDownloaded = true;
