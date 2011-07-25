@@ -260,7 +260,7 @@ namespace gtalkchat {
                 }
 
                 string uri = m.Groups[0].Value;
-                if (!uri.StartsWith("http://") || !uri.StartsWith("https://")) {
+                if (!uri.StartsWith("http://") && !uri.StartsWith("https://")) {
                     uri = uri.Insert(0, "http://");
                 }
 
