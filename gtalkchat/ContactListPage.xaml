@@ -7,6 +7,7 @@
     xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
     xmlns:local="clr-namespace:gtalkchat"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:delay="clr-namespace:Delay;assembly=PhonePerformance"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696"
@@ -20,7 +21,7 @@
         <local:NumberToVisibilityConverter x:Key="NumberToVisibilityConverter" />
         
         <DataTemplate x:Key="ContactTemplate">
-            <Grid Margin="0,0,0,6">
+            <Grid Margin="0,0,0,6" Height="76">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="60" />
                     <ColumnDefinition Width="6" />
@@ -32,7 +33,7 @@
                 </Grid.RowDefinitions>
 
                 <Rectangle Fill="{StaticResource PhoneChromeBrush}" Height="60" Grid.RowSpan="2"/>
-                <Image Source="{Binding PhotoUri}" Height="60" Grid.RowSpan="2" />
+                <Image delay:LowProfileImageLoader.UriSource="{Binding PhotoUri}" Height="60" Grid.RowSpan="2" />
                 <Grid Width="Auto" Height="Auto" Margin="0,5,0,0" HorizontalAlignment="Right" VerticalAlignment="Top" Visibility="{Binding UnreadCount, Converter={StaticResource NumberToVisibilityConverter}}">
                     <Rectangle Fill="{StaticResource PhoneAccentBrush}" Grid.RowSpan="2" />
                     <TextBlock Text="{Binding UnreadCount}" Foreground="White" Margin="6,0" FontSize="18" />
@@ -42,6 +43,14 @@
                 <TextBlock Grid.Column="2" Grid.Row="1" Style="{StaticResource PhoneTextSubtleStyle}" Text="{Binding Status}" />
             </Grid>
         </DataTemplate>
+
+        <Style TargetType="ListBoxItem" x:Key="ItemContainerStyle">
+            <Setter Property="Height" Value="76"/>
+        </Style>
+
+        <ItemsPanelTemplate x:Key="PanelTemplate">
+            <StackPanel/>
+        </ItemsPanelTemplate>
     </phone:PhoneApplicationPage.Resources>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
@@ -53,24 +62,35 @@
             <!--Pivot item one-->
             <controls:PivotItem Header="online">
                 <Grid Margin="12,-12,-12,0">
-                    <ListBox Name="OnlineContactsListBox" ItemTemplate="{StaticResource ContactTemplate}" SelectionChanged="ContactsListBox_SelectionChanged" toolkit:TiltEffect.IsTiltEnabled="True" />
+                    <delay:DeferredLoadListBox 
+                        Name="OnlineContactsListBox" 
+                        ItemTemplate="{StaticResource ContactTemplate}" 
+                        SelectionChanged="ContactsListBox_SelectionChanged" 
+                        toolkit:TiltEffect.IsTiltEnabled="True"
+                        ItemContainerStyle="{StaticResource ItemContainerStyle}"
+                        ItemsPanel="{StaticResource PanelTemplate}" />
                 </Grid>
             </controls:PivotItem>
 
             <!--Pivot item two-->
             <controls:PivotItem Header="all">
                 <Grid Margin="12,-12,-12,0">
-                    <ListBox Name="AllContactsListBox" ItemTemplate="{StaticResource ContactTemplate}" SelectionChanged="ContactsListBox_SelectionChanged" toolkit:TiltEffect.IsTiltEnabled="True" />
+                    <delay:DeferredLoadListBox 
+                        Name="AllContactsListBox" 
+                        ItemTemplate="{StaticResource ContactTemplate}" 
+                        SelectionChanged="ContactsListBox_SelectionChanged" 
+                        toolkit:TiltEffect.IsTiltEnabled="True"
+                        ItemContainerStyle="{StaticResource ItemContainerStyle}"
+                        ItemsPanel="{StaticResource PanelTemplate}" />
                 </Grid>
             </controls:PivotItem>
         </controls:Pivot>
     </Grid>
-
     
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
-            <shell:ApplicationBarIconButton x:Name="SettingsButton" IconUri="/icons/appbar.feature.settings.rest.png" Text="settings" Click="SettingsButton_Click"/>
             <shell:ApplicationBarIconButton x:Name="RefreshButton" IconUri="/icons/appbar.refresh.rest.png" Text="refresh" Click="RefreshButton_Click" />
+            <shell:ApplicationBarIconButton x:Name="SettingsButton" IconUri="/icons/appbar.feature.settings.rest.png" Text="settings" Click="SettingsButton_Click"/>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
     
