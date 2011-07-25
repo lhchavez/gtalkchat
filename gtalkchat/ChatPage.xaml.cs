@@ -204,13 +204,24 @@ namespace gtalkchat {
                     tile = new StandardTileData {
                         Title = contact.NameOrEmail
                     };
+
+                    if (contact.Photo != null) {
+                        gtalkHelper.DownloadImage(contact, () => {
+                            tile.BackgroundImage =
+                                new Uri("isostore:/Shared/ShellContent/" + contact.Photo + ".jpg");
+
+                            ShellTile.Create(GetPinUri(), tile);
+                        });
+                    } else {
+                        ShellTile.Create(GetPinUri(), tile);
+                    }
                 } else {
                     tile = new StandardTileData {
                         Title = email
                     };
-                }
 
-                ShellTile.Create(GetPinUri(), tile);
+                    ShellTile.Create(GetPinUri(), tile);
+                }
             }
         }
     }

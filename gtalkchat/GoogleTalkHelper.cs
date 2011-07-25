@@ -8,6 +8,8 @@ using System.Windows;
 using Microsoft.Phone.Shell;
 using Coding4Fun.Phone.Controls;
 using System.Windows.Media.Imaging;
+using System.Windows.Resources;
+using System.Net;
 
 namespace gtalkchat {
     public class GoogleTalkHelper {
@@ -193,6 +195,48 @@ namespace gtalkchat {
                 }
 
                 return chatLog[username];
+            }
+        }
+
+        public void DownloadImage(Contact contact, Action finished) {
+            var fileName = "Shared/ShellContent/" + contact.Photo + ".jpg";
+
+            using (IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication()) {
+                if (isf.FileExists(fileName)) {
+                    finished();
+                    return;
+                }
+
+                var fileStream = isf.CreateFile(fileName);
+
+                var req = WebRequest.CreateHttp("https://gtalkjsonproxy.lhchavez.com/images/" + contact.Photo);
+
+                req.BeginGetResponse(a => {
+                    var response = (HttpWebResponse) req.EndGetResponse(a);
+
+                    using (var responseStream = response.GetResponseStream()) {
+                        var data = new byte[response.ContentLength];
+
+                        responseStream.BeginRead(
+                            data,
+                            0,
+                            (int) response.ContentLength,
+                            result =>
+                                fileStream.BeginWrite(
+                                    data,
+                                    0,
+                                    data.Length,
+                                    async => {
+                                        finished();
+                                        fileStream.Close();
+                                    },
+                                    null
+                                )
+                            ,
+                            null
+                        );
+                    }
+                }, null);
             }
         }
 
