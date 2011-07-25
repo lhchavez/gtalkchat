@@ -26,7 +26,7 @@ namespace gtalkchat {
 
             // If the channel was not found, then create a new connection to the push service.
             if (pushChannel == null) {
-                pushChannel = new HttpNotificationChannel(channelName, "gtalkjsonproxy.lhchavez.com");
+                pushChannel = new HttpNotificationChannel(channelName, "PositiveSSL CA");
 
                 // Register for all the events before attempting to open the channel.
                 pushChannel.ChannelUriUpdated += PushChannel_ChannelUriUpdated;
