@@ -10,12 +10,17 @@ using System.Windows.Shapes;
 
 namespace gtalkchat {
     public partial class SentChatBubble : UserControl {
+        // TODO: Make a superclass for SentChatBubble and ReceivedChatBubble 
+        // (when I understand how XAML inheritance works u__u)
 
         public static DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string), typeof(SentChatBubble), new PropertyMetadata(""));
 
         public string Text {
             get { return (string)GetValue(TextProperty); }
-            set { SetValue(TextProperty, value); }
+            set {
+                SetRichText(value);
+                SetValue(TextProperty, value);
+            }
         }
 
         public static DependencyProperty TimeStampProperty = DependencyProperty.Register("TimeStamp", typeof(string), typeof(SentChatBubble), new PropertyMetadata(""));
@@ -28,6 +33,11 @@ namespace gtalkchat {
         public SentChatBubble() {
             // Required to initialize variables
             InitializeComponent();
+        }
+
+        public void SetRichText(string value) {
+            Paragraph richtext = GoogleTalkHelper.Linkify(value);
+            MessageText.Blocks.Add(richtext);
         }
     }
 }

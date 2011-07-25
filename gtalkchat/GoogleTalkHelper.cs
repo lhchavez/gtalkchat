@@ -246,38 +246,45 @@ namespace gtalkchat {
             }
         }
 
-        public static List<Inline> Linkify(string message) {
-            var list = new List<Inline>();
+        public static Paragraph Linkify(string message) {
+            var paragraph = new Paragraph();
 
             int last = 0;
 
             foreach (Match m in linkRegex.Matches(message)) {
                 if (m.Index > last) {
-                    list.Add(
+                    paragraph.Inlines.Add(
                         new Run {
                             Text = message.Substring(last, m.Index)
                         }
                     );
                 }
 
-                list.Add(
-                    new Hyperlink {
-                        NavigateUri = new Uri(m.Groups[0].Value)
-                    }
-                );
+                string uri = m.Groups[0].Value;
+                if (!uri.StartsWith("http://") || !uri.StartsWith("https://")) {
+                    uri = uri.Insert(0, "http://");
+                }
+
+                var link = new Hyperlink {
+                    NavigateUri = new Uri(uri),
+                    TargetName = "_blank"
+                };
+                link.Inlines.Add(m.Groups[0].Value);
+
+                paragraph.Inlines.Add(link);
 
                 last = m.Index + m.Length;
             }
 
             if (last != message.Length) {
-                list.Add(
+                paragraph.Inlines.Add(
                     new Run {
                         Text = message.Substring(last)
                     }
                 );
             }
 
-            return list;
+            return paragraph;
         }
 
         #endregion

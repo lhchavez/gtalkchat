@@ -20,7 +20,7 @@
 					<RowDefinition Height="Auto" />
 				</Grid.RowDefinitions>
 				<Rectangle Grid.RowSpan="2" Fill="{StaticResource PhoneAccentBrush}" Opacity="0.7" />
-				<TextBlock Text="{Binding Text}" Foreground="White" Margin="12,6,12,0" TextWrapping="Wrap" />
+                <RichTextBox Name="MessageText" Foreground="White" Margin="0,6,0,0" TextWrapping="Wrap" />
                 <TextBlock Grid.Row="1" Text="{Binding TimeStamp}" Foreground="#99FFFFFF" HorizontalAlignment="Right" Margin="12,0,12,6" />
 			</Grid>
 			<Path Data="M0,0 L1,1 L1,0" Fill="{StaticResource PhoneAccentBrush}" HorizontalAlignment="Right" Margin="0,0,12,0" Grid.Row="1" Stretch="Fill" UseLayoutRounding="False" Width="20" Opacity="0.7"/>
