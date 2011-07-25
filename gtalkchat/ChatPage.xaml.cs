@@ -41,7 +41,11 @@ namespace gtalkchat {
 
                 Dispatcher.BeginInvoke(() => {
 
-                    string displayName = App.Current.Roster.Contains(to) ? (App.Current.Roster[to].NameOrEmail ?? to) : to;
+                    string displayName = email;
+                    if (App.Current.Roster.Contains(to)) {
+                        displayName = App.Current.Roster[to].NameOrEmail;
+                    }
+
                     PageTitle.Text = displayName;
                     TypingStatus.Text = displayName + " is typing...";
 
