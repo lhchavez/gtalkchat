@@ -136,6 +136,8 @@ namespace gtalkchat {
         private void SendButton_Click(object sender, EventArgs e) {
             if (MessageText.Text.Length == 0) return;
 
+            (ApplicationBar.Buttons[0] as ApplicationBarIconButton).IsEnabled = false;
+
             lock (chatLog) {
                 if (chatLog.Count >= 10) {
                     chatLog.RemoveAt(0);
@@ -154,11 +156,14 @@ namespace gtalkchat {
 
                 MessageList.Children.Add(bubble);
 
+                MessageText.Text = "";
+                (ApplicationBar.Buttons[0] as ApplicationBarIconButton).IsEnabled = true;
+
                 MessageList.UpdateLayout();
                 Scroller.UpdateLayout();
                 Scroller.ScrollToVerticalOffset(Scroller.ExtentHeight);
 
-                MessageText.Text = "";
+                
             }), error => {
                 if (error.StartsWith("403")) {
                     settings.Remove("token");
