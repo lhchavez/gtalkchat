@@ -46,8 +46,10 @@
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
+        <toolkit:PerformanceProgressBar Name="ProgressBar" IsIndeterminate="True" VerticalAlignment="Top" />
+        
         <!--Pivot Control-->
-        <controls:Pivot Title="GCHAT">
+        <controls:Pivot Title="CONTACTS">
             <!--Pivot item one-->
             <controls:PivotItem Header="online">
                 <Grid Margin="12,-12,-12,0">

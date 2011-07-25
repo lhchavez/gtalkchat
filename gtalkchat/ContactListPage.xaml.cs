@@ -22,6 +22,7 @@ namespace gtalkchat {
 
             gtalkHelper.RosterUpdated += () =>
                 Dispatcher.BeginInvoke(() => {
+                    ProgressBar.Visibility = Visibility.Collapsed;
                     OnlineContactsListBox.ItemsSource = App.Current.Roster.GetOnlineContacts();
                 });
         }
