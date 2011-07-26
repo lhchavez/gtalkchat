@@ -10,26 +10,43 @@ using System.Windows.Data;
 
 namespace gtalkchat {
     public partial class ContactListPage : PhoneApplicationPage {
-        private readonly GoogleTalkHelper gtalkHelper;
+        private GoogleTalkHelper gtalkHelper;
 
         public ContactListPage() {
             InitializeComponent();
 
-            gtalkHelper = App.Current.GtalkHelper;
-
             AllContactsListBox.ItemsSource = App.Current.Roster;
             OnlineContactsListBox.ItemsSource = App.Current.Roster.GetOnlineContacts();
-
-            gtalkHelper.RosterUpdated += () =>
-                Dispatcher.BeginInvoke(() => {
-                    ProgressBar.Visibility = Visibility.Collapsed;
-                    OnlineContactsListBox.ItemsSource = App.Current.Roster.GetOnlineContacts();
-                });
         }
 
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e) {
             base.OnNavigatedTo(e);
 
+            if (gtalkHelper != App.Current.GtalkHelper) {
+                gtalkHelper = App.Current.GtalkHelper;
+
+                gtalkHelper.RosterUpdated += () =>
+                    Dispatcher.BeginInvoke(
+                        () => {
+                            ProgressBar.Visibility = Visibility.Collapsed;
+                            OnlineContactsListBox.ItemsSource =
+                                App.Current.Roster.GetOnlineContacts();
+                        }
+                    );
+            }
+
+            Dispatcher.BeginInvoke(
+                () => {
+                    if (gtalkHelper.RosterLoaded) {
+                        ProgressBar.Visibility = Visibility.Collapsed;
+                    } else {
+                        ProgressBar.Visibility = Visibility.Visible;
+                    }
+                });
+
+            if(gtalkHelper.RosterLoaded) {
+                gtalkHelper.GetOfflineMessages();
+            }
             gtalkHelper.LoginIfNeeded();
             gtalkHelper.MessageReceived += gtalkHelper.ShowToast;
         }

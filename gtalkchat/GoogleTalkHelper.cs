@@ -350,62 +350,7 @@ namespace gtalkchat {
             );
         }
 
-        #endregion
-
-        #region Private Methods
-
-        private void Register(string uri) {
-            if (!settings.Contains("clientkey")) {
-                gtalk.GetKey(
-                    clientKey => {
-                        settings["clientkey"] = ProtectedData.Protect(Encoding.UTF8.GetBytes(clientKey), null);
-
-                        Register(uri, true);
-                    },
-                    error => {
-                        App.Current.RootFrame.Dispatcher.BeginInvoke(() => MessageBox.Show(error));
-
-                        if (error.StartsWith("403")) {
-                            settings.Remove("token");
-
-                            LoginIfNeeded();
-                        }
-                    }
-                );
-            } else {
-                Register(uri, false);
-            }
-        }
-
-        private void Register(string uri, bool keySet) {
-            if (!keySet) {
-                var clientKeyBytes = ProtectedData.Unprotect(settings["clientkey"] as byte[], null);
-                gtalk.SetKey(Encoding.UTF8.GetString(clientKeyBytes, 0, clientKeyBytes.Length));
-            }
-
-            gtalk.Register(
-                uri,
-                data => {
-                    LoadRoster();
-
-                    Connected = true;
-                    if (Connect != null) {
-                        Connect();
-                    }
-                },
-                error => {
-                    App.Current.RootFrame.Dispatcher.BeginInvoke(() => MessageBox.Show(error));
-
-                    if (error.StartsWith("403")) {
-                        settings.Remove("token");
-
-                        LoginIfNeeded();
-                    }
-                }
-            );
-        }
-
-        private void GetOfflineMessages() {
+        public void GetOfflineMessages() {
             gtalk.MessageQueue(
                 NotifyMessageReceived,
                 error => {
@@ -465,12 +410,67 @@ namespace gtalkchat {
                             RosterUpdated();
                         }
 
-                        if(!offlineMessagesDownloaded) {
+                        if (!offlineMessagesDownloaded) {
                             offlineMessagesDownloaded = true;
                             GetOfflineMessages();
                         }
                     }
                 ),
+                error => {
+                    App.Current.RootFrame.Dispatcher.BeginInvoke(() => MessageBox.Show(error));
+
+                    if (error.StartsWith("403")) {
+                        settings.Remove("token");
+
+                        LoginIfNeeded();
+                    }
+                }
+            );
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private void Register(string uri) {
+            if (!settings.Contains("clientkey")) {
+                gtalk.GetKey(
+                    clientKey => {
+                        settings["clientkey"] = ProtectedData.Protect(Encoding.UTF8.GetBytes(clientKey), null);
+
+                        Register(uri, true);
+                    },
+                    error => {
+                        App.Current.RootFrame.Dispatcher.BeginInvoke(() => MessageBox.Show(error));
+
+                        if (error.StartsWith("403")) {
+                            settings.Remove("token");
+
+                            LoginIfNeeded();
+                        }
+                    }
+                );
+            } else {
+                Register(uri, false);
+            }
+        }
+
+        private void Register(string uri, bool keySet) {
+            if (!keySet) {
+                var clientKeyBytes = ProtectedData.Unprotect(settings["clientkey"] as byte[], null);
+                gtalk.SetKey(Encoding.UTF8.GetString(clientKeyBytes, 0, clientKeyBytes.Length));
+            }
+
+            gtalk.Register(
+                uri,
+                data => {
+                    LoadRoster();
+
+                    Connected = true;
+                    if (Connect != null) {
+                        Connect();
+                    }
+                },
                 error => {
                     App.Current.RootFrame.Dispatcher.BeginInvoke(() => MessageBox.Show(error));
 

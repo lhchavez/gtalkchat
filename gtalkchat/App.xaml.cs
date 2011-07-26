@@ -86,10 +86,10 @@ namespace gtalkchat {
         // Code to execute when the application is activated (brought to foreground)
         // This code will not execute when the application is first launched
         private void Application_Activated(object sender, ActivatedEventArgs e) {
-            Settings = IsolatedStorageSettings.ApplicationSettings;
-            PushHelper = new PushHelper();
-            GtalkClient = new GoogleTalk();
-            Roster = new Roster();
+            if(Settings == null) Settings = IsolatedStorageSettings.ApplicationSettings;
+            if(PushHelper == null) PushHelper = new PushHelper();
+            if(GtalkClient == null) GtalkClient = new GoogleTalk();
+            if(GtalkClient == null) Roster = new Roster();
 
             if (!Settings.Contains("chatlog")) {
                 Settings["chatlog"] = new Dictionary<string, List<Message>>();
@@ -98,7 +98,7 @@ namespace gtalkchat {
                 Settings["unread"] = new Dictionary<string, int>();
             }
 
-            GtalkHelper = new GoogleTalkHelper();
+            if(GtalkHelper == null) GtalkHelper = new GoogleTalkHelper();
             
             PushHelper.RegisterPushNotifications();
         }

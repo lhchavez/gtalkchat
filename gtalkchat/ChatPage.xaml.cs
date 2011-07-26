@@ -11,9 +11,9 @@ using System.Linq;
 
 namespace gtalkchat {
     public partial class ChatPage : PhoneApplicationPage {
-        private readonly GoogleTalk gtalk;
-        private readonly GoogleTalkHelper gtalkHelper;
-        private readonly IsolatedStorageSettings settings;
+        private GoogleTalk gtalk;
+        private GoogleTalkHelper gtalkHelper;
+        private IsolatedStorageSettings settings;
         private List<Message> chatLog;
 
         private string to;
@@ -21,13 +21,14 @@ namespace gtalkchat {
 
         public ChatPage() {
             InitializeComponent();
-            gtalk = App.Current.GtalkClient;
-            gtalkHelper = App.Current.GtalkHelper;
-            settings = App.Current.Settings;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e) {
             base.OnNavigatedTo(e);
+
+            gtalk = App.Current.GtalkClient;
+            gtalkHelper = App.Current.GtalkHelper;
+            settings = App.Current.Settings;
 
             if (NavigationContext.QueryString.ContainsKey("from")) {
                 to = NavigationContext.QueryString["from"];
@@ -43,13 +44,15 @@ namespace gtalkchat {
                 to = email;
             }
 
+            gtalkHelper.MessageReceived += DisplayMessage;
+
             if (gtalkHelper.RosterLoaded) {
                 Initialize();
+                gtalkHelper.GetOfflineMessages();
             } else {
                 gtalkHelper.RosterUpdated += Initialize;
             }
 
-            gtalkHelper.MessageReceived += DisplayMessage;
             gtalkHelper.LoginIfNeeded();
 
             ScrollToBottom();

@@ -22,6 +22,8 @@ namespace gtalkchat {
         #region Public Methods
 
         public void RegisterPushNotifications() {
+            if (pushChannel != null) return;
+
             pushChannel = HttpNotificationChannel.Find(channelName);
 
             // If the channel was not found, then create a new connection to the push service.
