@@ -1,4 +1,4 @@
-gtalkchat - A Windows Phone client for the Google Talkô instant messaging service
+Ôªøgtalkchat - A Windows Phone client for the Google Talk‚Ñ¢ instant messaging service
 
 A beautiful, fast, privacy-conscious client to use your favorite IM messaging service. Supports cool features such as:
 
@@ -7,9 +7,11 @@ A beautiful, fast, privacy-conscious client to use your favorite IM messaging se
 * Off-the-record conversations, with special and delicate handling.
 
 Backend & Server Development (check out http://github.com/lhchavez/gtalkjsonproxy)
-Luis HÈctor Ch·vez
+
+Luis H√©ctor Ch√°vez
 
 Frontend Development & UI Design
-Juliana PeÒa
+
+Juliana Pe√±a
 
 Released under the terms of the Microsoft Public License (http://www.opensource.org/licenses/MS-PL).
