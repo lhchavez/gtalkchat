@@ -45,6 +45,8 @@ namespace gtalkchat {
             aes = new AesUtility(key);
         }
 
+        #region Public API
+
         public void Login(string username, string auth, SuccessCallback scb, ErrorCallback ecb) {
             Send(
                 "/login",
@@ -159,6 +161,22 @@ namespace gtalkchat {
                 fcb
             );
         }
+
+        public void OTR(string jid, bool enabled, SuccessCallback mcb, ErrorCallback ecb) {
+            Send(
+                "/otr",
+                ReceiveMode.SingleString,
+                sw => sw.Write("token=" + HttpUtility.UrlEncode(token) + "&jid=" + HttpUtility.UrlEncode(jid) + "&enabled=" + enabled.ToString()),
+                mcb,
+                null,
+                ecb,
+                null
+            );
+        }
+
+        #endregion
+
+        #region Helper Methods
 
         private void Send(
             string uri, ReceiveMode mode, WriteDataCallback wdcb, SuccessCallback scb, BinarySuccessCallback bcb,
@@ -296,5 +314,7 @@ namespace gtalkchat {
                 ecb("Invalid JSON");
             }
         }
+
+        #endregion
     }
 }

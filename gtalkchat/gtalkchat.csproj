@@ -95,6 +95,7 @@
     <Compile Include="Message.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PushHelper.cs" />
+    <Compile Include="QuitException.cs" />
     <Compile Include="ReceivedChatBubble.xaml.cs">
       <DependentUpon>ReceivedChatBubble.xaml</DependentUpon>
     </Compile>

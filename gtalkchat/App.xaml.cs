@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using System;
 
 namespace gtalkchat {
     public partial class App : Application {
@@ -124,6 +125,12 @@ namespace gtalkchat {
 
         // Code to execute on Unhandled Exceptions
         private void Application_UnhandledException(object sender, ApplicationUnhandledExceptionEventArgs e) {
+            try {
+                Settings.Save();
+            } catch(Exception) {
+                // just hope for the best.
+            }
+
             if (System.Diagnostics.Debugger.IsAttached) {
                 // An unhandled exception has occurred; break into the debugger
                 System.Diagnostics.Debugger.Break();
