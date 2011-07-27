@@ -25,10 +25,13 @@ namespace gtalkchat {
             if (gtalkHelper != App.Current.GtalkHelper) {
                 gtalkHelper = App.Current.GtalkHelper;
 
+                Dispatcher.BeginInvoke(() => AllContactsListBox.ItemsSource = App.Current.Roster);
+
                 gtalkHelper.RosterUpdated += () =>
                     Dispatcher.BeginInvoke(
                         () => {
                             ProgressBar.Visibility = Visibility.Collapsed;
+                            ProgressBar.IsIndeterminate = false;
                             OnlineContactsListBox.ItemsSource =
                                 App.Current.Roster.GetOnlineContacts();
                         }
@@ -39,14 +42,19 @@ namespace gtalkchat {
                 () => {
                     if (gtalkHelper.RosterLoaded) {
                         ProgressBar.Visibility = Visibility.Collapsed;
+                        ProgressBar.IsIndeterminate = false;
                     } else {
+                        ProgressBar.IsIndeterminate = true;
                         ProgressBar.Visibility = Visibility.Visible;
                     }
                 });
 
             if(gtalkHelper.RosterLoaded) {
                 gtalkHelper.GetOfflineMessages();
+            } else {
+                Dispatcher.BeginInvoke(() => OnlineContactsListBox.ItemsSource = App.Current.Roster.GetOnlineContacts());
             }
+
             gtalkHelper.LoginIfNeeded();
             gtalkHelper.MessageReceived += gtalkHelper.ShowToast;
         }

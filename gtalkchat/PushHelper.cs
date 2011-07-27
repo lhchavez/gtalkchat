@@ -37,6 +37,7 @@ namespace gtalkchat {
 
                 pushChannel.Open();
                 pushChannel.BindToShellToast();
+                pushChannel.BindToShellTile();
             } else {
                 // The channel was already open, so just register for all the events.
                 pushChannel.ChannelUriUpdated += PushChannel_ChannelUriUpdated;
@@ -44,13 +45,14 @@ namespace gtalkchat {
                 pushChannel.HttpNotificationReceived += PushChannel_HttpNotificationReceived;
             }
 
-            if (!pushChannel.IsShellTileBound) {
-                pushChannel.BindToShellTile();
-            }
-
             if (UriUpdated != null && pushChannel.ChannelUri != null) {
                 UriUpdated(pushChannel.ChannelUri.ToString());
             }
+        }
+
+        public void CloseChannel() {
+            pushChannel.Close();
+            pushChannel = null;
         }
 
         #endregion
