@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Windows.Controls;
 using System.Net;
 using System.Linq;
+using System.Windows.Media;
 
 namespace gtalkchat {
     public partial class ChatPage : PhoneApplicationPage {
@@ -18,6 +19,8 @@ namespace gtalkchat {
 
         private string to;
         private string email;
+
+        private bool otr;
 
         public ChatPage() {
             InitializeComponent();
@@ -74,6 +77,16 @@ namespace gtalkchat {
                     TypingStatus.Visibility = Visibility.Visible;
                     ScrollToBottom();
                 } else {
+                    if (message.OTR != otr) {
+                        if (message.OTR) {
+                            ShowStartOtr();
+                        } else {
+                            ShowEndOtr();
+                        }
+
+                        otr = message.OTR;
+                    }
+
                     TypingStatus.Visibility = Visibility.Collapsed;
 
                     to = message.From;
@@ -89,6 +102,24 @@ namespace gtalkchat {
                     }
                 }
             });
+        }
+
+        private void LogChatEvent(string description) {
+            TextBlock t = new TextBlock {
+                Text = description
+            };
+            t.Margin = new Thickness(0, 0, 0, 6);
+            t.Foreground = (Brush)App.Current.Resources["PhoneSubtleBrush"];
+            MessageList.Children.Add(t);
+            ScrollToBottom();
+        }
+
+        private void ShowStartOtr() {
+            LogChatEvent("This conversation is now off the record.");
+        }
+
+        private void ShowEndOtr() {
+            LogChatEvent("This conversation is no longer off the record.");
         }
 
         private void SendButton_Click(object sender, EventArgs e) {
@@ -260,6 +291,17 @@ namespace gtalkchat {
 
                     ShellTile.Create(GetPinUri(), tile);
                 }
+            }
+        }
+
+        private void OTRButton_Click(object sender, EventArgs e) {
+            // TODO: Change icons
+            if (otr) {
+                gtalk.OTR(email, false, s => Dispatcher.BeginInvoke(() => ShowEndOtr()), s => { });
+                otr = false;
+            } else {
+                gtalk.OTR(email, true, s => Dispatcher.BeginInvoke(() => ShowStartOtr()), s => { });
+                otr = true;
             }
         }
     }

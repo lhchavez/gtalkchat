@@ -157,6 +157,7 @@
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar>
             <shell:ApplicationBarIconButton x:Name="SendButton" IconUri="/icons/appbar.send.text.rest.png" Text="send" Click="SendButton_Click"/>
+            <shell:ApplicationBarIconButton x:Name="OTRButton" IconUri="/icons/appbar.lock.rest.png" Text="go OTR" Click="OTRButton_Click"/>
             <shell:ApplicationBarIconButton x:Name="PinButton" IconUri="/icons/appbar.pin.rest.png" Text="pin to start" Click="PinButton_Click"/>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
