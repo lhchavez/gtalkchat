@@ -146,11 +146,18 @@ namespace gtalkchat {
 
             Dispatcher.BeginInvoke(() => {
                 string displayName = email;
+                string status = string.Empty;
                 if (App.Current.Roster.Contains(to)) {
-                    displayName = App.Current.Roster[to].NameOrEmail;
+                    Contact t = App.Current.Roster[to];
+                    displayName = t.NameOrEmail;
+                    status = t.Status;
                 }
 
                 PageTitle.Text = displayName.ToUpper();
+                if (status != string.Empty) {
+                    PageTitle.Text += ", " + char.ToUpper(status[0]) + status.Substring(1);
+                }
+
                 TypingStatus.Text = displayName + " is typing...";
 
                 if (IsPinned()) {
