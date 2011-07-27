@@ -116,12 +116,21 @@ namespace gtalkchat {
 
         public void Logout() {
             Connected = false;
+            RosterLoaded = false;
+            offlineMessagesDownloaded = false;
 
             settings.Clear();
+            settings["chatlog"] = new Dictionary<string, List<Message>>();
+            settings["unread"] = new Dictionary<string, int>();
+
+            App.Current.Roster.Clear();
 
             hasToken = false;
             hasUri = false;
             registeredUri = null;
+
+            App.Current.PushHelper.CloseChannel();
+            App.Current.PushHelper.RegisterPushNotifications();
 
             if (gtalk.LoggedIn) {
                 gtalk.Logout(data => { }, error => { });

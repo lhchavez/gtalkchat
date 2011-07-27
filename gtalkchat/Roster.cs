@@ -40,6 +40,19 @@ namespace gtalkchat {
             }
         }
 
+        public new void Clear() {
+            base.Clear();
+            contacts.Clear();
+
+            if (Notify) {
+                if (CollectionChanged != null) {
+                    CollectionChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+                }
+            } else {
+                pendingNotify = true;
+            }
+        }
+
         public bool Contains(string jid) {
             return contacts.ContainsKey(GetEmail(jid));
         }

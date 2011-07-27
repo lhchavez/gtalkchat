@@ -114,6 +114,7 @@ namespace gtalkchat {
                 ReceiveMode.SingleString,
                 sw => sw.Write("token=" + HttpUtility.UrlEncode(token)),
                 data => {
+                    aes = null;
                     token = null;
                     LoggedIn = false;
                     scb(data);
