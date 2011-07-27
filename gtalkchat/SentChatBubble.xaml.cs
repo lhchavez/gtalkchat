@@ -9,35 +9,13 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 
 namespace gtalkchat {
-    public partial class SentChatBubble : UserControl {
+    public partial class SentChatBubble : ChatBubble {
         // TODO: Make a superclass for SentChatBubble and ReceivedChatBubble 
         // (when I understand how XAML inheritance works u__u)
-
-        public static DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string), typeof(SentChatBubble), new PropertyMetadata(""));
-
-        public string Text {
-            get { return (string)GetValue(TextProperty); }
-            set {
-                SetRichText(value);
-                SetValue(TextProperty, value);
-            }
-        }
-
-        public static DependencyProperty TimeStampProperty = DependencyProperty.Register("TimeStamp", typeof(string), typeof(SentChatBubble), new PropertyMetadata(""));
-
-        public string TimeStamp {
-            get { return (string)GetValue(TimeStampProperty); }
-            set { SetValue(TimeStampProperty, value); }
-        }
 
         public SentChatBubble() {
             // Required to initialize variables
             InitializeComponent();
-        }
-
-        public void SetRichText(string value) {
-            Paragraph richtext = GoogleTalkHelper.Linkify(value);
-            MessageText.Blocks.Add(richtext);
         }
     }
 }
