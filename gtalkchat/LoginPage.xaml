@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696"
@@ -20,6 +21,8 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
+        <toolkit:PerformanceProgressBar Name="ProgressBar" IsIndeterminate="False" Visibility="Collapsed" VerticalAlignment="Top" />
+
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
             <TextBlock x:Name="ApplicationTitle" Text="GCHAT" Style="{StaticResource PhoneTextNormalStyle}"/>
@@ -28,12 +31,21 @@
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <StackPanel>
-                <TextBlock Text="username" Style="{StaticResource PhoneTextNormalStyle}" />
-                <TextBox Name="Username" InputScope="EmailUserName" />
-                <TextBlock Text="password" Style="{StaticResource PhoneTextNormalStyle}" />
-                <PasswordBox Name="Password" />
-            </StackPanel>
+            <ScrollViewer>
+                <StackPanel>
+                    <TextBlock Text="Google username or email" Style="{StaticResource PhoneTextSubtleStyle}" />
+                    <TextBox Name="Username" InputScope="EmailUserName" Margin="0,0,0,12" />
+                    <TextBlock Text="Google password" Style="{StaticResource PhoneTextSubtleStyle}" />
+                    <PasswordBox Name="Password" KeyUp="Password_KeyUp" />
+
+                    <HyperlinkButton 
+                    TargetName="_blank" 
+                    NavigateUri="https://www.google.com/accounts/NewAccount"
+                    Margin="0,24,0,0">
+                        Create a Google account
+                    </HyperlinkButton>
+                </StackPanel>
+            </ScrollViewer>
         </Grid>
     </Grid>
 

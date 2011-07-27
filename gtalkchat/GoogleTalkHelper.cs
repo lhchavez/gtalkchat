@@ -117,8 +117,7 @@ namespace gtalkchat {
         public void Logout() {
             Connected = false;
 
-            settings.Remove("token");
-            settings.Remove("auth");
+            settings.Clear();
 
             hasToken = false;
             hasUri = false;

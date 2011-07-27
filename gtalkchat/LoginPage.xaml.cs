@@ -3,6 +3,7 @@ using System.IO.IsolatedStorage;
 using System.Security.Cryptography;
 using System.Text;
 using Microsoft.Phone.Controls;
+using Microsoft.Phone.Shell;
 
 namespace gtalkchat {
     public partial class LoginPage : PhoneApplicationPage {
@@ -31,6 +32,12 @@ namespace gtalkchat {
                 return;
             }
 
+            ProgressBar.Visibility = System.Windows.Visibility.Visible;
+            ProgressBar.IsIndeterminate = true;
+            Username.IsEnabled = false;
+            Password.IsEnabled = false;
+            (ApplicationBar.Buttons[0] as ApplicationBarIconButton).IsEnabled = false;
+
             settings["username"] = Username.Text;
             settings["password"] = ProtectedData.Protect(Encoding.UTF8.GetBytes(Password.Password), null);
             settings.Save();
@@ -57,6 +64,13 @@ namespace gtalkchat {
             }
 
             base.OnBackKeyPress(e);
+        }
+
+        private void Password_KeyUp(object sender, System.Windows.Input.KeyEventArgs e) {
+            if (e.Key == System.Windows.Input.Key.Enter) {
+                this.Focus();
+                Login_Click(sender, e);
+            }
         }
     }
 }

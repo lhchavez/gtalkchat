@@ -21,7 +21,7 @@
             <!--Pivot item one-->
             <controls:PivotItem Header="settings">
                 <StackPanel>
-                    <Button Content="Log out" Click="Logout_Click" />
+                    <Button Content="log out" Click="Logout_Click" Margin="0,0,0,24" />
                 </StackPanel>
             </controls:PivotItem>
 
