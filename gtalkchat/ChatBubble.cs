@@ -8,6 +8,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using Microsoft.Phone.Controls;
 
 namespace gtalkchat {
     public class ChatBubble : UserControl {
@@ -27,7 +28,18 @@ namespace gtalkchat {
         }
 
         public ChatBubble() {
-            
+            // Create context menu
+            ContextMenu menu = new ContextMenu();
+            menu.IsZoomEnabled = false;
+
+            MenuItem copy = new MenuItem();
+            copy.Header = "copy";
+            copy.Click += (s, e) => {
+                System.Windows.Clipboard.SetText(Text);
+            };
+
+            menu.Items.Add(copy);
+            ContextMenuService.SetContextMenu(this, menu);
         }
     }
 }
