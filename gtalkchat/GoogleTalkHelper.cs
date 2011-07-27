@@ -15,6 +15,8 @@ using System.IO;
 
 namespace gtalkchat {
     public class GoogleTalkHelper {
+        public const int MaximumChatLogSize = 500;
+
         #region Public Events
 
         public delegate void LoginCallback(string token);
@@ -496,7 +498,7 @@ namespace gtalkchat {
                 List<Message> chatLog = ChatLog(message.From);
 
                 lock (chatLog) {
-                    if (chatLog.Count >= 10) {
+                    if (chatLog.Count >= MaximumChatLogSize) {
                         chatLog.RemoveAt(0);
                     }
                     chatLog.Add(message);

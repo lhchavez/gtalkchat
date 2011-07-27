@@ -85,6 +85,17 @@ namespace gtalkchat {
                         }
 
                         otr = message.OTR;
+
+                        lock (chatLog) {
+                            if (chatLog.Count >= GoogleTalkHelper.MaximumChatLogSize) {
+                                chatLog.RemoveAt(0);
+                            }
+                            chatLog.Add(new Message {
+                                OTR = otr,
+                                Outbound = false,
+                                Time = message.Time
+                            });
+                        }
                     }
 
                     TypingStatus.Visibility = Visibility.Collapsed;
@@ -128,13 +139,14 @@ namespace gtalkchat {
             (ApplicationBar.Buttons[0] as ApplicationBarIconButton).IsEnabled = false;
 
             lock (chatLog) {
-                if (chatLog.Count >= 10) {
+                if (chatLog.Count >= GoogleTalkHelper.MaximumChatLogSize) {
                     chatLog.RemoveAt(0);
                 }
                 chatLog.Add(new Message {
                     Body = MessageText.Text,
                     Outbound = true,
-                    Time = DateTime.Now
+                    Time = DateTime.Now,
+                    OTR = otr
                 });
             }
 
@@ -200,8 +212,22 @@ namespace gtalkchat {
                 MessageList.Children.Clear();
 
                 lock (chatLog) {
+                    var otr = false;
+
                     foreach (var message in chatLog) {
                         UserControl bubble;
+
+                        if (message.OTR != otr) {
+                            if (message.OTR) {
+                                ShowStartOtr();
+                            } else {
+                                ShowEndOtr();
+                            }
+
+                            otr = message.OTR;
+                        }
+
+                        if (message.Body == null) continue;
 
                         if (message.Outbound) {
                             bubble = new SentChatBubble();
@@ -297,11 +323,22 @@ namespace gtalkchat {
         private void OTRButton_Click(object sender, EventArgs e) {
             // TODO: Change icons
             if (otr) {
-                gtalk.OTR(email, false, s => Dispatcher.BeginInvoke(() => ShowEndOtr()), s => { });
+                gtalk.OTR(email, false, s => Dispatcher.BeginInvoke(ShowEndOtr), s => { });
                 otr = false;
             } else {
-                gtalk.OTR(email, true, s => Dispatcher.BeginInvoke(() => ShowStartOtr()), s => { });
+                gtalk.OTR(email, true, s => Dispatcher.BeginInvoke(ShowStartOtr), s => { });
                 otr = true;
+            }
+
+            lock (chatLog) {
+                if (chatLog.Count >= GoogleTalkHelper.MaximumChatLogSize) {
+                    chatLog.RemoveAt(0);
+                }
+                chatLog.Add(new Message {
+                    OTR = otr,
+                    Outbound = true,
+                    Time = DateTime.Now
+                });
             }
         }
     }
