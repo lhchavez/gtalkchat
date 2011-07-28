@@ -1,12 +1,9 @@
 ﻿using System;
-using System.IO.IsolatedStorage;
-using System.Linq;
+using System.Net.NetworkInformation;
 using System.Windows;
 using System.Windows.Controls;
-using Microsoft.Phone.Controls;
-using Coding4Fun.Phone.Controls;
-using System.Windows.Media.Imaging;
 using System.Windows.Data;
+using Microsoft.Phone.Controls;
 
 namespace gtalkchat {
     public partial class ContactListPage : PhoneApplicationPage {
@@ -21,6 +18,16 @@ namespace gtalkchat {
 
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e) {
             base.OnNavigatedTo(e);
+
+            if (!NetworkInterface.GetIsNetworkAvailable()) {
+                Dispatcher.BeginInvoke(
+                    () => {
+                        MessageBox.Show(
+                            "There is no internet connectivity. Please connect and try again.");
+                        throw new QuitException();
+
+                    });
+            }
 
             if (gtalkHelper != App.Current.GtalkHelper) {
                 gtalkHelper = App.Current.GtalkHelper;

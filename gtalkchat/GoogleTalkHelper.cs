@@ -100,14 +100,24 @@ namespace gtalkchat {
                         TokenUpdated();
                     },
                     error => {
-                        if (error.StartsWith("401")) {
+                        if (error.Equals("")) {
+                            App.Current.RootFrame.Dispatcher.BeginInvoke(
+                                () => {
+                                    MessageBox.Show(
+                                        "Unable to contact server. Please retry later.");
+
+                                    throw new QuitException();
+                                }
+                            );
+                        } else if (error.StartsWith("401")) {
                             // stale auth token. get a new one and we should be all happy again.
                             settings.Remove("auth");
 
-                            App.Current.RootFrame.Dispatcher.BeginInvoke(() => {
-                                MessageBox.Show("Your authentication token has expired. Try logging in again.");
-                                App.Current.RootFrame.Navigate(new Uri("/LoginPage.xaml", UriKind.Relative));
-                            });
+                            App.Current.RootFrame.Dispatcher.BeginInvoke(
+                                () => {
+                                    MessageBox.Show("Your authentication token has expired. Try logging in again.");
+                                    App.Current.RootFrame.Navigate(new Uri("/LoginPage.xaml", UriKind.Relative));
+                                });
                         } else {
                             App.Current.RootFrame.Dispatcher.BeginInvoke(() => MessageBox.Show(error));
                         }
@@ -364,12 +374,12 @@ namespace gtalkchat {
             gtalk.MessageQueue(
                 NotifyMessageReceived,
                 error => {
-                    App.Current.RootFrame.Dispatcher.BeginInvoke(() => MessageBox.Show(error));
-
-                    if (error.StartsWith("403")) {
-                        settings.Remove("token");
-
-                        LoginIfNeeded();
+                    if(error.Equals("")) {
+                        App.Current.RootFrame.Dispatcher.BeginInvoke(() => MessageBox.Show("Unable to contact server. Please retry later."));
+                    } else if (error.StartsWith("403")) {
+                        GracefulReLogin();
+                    } else {
+                        App.Current.RootFrame.Dispatcher.BeginInvoke(() => MessageBox.Show(error));
                     }
                 },
                 () => { }
@@ -427,12 +437,12 @@ namespace gtalkchat {
                     }
                 ),
                 error => {
-                    App.Current.RootFrame.Dispatcher.BeginInvoke(() => MessageBox.Show(error));
-
-                    if (error.StartsWith("403")) {
-                        settings.Remove("token");
-
-                        LoginIfNeeded();
+                    if (error.Equals("")) {
+                        App.Current.RootFrame.Dispatcher.BeginInvoke(() => MessageBox.Show("Unable to contact server. Please retry later."));
+                    } else if (error.StartsWith("403")) {
+                        GracefulReLogin();
+                    } else {
+                        App.Current.RootFrame.Dispatcher.BeginInvoke(() => MessageBox.Show(error));
                     }
                 }
             );
@@ -451,12 +461,19 @@ namespace gtalkchat {
                         Register(uri, true);
                     },
                     error => {
-                        App.Current.RootFrame.Dispatcher.BeginInvoke(() => MessageBox.Show(error));
+                        if (error.Equals("")) {
+                            App.Current.RootFrame.Dispatcher.BeginInvoke(
+                                () => {
+                                    MessageBox.Show(
+                                        "Unable to contact server. Please retry later.");
 
-                        if (error.StartsWith("403")) {
-                            settings.Remove("token");
-
-                            LoginIfNeeded();
+                                    throw new QuitException();
+                                }
+                            );
+                        } else if (error.StartsWith("403")) {
+                            GracefulReLogin();
+                        } else {
+                            App.Current.RootFrame.Dispatcher.BeginInvoke(() => MessageBox.Show(error));
                         }
                     }
                 );
@@ -482,12 +499,19 @@ namespace gtalkchat {
                     }
                 },
                 error => {
-                    App.Current.RootFrame.Dispatcher.BeginInvoke(() => MessageBox.Show(error));
+                        if (error.Equals("")) {
+                            App.Current.RootFrame.Dispatcher.BeginInvoke(
+                                () => {
+                                    MessageBox.Show(
+                                        "Unable to contact server. Please retry later.");
 
-                    if (error.StartsWith("403")) {
-                        settings.Remove("token");
-
-                        LoginIfNeeded();
+                                    throw new QuitException();
+                                }
+                            );
+                        } else if (error.StartsWith("403")) {
+                        GracefulReLogin();
+                    } else {
+                        App.Current.RootFrame.Dispatcher.BeginInvoke(() => MessageBox.Show(error));
                     }
                 }
             );
@@ -543,6 +567,14 @@ namespace gtalkchat {
             if (MessageReceived != null) {
                 MessageReceived(message);
             }
+        }
+
+        private void GracefulReLogin() {
+            settings.Remove("token");
+            gtalk.SetToken(null);
+            hasToken = false;
+
+            LoginIfNeeded();
         }
 
         #endregion

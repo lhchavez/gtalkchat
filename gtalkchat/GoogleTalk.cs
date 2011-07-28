@@ -38,7 +38,7 @@ namespace gtalkchat {
 
         public void SetToken(string token) {
             this.token = token;
-            LoggedIn = true;
+            LoggedIn = token != null;
         }
 
         public void SetKey(string key) {
@@ -168,6 +168,18 @@ namespace gtalkchat {
                 "/otr",
                 ReceiveMode.SingleString,
                 sw => sw.Write("token=" + HttpUtility.UrlEncode(token) + "&jid=" + HttpUtility.UrlEncode(jid) + "&enabled=" + enabled.ToString()),
+                mcb,
+                null,
+                ecb,
+                null
+            );
+        }
+
+        public void Notifications(bool toast, bool tile, SuccessCallback mcb, ErrorCallback ecb) {
+            Send(
+                "/notifications",
+                ReceiveMode.SingleString,
+                sw => sw.Write("token=" + HttpUtility.UrlEncode(token) + "&toast=" + toast.ToString() + "&tile=" + tile.ToString()),
                 mcb,
                 null,
                 ecb,
