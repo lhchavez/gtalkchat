@@ -3,11 +3,13 @@ using System.Net;
 using System.IO;
 using Procurios.Public;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace gtalkchat {
     public class GoogleTalk {
         private string token;
         private AesUtility aes;
+        public const int MessageTimeout = 10000;
         public bool LoggedIn { get; private set; }
 
         private enum ReceiveMode {
@@ -203,79 +205,104 @@ namespace gtalkchat {
             req.ContentType = "application/x-www-form-urlencoded";
             req.Method = "POST";
 
+            var waitHandle = new ManualResetEvent(false);
+
             req.BeginGetRequestStream(ar => {
-                using (var requestStream = req.EndGetRequestStream(ar)) {
-                    using (var sr = new StreamWriter(requestStream)) {
-                        wdcb(sr);
+                try {
+                    using (var requestStream = req.EndGetRequestStream(ar)) {
+                        using (var sr = new StreamWriter(requestStream)) {
+                            wdcb(sr);
+                        }
                     }
-                }
 
-                req.BeginGetResponse(a => {
-                    try {
-                        var response = (HttpWebResponse)req.EndGetResponse(a);
+                    req.BeginGetResponse(
+                        a => {
+                            waitHandle.Set();
 
-                        var responseStream = response.GetResponseStream();
+                            try {
+                                var response = (HttpWebResponse) req.EndGetResponse(a);
 
-                        if (mode == ReceiveMode.Blob) {
-                            var data = new byte[response.ContentLength];
+                                var responseStream = response.GetResponseStream();
 
-                            responseStream.BeginRead(
-                                data,
-                                0,
-                                (int) response.ContentLength,
-                                result => {
-                                    if (result.IsCompleted) {
-                                        bcb(response.ContentType, data);
-                                    } else {
-                                        ecb("Incomplete response");
-                                    }
-                                },
-                                null
-                            );
-                        } else {
-                            using (var sr = new StreamReader(responseStream)) {
-                                switch (mode) {
-                                    case ReceiveMode.Lines:
-                                        string line;
+                                if (mode == ReceiveMode.Blob) {
+                                    var data = new byte[response.ContentLength];
 
-                                        while ((line = sr.ReadLine()) != null) {
-                                            if (line.Length > 0) {
-                                                scb(line);
+                                    responseStream.BeginRead(
+                                        data,
+                                        0,
+                                        (int) response.ContentLength,
+                                        result => {
+                                            if (result.IsCompleted) {
+                                                bcb(response.ContentType, data);
+                                            } else {
+                                                ecb("Incomplete response");
                                             }
+                                        },
+                                        null
+                                        );
+                                } else {
+                                    using (var sr = new StreamReader(responseStream)) {
+                                        switch (mode) {
+                                            case ReceiveMode.Lines:
+                                                string line;
+
+                                                while ((line = sr.ReadLine()) != null) {
+                                                    if (line.Length > 0) {
+                                                        scb(line);
+                                                    }
+                                                }
+
+                                                break;
+                                            case ReceiveMode.SingleString:
+                                                scb(sr.ReadToEnd());
+
+                                                break;
                                         }
 
-                                        break;
-                                    case ReceiveMode.SingleString:
-                                        scb(sr.ReadToEnd());
-
-                                        break;
+                                        if (fcb != null) {
+                                            fcb();
+                                        }
+                                    }
+                                }
+                            } catch (WebException e) {
+                                if(e.Status == WebExceptionStatus.RequestCanceled) {
+                                    ecb("");
+                                    return;
                                 }
 
-                                if (fcb != null) {
-                                    fcb();
+                                var response = (HttpWebResponse) e.Response;
+
+                                if (response.StatusCode == HttpStatusCode.Forbidden) {
+                                    LoggedIn = false;
+                                }
+
+                                try {
+                                    using (var responseStream = response.GetResponseStream()) {
+                                        using (var sr = new StreamReader(responseStream)) {
+                                            ecb(sr.ReadToEnd());
+                                        }
+                                    }
+                                } catch (Exception ex) {
+                                    // What is wrong with this platform?!
+                                    ecb(ex.Message + "\n" + e.Message);
                                 }
                             }
-                        }
-                    } catch (WebException e) {
-                        var response = (HttpWebResponse)e.Response;
-
-                        if (response == null || response.StatusCode == HttpStatusCode.Forbidden) {
-                            LoggedIn = false;
-                        }
-
-                        try {
-                            using (var responseStream = response.GetResponseStream()) {
-                                using (var sr = new StreamReader(responseStream)) {
-                                    ecb(sr.ReadToEnd());
-                                }
-                            }
-                        } catch (Exception ex) {
-                            // What is wrong with this platform?!
-                            ecb(ex.Message + "\n" + e.Message);
-                        }
-                    }
-                }, null);
+                        }, null
+                    );
+                } catch(WebException e) {
+                    // The request was aborted
+                    ecb("");
+                }
             }, null);
+
+            ThreadPool.QueueUserWorkItem(
+                state => {
+                    if (!waitHandle.WaitOne(MessageTimeout)) {
+                        (state as HttpWebRequest).Abort();
+                    }
+                },
+                req
+            );
         }
 
         public void ParseMessage(string cipher, MessageCallback mcb, ErrorCallback ecb) {
