@@ -34,7 +34,10 @@ namespace gtalkchat {
                 Dispatcher.BeginInvoke(
                     () => {
                         MessageBox.Show(
-                            "There is no internet connectivity. Please connect and try again.");
+                            "There is no internet connectivity. Please connect and try again.",
+                            "Connection error",
+                            MessageBoxButton.OK
+                        );
                         throw new QuitException();
 
                     });
@@ -183,7 +186,7 @@ namespace gtalkchat {
                     Dispatcher.BeginInvoke(
                         () => {
                             (ApplicationBar.Buttons[0] as ApplicationBarIconButton).IsEnabled = true;
-                            //MessageBox.Show("Message not sent");
+                            GoogleTalkHelper.ShowToast("Message not sent. Please try again later");
                         }
                     );
                 }

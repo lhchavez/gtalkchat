@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.IO.IsolatedStorage;
 using System.Linq;
+using System.Net;
 using System.Security.Cryptography;
 using System.Text;
-using System.Windows;
-using Microsoft.Phone.Shell;
-using Coding4Fun.Phone.Controls;
-using System.Windows.Media.Imaging;
-using System.Net;
-using System.Windows.Documents;
 using System.Text.RegularExpressions;
-using System.IO;
+using System.Windows;
+using System.Windows.Documents;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using Coding4Fun.Phone.Controls;
+using Microsoft.Phone.Shell;
 
 namespace gtalkchat {
     public class GoogleTalkHelper {
@@ -104,8 +105,10 @@ namespace gtalkchat {
                             App.Current.RootFrame.Dispatcher.BeginInvoke(
                                 () => {
                                     MessageBox.Show(
-                                        "Unable to contact server. Please retry later.");
-
+                                        "Unable to contact server. Please retry later.",
+                                        "Connection error",
+                                        MessageBoxButton.OK
+                                    );
                                     throw new QuitException();
                                 }
                             );
@@ -115,11 +118,15 @@ namespace gtalkchat {
 
                             App.Current.RootFrame.Dispatcher.BeginInvoke(
                                 () => {
-                                    MessageBox.Show("Your authentication token has expired. Try logging in again.");
+                                    MessageBox.Show(
+                                        "Your authentication token has expired. Try logging in again.",
+                                        "Authentication error",
+                                        MessageBoxButton.OK
+                                    );
                                     App.Current.RootFrame.Navigate(new Uri("/LoginPage.xaml", UriKind.Relative));
                                 });
                         } else {
-                            App.Current.RootFrame.Dispatcher.BeginInvoke(() => MessageBox.Show(error));
+                            ShowToast(error, "Login");
                         }
                     }
                 );
@@ -156,20 +163,39 @@ namespace gtalkchat {
         public void ShowToast(Message m) {
             if (m.Body != null && m.Body != string.Empty) {
                 App.Current.RootFrame.Dispatcher.BeginInvoke(() => {
-                    ToastPrompt t = new ToastPrompt();
                     Contact c = App.Current.Roster[m.From];
-                    t.Title = c != null ? c.NameOrEmail : m.From;
-                    t.Message = m.Body;
-                    t.ImageSource = new BitmapImage(new Uri("/ApplicationIcon.png", UriKind.RelativeOrAbsolute));
-                    t.Show();
+                    var t = new ToastPrompt {    
+                        Title = c != null ? c.NameOrEmail : m.From,
+                        Message = m.Body,
+                        ImageSource = new BitmapImage(new Uri("/ApplicationIcon.png", UriKind.RelativeOrAbsolute))
+                    };
 
                     t.Completed += (s, ev) => {
                         if (ev.PopUpResult == PopUpResult.Ok) {
                             App.Current.RootFrame.Navigate(new Uri("/ChatPage.xaml?from=" + m.From, UriKind.Relative));
                         }
                     };
+
+                    t.Show();
                 });
             }
+        }
+
+        public static void ShowToast(string message) {
+            ShowToast(message, null);
+        }
+
+        public static void ShowToast(string message, string title) {
+            App.Current.RootFrame.Dispatcher.BeginInvoke(() => {
+                var toast = new ToastPrompt {
+                    Title = title ?? "",
+                    Message = message ?? "",
+                    ImageSource = new BitmapImage(new Uri("/ApplicationIcon.png", UriKind.RelativeOrAbsolute)),
+                    Background = (Brush)Application.Current.Resources["PhoneChromeBrush"],
+                    Foreground = (Brush)Application.Current.Resources["PhoneForegroundBrush"]
+                };
+                toast.Show();
+            });
         }
 
         public void UriUpdated(string uri) {
@@ -205,7 +231,7 @@ namespace gtalkchat {
                 gtalk.ParseMessage(
                     data.Substring(4),
                     NotifyMessageReceived,
-                    error => App.Current.RootFrame.Dispatcher.BeginInvoke(() => MessageBox.Show(error))
+                    error => ShowToast(error, "Message parsing")
                 );
             }
         }
@@ -351,15 +377,12 @@ namespace gtalkchat {
                                 try {
                                     using (var responseStream = response.GetResponseStream()) {
                                         using (var sr = new StreamReader(responseStream)) {
-                                            string message = "Authentication error:\n" + sr.ReadToEnd();
-                                            App.Current.RootFrame.Dispatcher.BeginInvoke(() => MessageBox.Show(message));
+                                            ShowToast("Authentication error:\n" + sr.ReadToEnd());
                                         }
                                     }
                                 } catch (Exception ex) {
                                     // What is wrong with this platform?!
-                                    App.Current.RootFrame.Dispatcher.BeginInvoke(
-                                        () => MessageBox.Show("Authentication error:\n" + ex.Message + "\n" + e.Message)
-                                    );
+                                    ShowToast("Authentication error:\n" + ex.Message + "\n" + e.Message);
                                 }
                             }
                         },
@@ -375,11 +398,11 @@ namespace gtalkchat {
                 NotifyMessageReceived,
                 error => {
                     if(error.Equals("")) {
-                        App.Current.RootFrame.Dispatcher.BeginInvoke(() => MessageBox.Show("Unable to contact server. Please retry later."));
+                        ShowToast("Unable to get offline messages. Please retry later.");
                     } else if (error.StartsWith("403")) {
                         GracefulReLogin();
                     } else {
-                        App.Current.RootFrame.Dispatcher.BeginInvoke(() => MessageBox.Show(error));
+                        ShowToast(error, "Getting offline messages");
                     }
                 },
                 () => { }
@@ -438,11 +461,11 @@ namespace gtalkchat {
                 ),
                 error => {
                     if (error.Equals("")) {
-                        App.Current.RootFrame.Dispatcher.BeginInvoke(() => MessageBox.Show("Unable to contact server. Please retry later."));
+                        ShowToast("Unable to get your contact list. Please retry later.");
                     } else if (error.StartsWith("403")) {
                         GracefulReLogin();
                     } else {
-                        App.Current.RootFrame.Dispatcher.BeginInvoke(() => MessageBox.Show(error));
+                        ShowToast(error, "Load roster");
                     }
                 }
             );
@@ -465,15 +488,17 @@ namespace gtalkchat {
                             App.Current.RootFrame.Dispatcher.BeginInvoke(
                                 () => {
                                     MessageBox.Show(
-                                        "Unable to contact server. Please retry later.");
-
+                                        "Unable to contact server. Please retry later.",
+                                        "Connection error",
+                                        MessageBoxButton.OK
+                                    );
                                     throw new QuitException();
                                 }
                             );
                         } else if (error.StartsWith("403")) {
                             GracefulReLogin();
                         } else {
-                            App.Current.RootFrame.Dispatcher.BeginInvoke(() => MessageBox.Show(error));
+                            ShowToast(error, "Register");
                         }
                     }
                 );
@@ -503,15 +528,17 @@ namespace gtalkchat {
                             App.Current.RootFrame.Dispatcher.BeginInvoke(
                                 () => {
                                     MessageBox.Show(
-                                        "Unable to contact server. Please retry later.");
-
+                                        "Unable to contact server. Please retry later.",
+                                        "Connection error",
+                                        MessageBoxButton.OK
+                                    );
                                     throw new QuitException();
                                 }
                             );
                         } else if (error.StartsWith("403")) {
                         GracefulReLogin();
                     } else {
-                        App.Current.RootFrame.Dispatcher.BeginInvoke(() => MessageBox.Show(error));
+                        ShowToast(error, "Register");
                     }
                 }
             );

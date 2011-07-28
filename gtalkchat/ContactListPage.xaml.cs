@@ -23,9 +23,11 @@ namespace gtalkchat {
                 Dispatcher.BeginInvoke(
                     () => {
                         MessageBox.Show(
-                            "There is no internet connectivity. Please connect and try again.");
+                            "There is no internet connectivity. Please connect and try again.",
+                            "Connection error",
+                            MessageBoxButton.OK
+                        );
                         throw new QuitException();
-
                     });
             }
 
