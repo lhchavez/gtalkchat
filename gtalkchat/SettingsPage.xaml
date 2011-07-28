@@ -20,9 +20,11 @@
         <controls:Pivot Title="GCHAT">
             <!--Pivot item one-->
             <controls:PivotItem Header="settings">
-                <StackPanel>
-                    <Button Content="log out" Click="Logout_Click" Margin="0,0,0,24" />
-                </StackPanel>
+                <ScrollViewer>
+                    <StackPanel>
+                        <Button Content="log out" Click="Logout_Click" Margin="0,0,0,24" />
+                    </StackPanel>
+                </ScrollViewer>
             </controls:PivotItem>
 
             <!--Pivot item two-->
