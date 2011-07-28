@@ -19,13 +19,13 @@
    enable-background="new 0 0 70.388 100"
    xml:space="preserve"
    inkscape:version="0.48.1 "
-   sodipodi:docname="noun_project_99.svg"
+   sodipodi:docname="lock icon.svg"
    inkscape:export-filename="C:\Users\lhchavez\Documents\Visual Studio 2010\Projects\gtalkchat\gtalkchat\icons\appbar.lock.rest.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90"><metadata
    id="metadata9"><rdf:RDF><cc:Work
        rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
-         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
+         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title /></cc:Work></rdf:RDF></metadata><defs
    id="defs7" /><sodipodi:namedview
    pagecolor="#ffffff"
    bordercolor="#666666"
@@ -39,13 +39,15 @@
    inkscape:window-height="538"
    id="namedview5"
    showgrid="false"
-   inkscape:zoom="5.6568543"
-   inkscape:cx="19.185551"
-   inkscape:cy="32.918411"
+   inkscape:zoom="7.7675247"
+   inkscape:cx="33.319151"
+   inkscape:cy="20.630396"
    inkscape:window-x="-8"
    inkscape:window-y="-8"
    inkscape:window-maximized="1"
-   inkscape:current-layer="Layer_1" />
+   inkscape:current-layer="Layer_1"
+   showguides="true"
+   inkscape:guide-bbox="true" />
 <rect
    style="fill:#000080;stroke-width:0;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none"
    id="rect3025"
@@ -53,7 +55,7 @@
    height="48"
    x="0"
    y="0" /><path
-   d="m 17.999999,22.500135 0,-4.989566 C 17.999999,14.272704 20.762542,12 24.000406,12 c 3.237594,0 5.999593,2.272704 5.999593,5.510569 l 0,13.040576 2,0 0,-13.040576 C 31.999727,13.027538 28.483165,10 24.000406,10 c -4.483302,0 -8.000407,3.027538 -8.000407,7.510569 l 0,4.989566 -1.500001,0 C 14.438068,22.499864 13.999999,23 13.999999,23 l 0,14.5 c 0,0.06166 0.438066,0.5 0.500001,0.5 l 18.999999,0 c 0.06221,0 0.500002,-0.43859 0.500002,-0.5 l -2e-6,-14.5 c 2.72e-4,-0.06166 -0.438069,-0.500136 -0.5,-0.500136"
+   d="M 19,23.500135 19,19 c 0,-3.237865 1.762542,-5 5.000406,-5 C 27.238,14 29,15.762135 29,19 l 0,0 2.999999,0 0,-0.489431 C 31.999727,14.027538 28.483165,11 24.000406,11 c -4.483302,0 -8.000407,3.027538 -8.000407,7.510569 l 0,4.989566 -1.500001,0 C 14.438068,23.499864 13.999999,24 13.999999,24 l 0,12.5 c 0,0.06166 0.438066,0.5 0.500001,0.5 l 18.999999,0 c 0.06221,0 0.500002,-0.43859 0.500002,-0.5 l -2e-6,-12.5 c 2.72e-4,-0.06166 -0.438069,-0.500136 -0.5,-0.500136"
    id="path3"
    inkscape:connector-curvature="0"
    sodipodi:nodetypes="cssscccsscccsssscc"
