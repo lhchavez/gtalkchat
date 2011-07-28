@@ -149,18 +149,6 @@ namespace gtalkchat {
 
             (ApplicationBar.Buttons[0] as ApplicationBarIconButton).IsEnabled = false;
 
-            lock (chatLog) {
-                if (chatLog.Count >= GoogleTalkHelper.MaximumChatLogSize) {
-                    chatLog.RemoveAt(0);
-                }
-                chatLog.Add(new Message {
-                    Body = MessageText.Text,
-                    Outbound = true,
-                    Time = DateTime.Now,
-                    OTR = otr
-                });
-            }
-
             gtalk.SendMessage(to, MessageText.Text, data => Dispatcher.BeginInvoke(() => {
                 var bubble = new SentChatBubble();
                 bubble.Text = MessageText.Text;
@@ -168,23 +156,37 @@ namespace gtalkchat {
 
                 MessageList.Children.Add(bubble);
 
-                MessageText.Text = "";
                 (ApplicationBar.Buttons[0] as ApplicationBarIconButton).IsEnabled = true;
 
                 MessageList.UpdateLayout();
                 Scroller.UpdateLayout();
                 Scroller.ScrollToVerticalOffset(Scroller.ExtentHeight);
 
-                
+                lock (chatLog) {
+                    if (chatLog.Count >= GoogleTalkHelper.MaximumChatLogSize) {
+                        chatLog.RemoveAt(0);
+                    }
+                    chatLog.Add(new Message {
+                        Body = MessageText.Text,
+                        Outbound = true,
+                        Time = DateTime.Now,
+                        OTR = otr
+                    });
+                }
+
+                MessageText.Text = "";
             }), error => {
                 if (error.StartsWith("403")) {
                     settings.Remove("token");
                     gtalkHelper.LoginIfNeeded();
+                } else {
+                    Dispatcher.BeginInvoke(
+                        () => {
+                            (ApplicationBar.Buttons[0] as ApplicationBarIconButton).IsEnabled = true;
+                            //MessageBox.Show("Message not sent");
+                        }
+                    );
                 }
-
-                Dispatcher.BeginInvoke(() => {
-                    MessageBox.Show(error);
-                });
             });
         }
 
