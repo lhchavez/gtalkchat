@@ -177,11 +177,11 @@ namespace gtalkchat {
             );
         }
 
-        public void Notifications(bool toast, bool tile, SuccessCallback mcb, ErrorCallback ecb) {
+        public void Notifications(bool toast, bool tile, bool secondaryTile, SuccessCallback mcb, ErrorCallback ecb) {
             Send(
                 "/notifications",
                 ReceiveMode.SingleString,
-                sw => sw.Write("token=" + HttpUtility.UrlEncode(token) + "&toast=" + toast.ToString() + "&tile=" + tile.ToString()),
+                sw => sw.Write("token=" + HttpUtility.UrlEncode(token) + "&toast=" + toast.ToString() + "&tile=" + tile.ToString() + "&secondarytile=" + secondaryTile.ToString()),
                 mcb,
                 null,
                 ecb,
