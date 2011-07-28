@@ -140,10 +140,16 @@ namespace gtalkchat {
         }
 
         private void ShowStartOtr() {
+            ApplicationBarIconButton otrButton = (ApplicationBarIconButton)ApplicationBar.Buttons[1];
+            otrButton.IconUri = new Uri("/icons/appbar.unlock.rest.png", UriKind.Relative);
+            otrButton.Text = "end otr";
             LogChatEvent("This conversation is now off the record.");
         }
 
         private void ShowEndOtr() {
+            ApplicationBarIconButton otrButton = (ApplicationBarIconButton)ApplicationBar.Buttons[1];
+            otrButton.IconUri = new Uri("/icons/appbar.lock.rest.png", UriKind.Relative);
+            otrButton.Text = "go otr";
             LogChatEvent("This conversation is no longer off the record.");
         }
 
@@ -337,7 +343,6 @@ namespace gtalkchat {
         }
 
         private void OTRButton_Click(object sender, EventArgs e) {
-            // TODO: Change icons
             if (otr) {
                 gtalk.OTR(email, false, s => Dispatcher.BeginInvoke(ShowEndOtr), s => { });
                 otr = false;

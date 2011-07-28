@@ -143,8 +143,8 @@
         		<RowDefinition/>
         	</Grid.RowDefinitions>
         	
-            <ScrollViewer Name="Scroller" Margin="12,0,0,0" VerticalAlignment="Bottom">
-                <StackPanel Margin="0,0,24,0">
+            <ScrollViewer Name="Scroller" Margin="12,0,0,0">
+                <StackPanel Margin="0,0,24,0"  VerticalAlignment="Bottom">
                     <StackPanel Name="MessageList">
                     </StackPanel>
                     <TextBlock Name="TypingStatus" Visibility="Collapsed" Grid.Row="1" FontSize="{StaticResource PhoneFontSizeNormal}" />
