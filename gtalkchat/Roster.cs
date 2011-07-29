@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Collections.Specialized;
+using System.Linq;
 
 namespace gtalkchat {
     public class Roster : List<Contact>, INotifyCollectionChanged {
@@ -70,6 +70,10 @@ namespace gtalkchat {
 
         public ObservableCollection<Contact> GetOnlineContacts() {
             return this.Where(r => r.Online).ToObservableCollection();
+        }
+
+        public void Save() {
+            App.Current.Settings["roster"] = this;
         }
 
         private static string GetEmail(string jid) {

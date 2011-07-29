@@ -102,15 +102,9 @@ namespace gtalkchat {
                     },
                     error => {
                         if (error.Equals("")) {
-                            App.Current.RootFrame.Dispatcher.BeginInvoke(
-                                () => {
-                                    MessageBox.Show(
-                                        "Unable to contact server. Please retry later.",
-                                        "Connection error",
-                                        MessageBoxButton.OK
-                                    );
-                                    throw new QuitException();
-                                }
+                            ShowToast(
+                                "Unable to contact server. Please retry later.",
+                                "Connection error"
                             );
                         } else if (error.StartsWith("401")) {
                             // stale auth token. get a new one and we should be all happy again.
@@ -485,15 +479,9 @@ namespace gtalkchat {
                     },
                     error => {
                         if (error.Equals("")) {
-                            App.Current.RootFrame.Dispatcher.BeginInvoke(
-                                () => {
-                                    MessageBox.Show(
-                                        "Unable to contact server. Please retry later.",
-                                        "Connection error",
-                                        MessageBoxButton.OK
-                                    );
-                                    throw new QuitException();
-                                }
+                            ShowToast(
+                                "Unable to contact server. Please retry later.",
+                                "Connection error"
                             );
                         } else if (error.StartsWith("403")) {
                             GracefulReLogin();
@@ -524,18 +512,12 @@ namespace gtalkchat {
                     }
                 },
                 error => {
-                        if (error.Equals("")) {
-                            App.Current.RootFrame.Dispatcher.BeginInvoke(
-                                () => {
-                                    MessageBox.Show(
-                                        "Unable to contact server. Please retry later.",
-                                        "Connection error",
-                                        MessageBoxButton.OK
-                                    );
-                                    throw new QuitException();
-                                }
-                            );
-                        } else if (error.StartsWith("403")) {
+                    if (error.Equals("")) {
+                        ShowToast(
+                            "Unable to contact server. Please retry later.",
+                            "Connection error"
+                        );
+                    } else if (error.StartsWith("403")) {
                         GracefulReLogin();
                     } else {
                         ShowToast(error, "Register");

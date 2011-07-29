@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Net;
-using System.Net.NetworkInformation;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -30,19 +29,6 @@ namespace gtalkchat {
         protected override void OnNavigatedTo(NavigationEventArgs e) {
             base.OnNavigatedTo(e);
 
-            if(!NetworkInterface.GetIsNetworkAvailable()) {
-                Dispatcher.BeginInvoke(
-                    () => {
-                        MessageBox.Show(
-                            "There is no internet connectivity. Please connect and try again.",
-                            "Connection error",
-                            MessageBoxButton.OK
-                        );
-                        throw new QuitException();
-
-                    });
-            }
-
             gtalk = App.Current.GtalkClient;
             gtalkHelper = App.Current.GtalkHelper;
             settings = App.Current.Settings;
@@ -63,8 +49,10 @@ namespace gtalkchat {
 
             gtalkHelper.MessageReceived += DisplayMessage;
 
-            if (gtalkHelper.RosterLoaded) {
+            if (App.Current.Roster.Contains(to)) {
                 Initialize();
+                gtalkHelper.RosterUpdated += RosterLoaded;
+            } else if (gtalkHelper.RosterLoaded) {
                 gtalkHelper.GetOfflineMessages();
             } else {
                 gtalkHelper.RosterUpdated += Initialize;
@@ -293,6 +281,11 @@ namespace gtalkchat {
                     contact.UnreadCount = 0;
                 }
             });
+        }
+
+        private void RosterLoaded() {
+            gtalkHelper.RosterUpdated -= RosterLoaded;
+            gtalkHelper.GetOfflineMessages();
         }
 
         private void ScrollToBottom() {

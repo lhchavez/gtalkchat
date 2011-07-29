@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net.NetworkInformation;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -18,18 +17,6 @@ namespace gtalkchat {
 
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e) {
             base.OnNavigatedTo(e);
-
-            if (!NetworkInterface.GetIsNetworkAvailable()) {
-                Dispatcher.BeginInvoke(
-                    () => {
-                        MessageBox.Show(
-                            "There is no internet connectivity. Please connect and try again.",
-                            "Connection error",
-                            MessageBoxButton.OK
-                        );
-                        throw new QuitException();
-                    });
-            }
 
             if (gtalkHelper != App.Current.GtalkHelper) {
                 gtalkHelper = App.Current.GtalkHelper;
