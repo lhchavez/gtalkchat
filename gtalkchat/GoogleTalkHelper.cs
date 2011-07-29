@@ -600,6 +600,7 @@ namespace gtalkchat {
             settings.Remove("token");
             gtalk.SetToken(null);
             hasToken = false;
+            registeredUri = null;
 
             LoginIfNeeded();
         }
