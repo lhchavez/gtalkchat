@@ -23,8 +23,7 @@
             <controls:PivotItem Header="settings">
                 <ScrollViewer>
                     <StackPanel>
-                        <toolkit:ToggleSwitch Content="reddit-style icons" Name="RagesCheckbox" Unchecked="RagesCheckbox_Checked" Checked="RagesCheckbox_Checked" />
-                        <Button Content="log out" Click="Logout_Click" Margin="0,0,0,24" />
+                        <toolkit:ToggleSwitch Header="Reddit-style icons" Name="RagesCheckbox" Unchecked="RagesCheckbox_Checked" Checked="RagesCheckbox_Checked" />
                     </StackPanel>
                 </ScrollViewer>
             </controls:PivotItem>

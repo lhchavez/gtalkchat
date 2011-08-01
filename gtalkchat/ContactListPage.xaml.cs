@@ -77,6 +77,11 @@ namespace gtalkchat {
             ProgressBar.Visibility = Visibility.Visible;
             gtalkHelper.LoadRoster();
         }
+
+        private void Logout_Click(object sender, EventArgs e) {
+            var gtalkHelper = App.Current.GtalkHelper;
+            gtalkHelper.Logout();
+        }
     }
 
     public class NumberToVisibilityConverter : IValueConverter {

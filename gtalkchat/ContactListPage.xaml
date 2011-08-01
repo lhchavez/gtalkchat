@@ -71,6 +71,9 @@
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
             <shell:ApplicationBarIconButton x:Name="RefreshButton" IconUri="/icons/appbar.refresh.rest.png" Text="refresh" Click="RefreshButton_Click" />
             <shell:ApplicationBarIconButton x:Name="SettingsButton" IconUri="/icons/appbar.feature.settings.rest.png" Text="settings" Click="SettingsButton_Click"/>
+            <shell:ApplicationBar.MenuItems>
+                <shell:ApplicationBarMenuItem Text="log out" Click="Logout_Click" />
+            </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
     

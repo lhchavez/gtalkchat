@@ -146,9 +146,10 @@
             <ScrollViewer Name="Scroller" Margin="12,0,0,0">
                 <StackPanel Margin="0,0,24,0"  VerticalAlignment="Bottom">
                     <StackPanel Name="MessageList">
+                        
                     </StackPanel>
                     <TextBlock Name="TypingStatus" Visibility="Collapsed" Grid.Row="1" FontSize="{StaticResource PhoneFontSizeNormal}" />
-                    <TextBox VerticalAlignment="Bottom" KeyUp="MessageText_KeyUp" Margin="98,12,-4,6" Name="MessageText" InputScope="Chat" Grid.Row="2" TextWrapping="Wrap" FontSize="{StaticResource PhoneFontSizeNormal}" Background="{x:Null}" BorderBrush="{x:Null}" Style="{StaticResource InputBubbleStyle}" />
+                    <TextBox VerticalAlignment="Bottom" AcceptsReturn="True" Margin="98,12,-4,6" Name="MessageText" InputScope="Chat" Grid.Row="2" TextWrapping="Wrap" FontSize="{StaticResource PhoneFontSizeMedium}" Background="{x:Null}" BorderBrush="{x:Null}" Style="{StaticResource InputBubbleStyle}" />
                 </StackPanel>
             </ScrollViewer>
         </Grid>
