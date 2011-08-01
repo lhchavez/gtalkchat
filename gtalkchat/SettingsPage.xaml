@@ -7,6 +7,7 @@
     xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -22,6 +23,7 @@
             <controls:PivotItem Header="settings">
                 <ScrollViewer>
                     <StackPanel>
+                        <toolkit:ToggleSwitch Content="reddit-style icons" Name="RagesCheckbox" Unchecked="RagesCheckbox_Checked" Checked="RagesCheckbox_Checked" />
                         <Button Content="log out" Click="Logout_Click" Margin="0,0,0,24" />
                     </StackPanel>
                 </ScrollViewer>

@@ -1,16 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
+﻿using System.Windows;
 using Microsoft.Phone.Controls;
-using Microsoft.Phone.Tasks;
 
 namespace gtalkchat {
     public partial class SettingsPage : PhoneApplicationPage {
@@ -18,9 +7,19 @@ namespace gtalkchat {
             InitializeComponent();
         }
 
+        protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e) {
+            base.OnNavigatedTo(e);
+
+            RagesCheckbox.IsChecked = App.Current.Settings.Contains("rages") && (bool) App.Current.Settings["rages"];
+        }
+
         private void Logout_Click(object sender, RoutedEventArgs e) {
             var gtalkHelper = App.Current.GtalkHelper;
             gtalkHelper.Logout();
+        }
+
+        private void RagesCheckbox_Checked(object sender, RoutedEventArgs e) {
+            App.Current.Settings["rages"] = RagesCheckbox.IsChecked;
         }
     }
 }
