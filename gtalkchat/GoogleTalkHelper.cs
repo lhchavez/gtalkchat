@@ -55,7 +55,7 @@ namespace gtalkchat {
         private bool hasToken;
         private bool hasUri;
         private string registeredUri;
-        private static readonly Regex linkRegex = new Regex("(https?://)?(([0-9]{1-3}\\.[0-9]{1-3}\\.[0-9]{1-3}\\.[0-9]{1-3})|([a-z0-9.-]+\\.[a-z]{2,4}))(/[-a-z0-9+&@#\\/%?=~_|!:,.;]*[-a-z0-9+&@#\\/%=~_|])?", RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
+        private static readonly Regex linkRegex = new Regex("(?:(\\B(?:;-?\\)|:-?\\)|:-?D|:-?P|:-?S|:-?/|:-?\\||:'\\(|:-?\\(|<3))|(https?://)?(([0-9]{1-3}\\.[0-9]{1-3}\\.[0-9]{1-3}\\.[0-9]{1-3})|([a-z0-9.-]+\\.[a-z]{2,4}))(/[-a-z0-9+&@#\\/%?=~_|!:,.;]*[-a-z0-9+&@#\\/%=~_|])?)", RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
 
         #endregion
 
@@ -298,36 +298,94 @@ namespace gtalkchat {
                 if (m.Index > last) {
                     paragraph.Inlines.Add(
                         new Run {
-                            Text = message.Substring(last, m.Index)
+                            Text = message.Substring(last, m.Index-last)
                         }
                     );
                 }
 
-                string uri = m.Groups[0].Value;
+                if (m.Groups[1].Value != null && m.Groups[1].Value.Length > 0) {
+                    var smiley = m.Groups[0].Value.ToUpperInvariant();
+                    string smileyName = "smile.8";
 
-                if (uri.StartsWith("ra.ge/", StringComparison.InvariantCultureIgnoreCase) && App.Current.Settings.Contains("rages") && (bool)App.Current.Settings["rages"]) {
-                    var rageUri = new Uri("/icons/emoticon.rage." + uri.Substring(6).Replace("!", "_") + ".png", UriKind.Relative);
-                    paragraph.Inlines.Add(
-                        new InlineUIContainer {
-                            Child = new Image {
-                                Source = new BitmapImage(rageUri),
-                                MaxWidth = 25,
-                                MaxHeight = 25
-                            }
-                        }
-                    );
-                } else {
-                    if (!uri.StartsWith("http://") && !uri.StartsWith("https://")) {
-                        uri = uri.Insert(0, "http://");
+                    switch (smiley) {
+                        case ":)":
+                        case ":-)":
+                            smileyName = "smile.1";
+                            break;
+                        case ";)":
+                        case ";-)":
+                            smileyName = "smile.15"; // awkward drunken smile
+                            break;
+                        case ":D":
+                        case ":-D":
+                            smileyName = "smile.10";
+                            break;
+                        case ":P":
+                        case ":-P":
+                            smileyName = "smile.14";
+                            break;
+                        case ":S":
+                        case ":-S":
+                            smileyName = "smile.6";
+                            break;
+                        case ":/":
+                        case ":-/":
+                            smileyName = "smile.17";
+                            break;
+                        case ":|":
+                        case ":-|":
+                            smileyName = "smile.7";
+                            break;
+                        case ":'(":
+                            smileyName = "smile.22";
+                            break;
+                        case ":(":
+                        case ":-(":
+                            smileyName = "smile.18";
+                            break;
+                        case"<3":
+                            smileyName = "heart";
+                            break;
                     }
 
-                    var link = new Hyperlink {
-                        NavigateUri = new Uri(uri),
-                        TargetName = "_blank"
-                    };
-                    link.Inlines.Add(m.Groups[0].Value);
+                    paragraph.Inlines.Add(
+                            new InlineUIContainer {
+                                Child = new Image {
+                                    Source = new BitmapImage(new Uri("/icons/appbar." + smileyName + ".rest.png", UriKind.Relative)),
+                                    MaxWidth = 48,
+                                    MaxHeight = 48
+                                }
+                            }
+                        );
+                } else {
+                    string uri = m.Groups[0].Value;
 
-                    paragraph.Inlines.Add(link);
+                    if (uri.StartsWith("ra.ge/", StringComparison.InvariantCultureIgnoreCase) &&
+                        App.Current.Settings.Contains("rages") && (bool) App.Current.Settings["rages"]) {
+                        var rageUri = new Uri(
+                            "/icons/emoticon.rage." + uri.Substring(6).Replace("!", "_") + ".png", UriKind.Relative);
+                        paragraph.Inlines.Add(
+                            new InlineUIContainer {
+                                Child = new Image {
+                                    Source = new BitmapImage(rageUri),
+                                    MaxWidth = 25,
+                                    MaxHeight = 25
+                                }
+                            }
+                        );
+                    } else {
+                        if (!uri.StartsWith("http://") && !uri.StartsWith("https://")) {
+                            uri = uri.Insert(0, "http://");
+                        }
+
+                        var link = new Hyperlink {
+                            NavigateUri = new Uri(uri),
+                            TargetName = "_blank"
+                        };
+                        link.Inlines.Add(m.Groups[0].Value);
+
+                        paragraph.Inlines.Add(link);
+                    }
                 }
 
                 last = m.Index + m.Length;
