@@ -305,7 +305,7 @@ namespace gtalkchat {
 
                 string uri = m.Groups[0].Value;
 
-                if (uri.StartsWith("ra.ge/") && App.Current.Settings.Contains("rages") && (bool)App.Current.Settings["rages"]) {
+                if (uri.StartsWith("ra.ge/", StringComparison.InvariantCultureIgnoreCase) && App.Current.Settings.Contains("rages") && (bool)App.Current.Settings["rages"]) {
                     var rageUri = new Uri("/icons/emoticon.rage." + uri.Substring(6).Replace("!", "_") + ".png", UriKind.Relative);
                     paragraph.Inlines.Add(
                         new InlineUIContainer {
