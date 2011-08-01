@@ -548,6 +548,18 @@ namespace gtalkchat {
             }
         }
 
+        public string FormatMessageDate(DateTime date) {
+            string res = string.Empty;
+
+            if (date.Date != DateTime.Today) {
+                res += date.ToString("M/d, ");
+            }
+
+            res += date.ToString("h:mmt").ToLower();
+
+            return res;
+        }
+
         #endregion
 
         #region Private Methods

@@ -23,8 +23,13 @@ namespace gtalkchat {
                 if (value != time) {
                     time = value;
                     Changed("Time");
+                    Changed("PrettyTime");
                 }
             }
+        }
+
+        public string PrettyTime {
+            get { return App.Current.GtalkHelper.FormatMessageDate(time); }
         }
 
         private string type;
