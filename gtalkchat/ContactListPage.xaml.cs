@@ -34,6 +34,8 @@ namespace gtalkchat {
                     );
             }
 
+            App.Current.GtalkHelper.SetCorrectOrientation(this);
+
             Dispatcher.BeginInvoke(
                 () => {
                     if (gtalkHelper.RosterLoaded) {

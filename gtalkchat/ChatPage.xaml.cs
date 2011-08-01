@@ -33,6 +33,8 @@ namespace gtalkchat {
             gtalkHelper = App.Current.GtalkHelper;
             settings = App.Current.Settings;
 
+            App.Current.GtalkHelper.SetCorrectOrientation(this);
+
             if (NavigationContext.QueryString.ContainsKey("from")) {
                 to = NavigationContext.QueryString["from"];
                 email = to;

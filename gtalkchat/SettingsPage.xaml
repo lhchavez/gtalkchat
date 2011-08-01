@@ -23,6 +23,7 @@
             <controls:PivotItem Header="settings">
                 <ScrollViewer>
                     <StackPanel>
+                        <toolkit:ToggleSwitch Header="Lock screen rotation" Name="LandscapeCheckbox" Unchecked="LandscapeCheckbox_Checked" Checked="LandscapeCheckbox_Checked" />
                         <toolkit:ToggleSwitch Header="Reddit-style icons" Name="RagesCheckbox" Unchecked="RagesCheckbox_Checked" Checked="RagesCheckbox_Checked" />
                     </StackPanel>
                 </ScrollViewer>

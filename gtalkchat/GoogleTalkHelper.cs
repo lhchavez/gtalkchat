@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using Coding4Fun.Phone.Controls;
 using Microsoft.Phone.Shell;
 using System.Windows.Controls;
+using Microsoft.Phone.Controls;
 
 namespace gtalkchat {
     public class GoogleTalkHelper {
@@ -478,6 +479,14 @@ namespace gtalkchat {
                     }
                 }
             );
+        }
+
+        public void SetCorrectOrientation(PhoneApplicationPage page) {
+            if (App.Current.Settings.Contains("rotate") && (bool)App.Current.Settings["rotate"]) {
+                page.SupportedOrientations = SupportedPageOrientation.Portrait;
+            } else {
+                page.SupportedOrientations = SupportedPageOrientation.PortraitOrLandscape;
+            }
         }
 
         #endregion
