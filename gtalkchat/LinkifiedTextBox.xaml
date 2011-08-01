@@ -11,7 +11,7 @@
     
     <Grid x:Name="LayoutRoot">
         <StackPanel>
-            <RichTextBox x:Name="RichText" TextWrapping="Wrap" />
+            <RichTextBox x:Name="RichText" TextWrapping="Wrap" FontSize="{StaticResource PhoneFontSizeMedium}" />
         </StackPanel>
     </Grid>
 </UserControl>

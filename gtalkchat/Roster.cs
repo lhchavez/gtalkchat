@@ -29,6 +29,7 @@ namespace gtalkchat {
 
         public new void Add(Contact item) {
             base.Add(item);
+            this.Sort();
             contacts.Add(GetEmail(item.JID), item);
 
             if (Notify) {
@@ -69,7 +70,9 @@ namespace gtalkchat {
         }
 
         public ObservableCollection<Contact> GetOnlineContacts() {
-            return this.Where(r => r.Online).ToObservableCollection();
+            var online = this.Where(r => r.Online).ToObservableCollection();
+            online.Sort(Contact.CompareByStatus);
+            return online;
         }
 
         public void Save() {

@@ -187,13 +187,6 @@ namespace gtalkchat {
             });
         }
 
-        private void MessageText_KeyUp(object sender, System.Windows.Input.KeyEventArgs e) {
-            ScrollToBottom();
-            if (e.Key == System.Windows.Input.Key.Enter) {
-                SendButton_Click(sender, e);
-            }
-        }
-
         private void Initialize() {
             gtalkHelper.RosterUpdated -= Initialize;
 

@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel;
 using System;
 using System.Net;
+using System.Collections.Generic;
 
 namespace gtalkchat {
-    public class Contact : INotifyPropertyChanged {
+    public class Contact : INotifyPropertyChanged, IComparable<Contact> {
         #region Public Properties
 
         private string jID;
@@ -100,7 +101,7 @@ namespace gtalkchat {
             get {
                 if (show == null || show == string.Empty) {
                     if (online) {
-                        return "online";
+                        return "available";
                     } else {
                         return "offline";
                     }
@@ -133,6 +134,39 @@ namespace gtalkchat {
             if (PropertyChanged != null) {
                 PropertyChanged(this, new PropertyChangedEventArgs(property));
             }
+        }
+
+        #endregion
+
+        #region IComparable Members
+
+        public int CompareTo(Contact other) {
+            return CompareByName(this, other);
+        }
+
+        public static int CompareByName(Contact a, Contact b) {
+            return a.NameOrEmail.CompareTo(b.NameOrEmail);
+        }
+
+        public static int CompareByStatus(Contact a, Contact b) {
+            Dictionary<string, int> priority = new Dictionary<string,int> {
+                {"available", 1},
+                {"do not disturb", 2},
+                {"away", 3},
+                {"extended away", 4},
+                {"offline", 5}
+            };
+            
+            if (a.Status == b.Status) {
+                return CompareByName(a, b);
+            } else {
+                int ast, bst;
+                if (priority.TryGetValue(a.Status, out ast) && priority.TryGetValue(b.Status, out bst)) {
+                    return ast.CompareTo(bst);
+                }
+            }
+
+            return 0;
         }
 
         #endregion

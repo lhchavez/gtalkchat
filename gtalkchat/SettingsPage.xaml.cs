@@ -13,11 +13,6 @@ namespace gtalkchat {
             RagesCheckbox.IsChecked = App.Current.Settings.Contains("rages") && (bool) App.Current.Settings["rages"];
         }
 
-        private void Logout_Click(object sender, RoutedEventArgs e) {
-            var gtalkHelper = App.Current.GtalkHelper;
-            gtalkHelper.Logout();
-        }
-
         private void RagesCheckbox_Checked(object sender, RoutedEventArgs e) {
             App.Current.Settings["rages"] = RagesCheckbox.IsChecked;
         }
