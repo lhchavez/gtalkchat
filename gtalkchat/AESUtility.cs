@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Ionic.Zlib;
+using System;
 using System.Text;
 using System.Security.Cryptography;
+using System.IO;
 
 namespace gtalkchat {
     internal class AesUtility {
@@ -15,6 +17,10 @@ namespace gtalkchat {
         }
 
         public string Decipher(string cipherText) {
+            return Decipher(cipherText, false);
+        }
+
+        public string Decipher(string cipherText, bool gzip) {
             var tokens = cipherText.Split(new[] {':'});
 
             var length = int.Parse(tokens[0]);
@@ -28,7 +34,24 @@ namespace gtalkchat {
 
             var data = Convert.FromBase64String(tokens[2]);
 
-            return Encoding.UTF8.GetString(decryptor.TransformFinalBlock(data, 0, data.Length), 0, length);
+            if (gzip) {
+                using(var ms = new MemoryStream(decryptor.TransformFinalBlock(data, 0, data.Length), 0, length)) {
+                    using(var gz = new GZipStream(ms, CompressionMode.Decompress)) {
+                        var buffer = new byte[1024];
+                        using(var mem = new MemoryStream()) {
+                            var read = 0;
+
+                            while((read = gz.Read(buffer, 0, buffer.Length)) > 0) {
+                                mem.Write(buffer, 0, read);
+                            }
+
+                            return Encoding.UTF8.GetString(mem.GetBuffer(), 0, (int)mem.Length);
+                        }
+                    }
+                }
+            } else {
+                return Encoding.UTF8.GetString(decryptor.TransformFinalBlock(data, 0, data.Length), 0, length);
+            }
         }
 
         public string Cipher(string plainText) {

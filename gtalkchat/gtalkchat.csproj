@@ -59,6 +59,9 @@
     <Reference Include="Coding4Fun.Phone.Site.Controls">
       <HintPath>..\lib\Coding4Fun.Phone.Site.Controls.dll</HintPath>
     </Reference>
+    <Reference Include="Ionic.Zlib">
+      <HintPath>..\lib\Ionic.Zlib.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Phone.Controls.Toolkit">
       <HintPath>..\lib\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
     </Reference>
@@ -160,6 +163,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="icons\appbar.heart.rest.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="icons\appbar.phone.rest.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="icons\appbar.smile.1.rest.png">

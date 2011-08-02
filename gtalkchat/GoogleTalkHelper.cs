@@ -44,6 +44,8 @@ namespace gtalkchat {
 
         public bool RosterLoaded { get; private set; }
 
+        public string Jid { get; private set; }
+
         private bool offlineMessagesDownloaded;
 
         #endregion
@@ -70,6 +72,10 @@ namespace gtalkchat {
             pushHelper.UriUpdated += UriUpdated;
             pushHelper.RawNotificationReceived += RawNotificationReceived;
             Connected = false;
+
+            if (settings.Contains("jid")) {
+                Jid = (string) settings["jid"];
+            }
         }
 
         public void LoginIfNeeded() {
@@ -229,6 +235,8 @@ namespace gtalkchat {
                     NotifyMessageReceived,
                     error => ShowToast(error, "Message parsing")
                 );
+            } else if (data.StartsWith("iq:")) {
+                App.Current.RootFrame.Dispatcher.BeginInvoke(() => MessageBox.Show(gtalk.DecryptMessage(data.Substring(3))));
             }
         }
 
@@ -599,6 +607,9 @@ namespace gtalkchat {
             gtalk.Register(
                 uri,
                 data => {
+                    Jid = data;
+                    settings["jid"] = Jid;
+
                     LoadRoster();
 
                     Connected = true;
