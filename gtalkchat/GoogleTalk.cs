@@ -189,18 +189,6 @@ namespace gtalkchat {
             );
         }
 
-        public void RawIQ(string id, string body, SuccessCallback cb, ErrorCallback ecb) {
-            Send(
-                "/rawiq",
-                ReceiveMode.SingleString,
-                sw => sw.Write("token=" + HttpUtility.UrlEncode(token) + "&id=" + HttpUtility.UrlEncode(id) + "&body=" + HttpUtility.UrlEncode(body)),
-                cb,
-                null,
-                ecb,
-                null
-            );
-        }
-
         #endregion
 
         #region Helper Methods
@@ -315,10 +303,6 @@ namespace gtalkchat {
                 },
                 req
             );
-        }
-
-        public string DecryptMessage(string cipher) {
-            return aes.Decipher(cipher, true);
         }
 
         public void ParseMessage(string cipher, MessageCallback mcb, ErrorCallback ecb) {
