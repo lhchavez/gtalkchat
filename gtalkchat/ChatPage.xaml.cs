@@ -9,6 +9,7 @@ using System.Windows.Media;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using gtalkchat.Voice;
 
 namespace gtalkchat {
     public partial class ChatPage : PhoneApplicationPage {
@@ -352,30 +353,7 @@ namespace gtalkchat {
         }
 
         private void PhoneButton_Click(object sender, EventArgs e) {
-            string id = "phone1";
-            string msg = "<iq from=\"" +gtalkHelper.Jid + "\" id=\"" + id + "\" to=\"" + to + "\" type=\"set\">" +
-                "<session xmlns=\"http://www.google.com/session\" type=\"initiate\" id=\"c1451315399\" initiator=\"" + gtalkHelper.Jid + "\">" +
-                    "<description xmlns=\"http://www.google.com/session/phone\">" +
-                        //"<payload-type id=\"103\" name=\"ISAC\" clockrate=\"16000\"/>" +
-                        //"<payload-type id=\"97\" name=\"IPCMWB\" bitrate=\"80000\" clockrate=\"16000\"/>" +
-                        "<payload-type id=\"99\" name=\"speex\" bitrate=\"22000\" clockrate=\"16000\"/>" +
-                        //"<payload-type id=\"102\" name=\"iLBC\" bitrate=\"13300\" clockrate=\"8000\"/>" +
-                        "<payload-type id=\"98\" name=\"speex\" bitrate=\"11000\" clockrate=\"8000\"/>" +
-                        //"<payload-type id=\"100\" name=\"EG711U\" bitrate=\"64000\" clockrate=\"8000\"/>" +
-                        //"<payload-type id=\"101\" name=\"EG711A\" bitrate=\"64000\" clockrate=\"8000\"/>" +
-                        "<payload-type id=\"0\" name=\"PCMU\" bitrate=\"64000\" clockrate=\"8000\"/>" +
-                        "<payload-type id=\"8\" name=\"PCMA\" bitrate=\"64000\" clockrate=\"8000\"/>" +
-                        //"<payload-type id=\"106\" name=\"telephone-event\" clockrate=\"8000\"/>" +
-                    "</description>" +
-                "</session>" +
-            "</iq>";
-
-            gtalk.RawIQ(
-                id,
-                msg,
-                response => {},
-                error => {}
-            );
+            new VoiceSession(to).Initiate();
         }
     }
 }

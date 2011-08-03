@@ -8,13 +8,15 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Xml.Linq;
 using Coding4Fun.Phone.Controls;
-using Microsoft.Phone.Shell;
-using System.Windows.Controls;
 using Microsoft.Phone.Controls;
+using Microsoft.Phone.Shell;
+using gtalkchat.Voice;
 
 namespace gtalkchat {
     public class GoogleTalkHelper {
@@ -35,6 +37,8 @@ namespace gtalkchat {
         public delegate void RosterUpdatedEventHandler();
 
         public event RosterUpdatedEventHandler RosterUpdated;
+
+        public delegate void SessionStanzaReceived(string xml, XElement doc);
 
         #endregion
 
@@ -59,6 +63,9 @@ namespace gtalkchat {
         private bool hasUri;
         private string registeredUri;
         private static readonly Regex linkRegex = new Regex("(?:(\\B(?:;-?\\)|:-?\\)|:-?D|:-?P|:-?S|:-?/|:-?\\||:'\\(|:-?\\(|<3))|(https?://)?(([0-9]{1-3}\\.[0-9]{1-3}\\.[0-9]{1-3}\\.[0-9]{1-3})|([a-z0-9.-]+\\.[a-z]{2,4}))(/[-a-z0-9+&@#\\/%?=~_|!:,.;]*[-a-z0-9+&@#\\/%=~_|])?)", RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
+
+        private Dictionary<string, SessionStanzaReceived> sessionCallbacks =
+            new Dictionary<string, SessionStanzaReceived>();
 
         #endregion
 
@@ -236,8 +243,43 @@ namespace gtalkchat {
                     error => ShowToast(error, "Message parsing")
                 );
             } else if (data.StartsWith("iq:")) {
-                App.Current.RootFrame.Dispatcher.BeginInvoke(() => MessageBox.Show(gtalk.DecryptMessage(data.Substring(3))));
+                var xml = gtalk.DecryptMessage(data.Substring(3));
+                var doc = XDocument.Parse(xml);
+
+                // get rid of those pesky namespaces
+                foreach(var node in doc.Descendants()) {
+                    node.Name = node.Name.LocalName;
+                    var atList = node.Attributes().ToList();
+                    node.Attributes().Remove();
+                    foreach (var at in atList) {
+                        if (at.Name.Namespace == XNamespace.Xmlns) {
+                            node.Add(new XAttribute("xmlns", at.Value));
+                        } else {
+                            node.Add(new XAttribute(at.Name.LocalName, at.Value));
+                        }
+                    }
+                }
+
+                var session = doc.Descendants("session").FirstOrDefault();
+
+                if(session != null && session.Attribute("id") != null) {
+                    var sessionId = session.Attribute("id").Value;
+
+                    if (!sessionCallbacks.ContainsKey(sessionId)) {
+                        new VoiceSession(session.Attribute("initiator").Value, sessionId);
+                    }
+
+                    sessionCallbacks[sessionId](xml, doc.Descendants("iq").FirstOrDefault());
+                }
             }
+        }
+
+        public void AddSessionListener(string id, SessionStanzaReceived callback) {
+            sessionCallbacks.Add(id, callback);
+        }
+
+        public void RemoveSessionListener(string id) {
+            sessionCallbacks.Remove(id);
         }
 
         public List<Message> ChatLog(string username) {
@@ -312,7 +354,7 @@ namespace gtalkchat {
                     );
                 }
 
-                if (m.Groups[1].Value != null && m.Groups[1].Value.Length > 0) {
+                if (m.Groups[1].Value.Length > 0) {
                     var smiley = m.Groups[0].Value.ToUpperInvariant();
                     string smileyName = "smile.8";
 

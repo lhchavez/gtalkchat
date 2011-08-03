@@ -15,6 +15,7 @@ namespace gtalkchat.Voice {
         public event AudioReadyHandler AudioReady;
 
         public EncoderStream Encoder { get; set; }
+        public long Timestamp { get; private set; }
 
         public RecordingSession() {
             timer = new DispatcherTimer {
@@ -53,6 +54,8 @@ namespace gtalkchat.Voice {
             if (encodedBytes != 0 && AudioReady != null) {
                 AudioReady(buffer, 0, encodedBytes);
             }
+
+            Timestamp += sampleIndex;
         }
     }
 }
