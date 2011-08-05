@@ -265,11 +265,13 @@ namespace gtalkchat {
                 if(session != null && session.Attribute("id") != null) {
                     var sessionId = session.Attribute("id").Value;
 
-                    if (!sessionCallbacks.ContainsKey(sessionId)) {
+                    if (session.Attribute("type").Value == "initiate" && !sessionCallbacks.ContainsKey(sessionId)) {
                         new VoiceSession(session.Attribute("initiator").Value, sessionId);
                     }
 
-                    sessionCallbacks[sessionId](xml, doc.Descendants("iq").FirstOrDefault());
+                    if(sessionCallbacks.ContainsKey(sessionId)) {
+                        sessionCallbacks[sessionId](xml, doc.Descendants("iq").FirstOrDefault());
+                    }
                 }
             }
         }

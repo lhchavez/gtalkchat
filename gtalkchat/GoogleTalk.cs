@@ -201,6 +201,18 @@ namespace gtalkchat {
             );
         }
 
+        public void Jingle(SuccessCallback cb, ErrorCallback ecb) {
+            Send(
+                "/jingle",
+                ReceiveMode.SingleString,
+                sw => sw.Write("token=" + HttpUtility.UrlEncode(token)),
+                cb,
+                null,
+                ecb,
+                null
+            );
+        }
+
         #endregion
 
         #region Helper Methods

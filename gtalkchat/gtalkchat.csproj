@@ -85,6 +85,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ByteArrayExtensions.cs" />
     <Compile Include="ChatBubble.cs" />
     <Compile Include="ChatPage.xaml.cs">
       <DependentUpon>ChatPage.xaml</DependentUpon>
@@ -93,6 +94,7 @@
     <Compile Include="ContactListPage.xaml.cs">
       <DependentUpon>ContactListPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Crc32.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="GoogleTalk.cs" />
     <Compile Include="GoogleTalkHelper.cs" />
@@ -119,11 +121,14 @@
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Voice\AudioSession.cs" />
+    <Compile Include="Voice\CandidatePair.cs" />
     <Compile Include="Voice\DecoderStream.cs" />
     <Compile Include="Voice\EncoderStream.cs" />
+    <Compile Include="Voice\StunPacket.cs" />
     <Compile Include="Voice\PcmDecoderStream.cs" />
     <Compile Include="Voice\PcmEncoderStream.cs" />
     <Compile Include="Voice\RecordingSession.cs" />
+    <Compile Include="Voice\RtpSession.cs" />
     <Compile Include="Voice\SinewaveGeneratorStream.cs" />
     <Compile Include="Voice\SpeexDecoderStream.cs" />
     <Compile Include="Voice\SpeexEncoderStream.cs" />

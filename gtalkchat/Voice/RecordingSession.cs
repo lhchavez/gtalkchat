@@ -5,11 +5,11 @@ using Microsoft.Xna.Framework;
 
 namespace gtalkchat.Voice {
     public class RecordingSession {
-        private readonly Microphone microphone = Microphone.Default;
-        private readonly DispatcherTimer timer;
+        private Microphone microphone;
+        private DispatcherTimer timer;
 
-        private readonly byte[] buffer;
-        private readonly short[] samples;
+        private byte[] buffer;
+        private short[] samples;
 
         public delegate void AudioReadyHandler(byte[] data, int offset, int count);
         public event AudioReadyHandler AudioReady;
@@ -18,27 +18,38 @@ namespace gtalkchat.Voice {
         public long Timestamp { get; private set; }
 
         public RecordingSession() {
-            timer = new DispatcherTimer {
-                Interval = TimeSpan.FromMilliseconds(50)
-            };
+            App.Current.RootFrame.Dispatcher.BeginInvoke(
+                () => {
+                    timer = new DispatcherTimer {
+                        Interval = TimeSpan.FromMilliseconds(20)
+                    };
 
-            timer.Tick += delegate { try { FrameworkDispatcher.Update(); } catch { } };
+                    timer.Tick += delegate { try { FrameworkDispatcher.Update(); } catch { } };
 
-            microphone.BufferReady += microphone_BufferReady;
-            microphone.BufferDuration = TimeSpan.FromMilliseconds(100);
+                    microphone = Microphone.Default;
 
-            samples = new short[microphone.GetSampleSizeInBytes(microphone.BufferDuration)];
-            buffer = new byte[samples.Length * 2];
+                    microphone.BufferReady += microphone_BufferReady;
+                    microphone.BufferDuration = TimeSpan.FromMilliseconds(100);
+
+                    samples = new short[microphone.GetSampleSizeInBytes(microphone.BufferDuration)];
+                    buffer = new byte[samples.Length * 2];
+                });
         }
 
         public void Start() {
-            timer.Start();
-            microphone.Start();
+            App.Current.RootFrame.Dispatcher.BeginInvoke(
+                () => {
+                    timer.Start();
+                    microphone.Start();
+                });
         }
 
         public void Stop() {
-            timer.Stop();
-            microphone.Stop();
+            App.Current.RootFrame.Dispatcher.BeginInvoke(
+                () => {
+                    timer.Stop();
+                    microphone.Stop();
+                });
         }
 
         private void microphone_BufferReady(object sender, EventArgs e) {
