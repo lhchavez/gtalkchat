@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Net;
+using System.Net.Sockets;
 
 namespace gtalkchat.Voice {
     public class Candidate {
         private static Random random = new Random();
+        private static string Alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
         private string username;
         public string Username {
@@ -30,6 +32,9 @@ namespace gtalkchat.Voice {
         public double Priority { get; set; }
         public string Type { get; set; }
         public int Generation { get; set; }
+        public int ListenPort { get; set; }
+        public bool Sent { get; set; }
+        public string Protocol { get; set; }
 
         public string Address {
             get {
@@ -56,8 +61,6 @@ namespace gtalkchat.Voice {
         }
 
         public static string GenerateRandomString() {
-            var Alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-/";
-
             var ans = "";
 
             for(var i = 0; i < 16; i++) {
@@ -65,6 +68,20 @@ namespace gtalkchat.Voice {
             }
 
             return ans;
+        }
+
+        public void Connect() {
+            System.Diagnostics.Debug.WriteLine("Connecting tcpily to {0}", EndPoint);
+
+            var rtp = new RtpSession(0) {
+                EndPoint = EndPoint,
+                Socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp),
+                RecordingSession = new RecordingSession {
+                    Encoder = new PcmEncoderStream()
+                }
+            };
+
+            rtp.Start();
         }
     }
 

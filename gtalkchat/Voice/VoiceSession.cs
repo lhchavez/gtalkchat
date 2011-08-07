@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Windows;
 using System.Xml.Linq;
+using System.Diagnostics;
 
 namespace gtalkchat.Voice {
     public class VoiceSession {
@@ -17,10 +18,8 @@ namespace gtalkchat.Voice {
 
         private List<Candidate> localCandidates = new List<Candidate>();
         private List<CandidatePair> candidatePairs = new List<CandidatePair>();
-        private bool sentFirstCandidate;
-        private bool canSendCandidated;
-
-        private int currentGeneration = -1;
+        private bool canSendCandidates;
+        private bool rtpSessionStarted;
 
         private XNamespace phoneNs = "http://www.google.com/session/phone";
         private XNamespace sessionNs = "http://www.google.com/session";
@@ -43,7 +42,7 @@ namespace gtalkchat.Voice {
             
             App.Current.GtalkHelper.AddSessionListener(SessionId, SessionStanzaReceived);
 
-            for (var i = 0; i < 5; i++) {
+            for (var i = 0; i < 4; i++) {
                 localCandidates.Add(
                     new Candidate {
                         Type = "stun",
@@ -52,6 +51,10 @@ namespace gtalkchat.Voice {
                     });
             }
 
+            localCandidates[0].Type = "local";
+            //localCandidates[0].EndPoint = new IPEndPoint(IPAddress.Parse("192.168.1.103"), 12345);
+            localCandidates[0].Priority = 1;
+
             App.Current.GtalkClient.Jingle(data => {
                 var doc = XDocument.Parse(data);
 
@@ -59,7 +62,7 @@ namespace gtalkchat.Voice {
                     var ep = new IPEndPoint(
                         IPAddress.Parse(stun.Descendants("host").FirstOrDefault().FirstNode.ToString()),
                         int.Parse(stun.Descendants("udp").FirstOrDefault().FirstNode.ToString())
-                        );
+                    );
 
                     var endpoint = new StunPacket {
                         EndPoint = ep,
@@ -67,9 +70,14 @@ namespace gtalkchat.Voice {
                     };
 
                     endpoint.Success += (sp, ctx, sock, args) => {
-                        if (localCandidates[0].EndPoint == null) {
-                            localCandidates[0].EndPoint = sp.MappedAddress;
-                            SendCandidate(localCandidates[0]);
+                        if (localCandidates[1].EndPoint == null) {
+                            localCandidates[1].EndPoint = sp.MappedAddress;
+                            localCandidates[1].ListenPort = ep.Port;
+                            localCandidates[1].Generation = 0;
+
+                            SendCandidates();
+
+                            sp.Serve(sock, ep.Port);
                         }
                     };
 
@@ -128,42 +136,47 @@ namespace gtalkchat.Voice {
             );
         }
 
-        private void SendCandidate(Candidate candidate) {
-            if (!canSendCandidated || sentFirstCandidate || candidate.EndPoint == null) return;
+        private void SendCandidates() {
+            if (!canSendCandidates) return;
 
-            sentFirstCandidate = true;
+            foreach(var candidate in localCandidates) {
+                if (candidate.EndPoint == null || candidate.Sent) continue;
+                candidate.Sent = true;
 
-            App.Current.GtalkClient.RawIQ(
-                "",
-                new XElement(
-                    "iq",
-                    new XAttribute("to", Partner),
-                    new XAttribute("id", "phone" + IdCounter++),
-                    new XAttribute("type", "set"),
+                Debug.WriteLine("sent a candidate " + candidate.EndPoint + ", " + candidate.Username);
+
+                App.Current.GtalkClient.RawIQ(
+                    "",
                     new XElement(
-                        sessionNs.GetName("session"),
-                        new XAttribute(XNamespace.Xmlns + "ses", sessionNs),
-                        new XAttribute("type", "candidates"),
-                        new XAttribute("id", SessionId),
-                        new XAttribute("initiator", Initiator),
+                        "iq",
+                        new XAttribute("to", Partner),
+                        new XAttribute("id", "phone" + IdCounter++),
+                        new XAttribute("type", "set"),
                         new XElement(
-                            sessionNs.GetName("candidate"),
-                            new XAttribute("address", candidate.Address),
-                            new XAttribute("port", candidate.Port),
-                            new XAttribute("username", candidate.Username),
-                            new XAttribute("password", candidate.Password),
-                            new XAttribute("name", "rtp"),
-                            new XAttribute("preference", candidate.Priority),
-                            new XAttribute("protocol", "udp"),
-                            new XAttribute("generation", candidate.Generation),
-                            new XAttribute("network", "1"),
-                            new XAttribute("type", candidate.Type)
+                            sessionNs.GetName("session"),
+                            new XAttribute(XNamespace.Xmlns + "ses", sessionNs),
+                            new XAttribute("type", "candidates"),
+                            new XAttribute("id", SessionId),
+                            new XAttribute("initiator", Initiator),
+                            new XElement(
+                                sessionNs.GetName("candidate"),
+                                new XAttribute("address", candidate.Address),
+                                new XAttribute("port", candidate.Port),
+                                new XAttribute("username", candidate.Username),
+                                new XAttribute("password", candidate.Password),
+                                new XAttribute("name", "rtp"),
+                                new XAttribute("preference", candidate.Priority),
+                                new XAttribute("protocol", "udp"),
+                                new XAttribute("generation", candidate.Generation),
+                                new XAttribute("network", "1"),
+                                new XAttribute("type", candidate.Type)
+                            )
                         )
-                    )
-                ).ToString(SaveOptions.DisableFormatting),
-                data => { },
-                error => { }
-            );
+                    ).ToString(SaveOptions.DisableFormatting),
+                    data => { },
+                    error => { }
+                );
+            }
         }
 
         private void SessionStanzaReceived(string xml, XElement iq) {
@@ -171,8 +184,8 @@ namespace gtalkchat.Voice {
             var iqId = iq.Attribute("id").Value;
 
             if(iq.Attribute("type").Value == "result" && session.Attribute("type").Value == "initiate") {
-                canSendCandidated = true;
-                SendCandidate(localCandidates[0]);
+                canSendCandidates = true;
+                SendCandidates();
             }
 
             if(iq.Attribute("type").Value == "set" && session.Attribute("type") != null) {
@@ -194,11 +207,11 @@ namespace gtalkchat.Voice {
                                     iq.Attribute("from").Value + "wants to call you. Do you accept the call?",
                                     "Voice call",
                                     MessageBoxButton.OKCancel
-                                ) == MessageBoxResult.OK) {
+                                    ) == MessageBoxResult.OK) {
                                     Initiate(iqId);
 
-                                    canSendCandidated = true;
-                                    SendCandidate(localCandidates[0]);
+                                    canSendCandidates = true;
+                                    SendCandidates();
                                 } else {
                                     App.Current.GtalkClient.RawIQ(
                                         "",
@@ -213,81 +226,105 @@ namespace gtalkchat.Voice {
                                                 new XAttribute("type", "reject"),
                                                 new XAttribute("id", SessionId),
                                                 new XAttribute("initiator", Initiator)
-                                            )
-                                        ).ToString(SaveOptions.DisableFormatting),
+                                                )
+                                            ).ToString(SaveOptions.DisableFormatting),
                                         data => { },
                                         error => { }
-                                    );
+                                        );
                                     Close();
                                 }
                             });
                         break;
                     case "candidates":
-                        var candidate = iq.Descendants("candidate").FirstOrDefault();
+                        foreach (var candidate in session.Descendants("candidate")) {
+                            App.Current.GtalkClient.RawIQ(
+                                "",
+                                new XElement(
+                                    "iq",
+                                    new XAttribute("to", Partner),
+                                    new XAttribute("id", iqId),
+                                    new XAttribute("type", "result")
+                                    ).ToString(SaveOptions.DisableFormatting),
+                                data => { },
+                                error => { }
+                                );
 
-                        App.Current.GtalkClient.RawIQ(
-                            "",
-                            new XElement(
-                                "iq",
-                                new XAttribute("to", Partner),
-                                new XAttribute("id", iqId),
-                                new XAttribute("type", "result")
-                            ).ToString(SaveOptions.DisableFormatting),
-                            data => { },
-                            error => { }
-                        );
-
-                        var remoteCandidate = new Candidate {
-                            EndPoint = new IPEndPoint(
-                                IPAddress.Parse(candidate.Attribute("address").Value),
-                                int.Parse(candidate.Attribute("port").Value)
-                            ),
-                            Username = candidate.Attribute("username").Value,
-                            Priority = double.Parse(candidate.Attribute("preference").Value),
-                            Password = candidate.Attribute("password").Value,
-                            Type = candidate.Attribute("type").Value
-                        };
-                        Candidate localCandidate;
-
-                        CandidatePair candidatePair;
-
-                        if(candidate.Attribute("type").Value != "local") {
-                            localCandidate = localCandidates[0];
-                        } else {
-                            localCandidate = new Candidate {
-                                Priority = 1,
-                                Generation = 0,
-                                Type = "local"
+                            var remoteCandidate = new Candidate {
+                                EndPoint = new IPEndPoint(
+                                    IPAddress.Parse(candidate.Attribute("address").Value),
+                                    int.Parse(candidate.Attribute("port").Value)
+                                    ),
+                                Username = candidate.Attribute("username").Value,
+                                Priority = double.Parse(candidate.Attribute("preference").Value),
+                                Password = candidate.Attribute("password").Value,
+                                Type = candidate.Attribute("type").Value,
+                                Protocol = candidate.Attribute("protocol").Value
                             };
-                            return;
+                            Candidate localCandidate;
+
+                            Debug.WriteLine("received a candidate " + remoteCandidate.EndPoint + ", " + remoteCandidate.Username);
+
+                            CandidatePair candidatePair;
+
+                            switch (remoteCandidate.Type) {
+                                case "local":
+                                    localCandidate = localCandidates[0];
+                                    break;
+                                case "stun":
+                                    localCandidate = localCandidates[1];
+                                    break;
+                                default:
+                                    return;
+                            }
+
+                            candidatePair = new CandidatePair {
+                                Local = localCandidate,
+                                Remote = remoteCandidate
+                            };
+
+                            /*
+                            candidatePair.Negotiation = new StunPacket {
+                                EndPoint = candidatePair.Remote.EndPoint,
+                                Username = candidatePair.Remote.Username + ":" + candidatePair.Local.Username,
+                                Password = candidatePair.Remote.Password,
+                                Priority = (uint)(0x100000000L * candidatePair.Priority),
+                                Role = IsInitiator ? StunPacket.IceRole.IceControlling : StunPacket.IceRole.IceControlled,
+                                Context = candidatePair
+                            };
+                            */
+
+                            candidatePair.Negotiation = new StunPacket {
+                                EndPoint = candidatePair.Remote.EndPoint,
+                                Username = candidatePair.Remote.Username + candidatePair.Local.Username,
+                                ClassicStun = true
+                            };
+
+                            candidatePairs.Add(candidatePair);
+
+                            candidatePair.Negotiation.Success += (a, b, c, d) => {
+                                Debug.WriteLine("negotiations succeeded for " + a);
+
+                                if (remoteCandidate.Type == "local" &&
+                                    localCandidates[0].ListenPort == 0) {
+                                    localCandidates[0].EndPoint = a.MappedAddress;
+                                    localCandidates[0].Generation = 1;
+                                    localCandidates[0].ListenPort = 12345;
+                                    localCandidates[0].Sent = false;
+
+                                    localCandidates[1].Generation = 1;
+                                    localCandidates[1].Sent = false;
+
+                                    SendCandidates();
+                                }
+                            };
+
+                            candidatePair.Negotiation.Error += (a, b) => {
+                                Debug.WriteLine("negotiations failed for " + a);
+                            };
+
+                            Debug.WriteLine("starting negotiations for " + candidatePair.Negotiation);
+                            candidatePair.Negotiation.Send();
                         }
-                        
-                        candidatePair = new CandidatePair {
-                            Local = localCandidate,
-                            Remote = remoteCandidate
-                        };
-                            
-                        candidatePair.Negotiation = new StunPacket {
-                            EndPoint = candidatePair.Remote.EndPoint,
-                            Username = candidatePair.Remote.Username + ":" + candidatePair.Local.Username,
-                            Password = candidatePair.Remote.Password,
-                            Priority = (uint)(0x100000000L * candidatePair.Priority),
-                            Role = IsInitiator ? StunPacket.IceRole.IceControlling : StunPacket.IceRole.IceControlled,
-                            Context = candidatePair
-                        };
-
-                        candidatePairs.Add(candidatePair);
-                            
-                        candidatePair.Negotiation.Send();
-
-                        candidatePair.Negotiation.Success += (a, b, c, d) => {
-                            Console.WriteLine(a);
-                        };
-
-                        candidatePair.Negotiation.Error += (a, b) => {
-                            Console.WriteLine(a);
-                        };
-
                         break;
                 }
             }

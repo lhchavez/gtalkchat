@@ -51,13 +51,15 @@ namespace gtalkchat.Voice {
 
         private byte[] packet = new byte[1500];
         private int offset;
-        private byte[] response = new byte[1500];
+        public byte[] response = new byte[1500];
         private Random random = new Random();
         private ManualResetEvent waiter = new ManualResetEvent(false);
         private static byte[] softwareName;
         private bool success;
         private bool alive;
+        private int listenPort;
 
+        public byte[] TransactionId { get; private set; }
         public PacketType Type { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
@@ -67,33 +69,109 @@ namespace gtalkchat.Voice {
         public uint Priority { get; set; }
         public IceRole Role { get; set; }
         public bool ClassicStun { get; set; }
-        public EndPoint MappedAddress { get; private set; }
+        public IPEndPoint MappedAddress { get; private set; }
         public object Context { get; set; }
 
         public StunPacket() {
             if(softwareName == null) {
-                softwareName = Encoding.UTF8.GetBytes("gChat v1.0");
+                softwareName = Encoding.UTF8.GetBytes("gChat1.0");
             }
 
-            Timeout = 100;
+            Timeout = 50;
             Type = PacketType.BindingRequest;
             Role = IceRole.None;
             Socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
         }
 
         public void Send() {
-            packet.WriteUint16(0, (int) Type);
+            Type = PacketType.BindingRequest;
 
-            if (ClassicStun) {
-                for (var i = 4; i < 8; i++) {
+            PreparePacket();
+
+            new Thread(Run).Start();
+        }
+
+        public void Stop() {
+            alive = false;
+            Socket.Close();
+        }
+
+        /// <summary>
+        /// Starts a STUN server on the chosen port.
+        /// The port MUST be the same port as the one you sent TO, not received FROM.
+        /// </summary>
+        /// <param name="sock"></param>
+        /// <param name="port"></param>
+        public void Serve(Socket sock, int port) {
+            SocketAsyncEventArgs args = new SocketAsyncEventArgs {
+                RemoteEndPoint = new IPEndPoint(IPAddress.Any, port)
+            };
+
+            listenPort = port;
+
+            args.SetBuffer(response, 0, response.Length);
+            args.Completed += ServeReceived;
+
+            if(!sock.ReceiveFromAsync(args)) {
+                ServeReceived(sock, args);
+            }
+        }
+
+        private void ServeReceived(object sender, SocketAsyncEventArgs args) {
+            var sock = sender as Socket;
+
+            if (args.SocketError == SocketError.Success) {
+                Parse(args.BytesTransferred);
+
+                MappedAddress = args.RemoteEndPoint as IPEndPoint;
+
+                if (Type == PacketType.BindingRequest) {
+                    ClassicStun = true;
+                    Type = PacketType.BindingResponse;
+
+                    System.Diagnostics.Debug.WriteLine("Serving a STUN request from " + MappedAddress);
+
+                    PreparePacket();
+
+                    System.Diagnostics.Debug.WriteLine("Served a STUN request to " + MappedAddress + ", " + this);
+
+                    var sendArgs = new SocketAsyncEventArgs {
+                        RemoteEndPoint = args.RemoteEndPoint
+                    };
+                    sendArgs.SetBuffer(packet, 0, offset);
+                    sock.SendToAsync(sendArgs);
+                }
+
+                args.RemoteEndPoint = new IPEndPoint(IPAddress.Any, listenPort);
+
+                if (!sock.ReceiveFromAsync(args)) {
+                    ServeReceived(sock, args);
+                }
+            }
+        }
+
+        public override string ToString() {
+            return String.Format("StunPacket{{RemoteEndPoint = {0}, Username = {1}, MappedAddress = {2}}}", EndPoint, Username, MappedAddress);
+        }
+
+        private void PreparePacket() {
+            offset = 0;
+            packet.WriteUint16(0, (int)Type);
+
+            if (TransactionId != null) {
+                Array.Copy(TransactionId, 0, packet, 4, 20);
+            } else {
+                if (ClassicStun) {
+                    for (var i = 4; i < 8; i++) {
+                        packet[i] = (byte) random.Next(0, 0xFF);
+                    }
+                } else {
+                    packet.WriteUint32(4, MagicCookie);
+                }
+
+                for (var i = 8; i < 20; i++) {
                     packet[i] = (byte) random.Next(0, 0xFF);
                 }
-            } else {
-                packet.WriteUint32(4, MagicCookie);
-            }
-
-            for (var i = 8; i < 20; i++) {
-                packet[i] = (byte) random.Next(0, 0xFF);
             }
 
             offset = 20;
@@ -115,7 +193,7 @@ namespace gtalkchat.Voice {
             // Priority attribute
 
             if (Priority != 0) {
-                packet.WriteUint16(offset, (int) AttributeType.Priority);
+                packet.WriteUint16(offset, (int)AttributeType.Priority);
                 packet.WriteUint16(offset + 2, 4);
 
                 packet.WriteUint32(offset + 4, Priority);
@@ -127,14 +205,14 @@ namespace gtalkchat.Voice {
 
             if (Role != IceRole.None) {
                 if (Role == IceRole.IceControlled) {
-                    packet.WriteUint16(offset, (int) AttributeType.IceControlled);
+                    packet.WriteUint16(offset, (int)AttributeType.IceControlled);
                 } else {
-                    packet.WriteUint16(offset, (int) AttributeType.IceControlling);
+                    packet.WriteUint16(offset, (int)AttributeType.IceControlling);
                 }
                 packet.WriteUint16(offset + 2, 8);
 
                 for (var i = 4; i < 12; i++) {
-                    packet[offset + i] = (byte) random.Next(0, 0xFF);
+                    packet[offset + i] = (byte)random.Next(0, 0xFF);
                 }
 
                 offset += 12;
@@ -143,7 +221,7 @@ namespace gtalkchat.Voice {
             if (Username != null) {
                 var usernameBytes = Encoding.UTF8.GetBytes(Username);
 
-                packet.WriteUint16(offset, (int) AttributeType.Username);
+                packet.WriteUint16(offset, (int)AttributeType.Username);
                 packet.WriteUint16(offset + 2, usernameBytes.Length);
 
                 Array.Copy(usernameBytes, 0, packet, offset + 4, usernameBytes.Length);
@@ -153,8 +231,18 @@ namespace gtalkchat.Voice {
                 if (offset % 4 != 0) {
                     offset += 4 - offset % 4;
                 }
+            }
 
-                Username = null;
+            if (MappedAddress != null) {
+                packet.WriteUint16(offset, (int)AttributeType.MappedAddress);
+                packet.WriteUint16(offset + 2, 8);
+
+                packet.WriteUint16(offset + 4, 1);
+                packet.WriteUint16(offset + 6, MappedAddress.Port);
+
+                Array.Copy(MappedAddress.Address.GetAddressBytes(), 0, packet, offset + 8, 4);
+
+                offset += 8 + 4;
             }
 
             // message integrity attribute
@@ -166,7 +254,7 @@ namespace gtalkchat.Voice {
 
                 var hmacBytes = hmac.ComputeHash(packet, 0, offset);
 
-                packet.WriteUint16(offset, (int) AttributeType.MessageIntegrity);
+                packet.WriteUint16(offset, (int)AttributeType.MessageIntegrity);
                 packet.WriteUint16(offset + 2, 20);
 
                 Array.Copy(hmacBytes, 0, packet, offset + 4, 20);
@@ -183,40 +271,78 @@ namespace gtalkchat.Voice {
 
                 var crc = Crc32.Compute(packet, 0, offset) ^ 0x5354554e;
 
-                packet.WriteUint16(offset, (int) AttributeType.Fingerprint);
+                packet.WriteUint16(offset, (int)AttributeType.Fingerprint);
                 packet.WriteUint16(offset + 2, 4);
 
                 packet.WriteUint32(offset + 4, crc);
 
                 offset += 8;
             }
-
-            new Thread(Run).Start();
         }
 
-        public void Run() {
+        private void Parse(int bytesTransferred) {
+            Username = null;
+            MappedAddress = null;
+
+            switch(response.ReadUint16(0)) {
+                case (int)PacketType.BindingRequest:
+                    Type = PacketType.BindingRequest;
+                    break;
+                case (int)PacketType.BindingResponse:
+                    Type = PacketType.BindingResponse;
+                    break;
+                default:
+                    Type = PacketType.BindingErrorResponse;
+                    break;
+            }
+
+            for (var pos = 20; pos < bytesTransferred; ) {
+                var length = response.ReadUint16(pos + 2);
+                var paddedLength = length;
+
+                if (length % 4 != 0) {
+                    paddedLength += (4 - length % 4);
+                }
+
+                switch (response.ReadUint16(pos)) {
+                    case (int)AttributeType.MappedAddress:
+                        var ip = response[pos + 8] | (uint)response[pos + 9] << 8 | (uint)response[pos + 10] << 16 | (uint)response[pos + 11] << 24;
+                        MappedAddress = new IPEndPoint(ip, response.ReadUint16(pos + 6));
+                        break;
+                    case (int)AttributeType.Username:
+                        Username = Encoding.UTF8.GetString(response, pos + 4, length);
+                        break;
+                }
+
+                pos += paddedLength + 4;
+            }
+        }
+
+        private void Run() {
+            var sendEndPoint = EndPoint;
             var sendArgs = new SocketAsyncEventArgs {
-                RemoteEndPoint = EndPoint
+                RemoteEndPoint = new IPEndPoint(IPAddress.Broadcast, (EndPoint as IPEndPoint).Port)
             };
 
             sendArgs.Completed += Sent;
             sendArgs.SetBuffer(packet, 0, offset);
 
-            var recvArgs = new SocketAsyncEventArgs {
-                RemoteEndPoint = EndPoint
-            };
+            var recvArgs = new SocketAsyncEventArgs();
 
             recvArgs.Completed += Received;
             recvArgs.SetBuffer(response, 0, response.Length);
-            if (recvArgs.RemoteEndPoint is IPEndPoint) {
-                recvArgs.RemoteEndPoint = new IPEndPoint(IPAddress.Any, (recvArgs.RemoteEndPoint as IPEndPoint).Port);
-            } else if (recvArgs.RemoteEndPoint is DnsEndPoint) {
-                recvArgs.RemoteEndPoint = new IPEndPoint(IPAddress.Any, (recvArgs.RemoteEndPoint as DnsEndPoint).Port);
+            if (EndPoint is IPEndPoint) {
+                recvArgs.RemoteEndPoint = new IPEndPoint(IPAddress.Any, (EndPoint as IPEndPoint).Port);
+            } else if (EndPoint is DnsEndPoint) {
+                recvArgs.RemoteEndPoint = new IPEndPoint(IPAddress.Any, (EndPoint as DnsEndPoint).Port);
             }
 
             alive = true;
 
             for (var round = 0; alive && round < 9; round++, Timeout *= 2) {
+                if(round > 0) {
+                    sendArgs.RemoteEndPoint = sendEndPoint;
+                }
                 if (!Socket.SendToAsync(sendArgs)) {
                     Sent(Socket, sendArgs);
                 }
@@ -237,11 +363,14 @@ namespace gtalkchat.Voice {
 
             if(alive && Error != null) {
                 Error(this, Context);
+                Socket.Close();
+                Socket = null;
             }
         }
 
         private void Sent(object sender, SocketAsyncEventArgs args) {
             success = args.SocketError == SocketError.Success;
+            System.Diagnostics.Debug.WriteLine("Sent a packet " + this);
             waiter.Set();
         }
 
@@ -263,23 +392,9 @@ namespace gtalkchat.Voice {
                 }
             }
 
-            for (var pos = 20; pos < args.BytesTransferred; ) {
-                var length = response.ReadUint16(pos + 2);
-                var paddedLength = length;
+            Parse(args.BytesTransferred);
 
-                if (length % 4 != 0) {
-                    paddedLength += (4 - length % 4);
-                }
-
-                switch (response.ReadUint16(pos)) {
-                    case (int) AttributeType.MappedAddress:
-                        var ip = response[pos + 8] | response[pos + 9] << 8 | response[pos + 10] << 16 | response[pos+11] << 24;
-                        MappedAddress = new IPEndPoint(ip, response.ReadUint16(pos + 6));
-                        break;
-                }
-
-                pos += paddedLength + 4;
-            }
+            System.Diagnostics.Debug.WriteLine("Received a packet " + this);
 
             args.Completed -= Received;
 

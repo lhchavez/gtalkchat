@@ -17,6 +17,7 @@ using Coding4Fun.Phone.Controls;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using gtalkchat.Voice;
+using System.Net.Sockets;
 
 namespace gtalkchat {
     public class GoogleTalkHelper {
@@ -63,6 +64,7 @@ namespace gtalkchat {
         private bool hasUri;
         private string registeredUri;
         private static readonly Regex linkRegex = new Regex("(?:(\\B(?:;-?\\)|:-?\\)|:-?D|:-?P|:-?S|:-?/|:-?\\||:'\\(|:-?\\(|<3))|(https?://)?(([0-9]{1-3}\\.[0-9]{1-3}\\.[0-9]{1-3}\\.[0-9]{1-3})|([a-z0-9.-]+\\.[a-z]{2,4}))(/[-a-z0-9+&@#\\/%?=~_|!:,.;]*[-a-z0-9+&@#\\/%=~_|])?)", RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
+        private static int retries = 5;
 
         private Dictionary<string, SessionStanzaReceived> sessionCallbacks =
             new Dictionary<string, SessionStanzaReceived>();
@@ -82,6 +84,50 @@ namespace gtalkchat {
 
             if (settings.Contains("jid")) {
                 Jid = (string) settings["jid"];
+            }
+
+            //TestUDP();
+        }
+
+        private static void TestUDP() {
+            var sock = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+            var args = new SocketAsyncEventArgs();
+
+            args.SetBuffer(new byte[1], 0, 1);
+            args.Completed += Sent;
+            args.RemoteEndPoint = new IPEndPoint(IPAddress.Broadcast, 12345);
+
+            if(!sock.SendToAsync(args)) {
+                Sent(sock, args);
+            }
+        }
+
+        private static void Sent(object sender, SocketAsyncEventArgs args) {
+            var sock = sender as Socket;
+
+            args.Completed -= Sent;
+            args.Completed += Received;
+            args.SetBuffer(new byte[2048], 0, 2048);
+
+            (args.RemoteEndPoint as IPEndPoint).Address = IPAddress.Any;
+            if(!sock.ReceiveFromAsync(args)) {
+                Received(sock, args);
+            }
+        }
+
+        private static void Received(object sender, SocketAsyncEventArgs args) {
+            var sock = sender as Socket;
+
+            var recvEndPoint = args.RemoteEndPoint;
+
+            App.Current.RootFrame.Dispatcher.BeginInvoke(
+                () => 
+                    MessageBox.Show(Encoding.UTF8.GetString(args.Buffer, 0, args.BytesTransferred) + " from " + recvEndPoint)
+            );
+
+            args.RemoteEndPoint = new IPEndPoint(IPAddress.Any, (args.RemoteEndPoint as IPEndPoint).Port);
+            if (!sock.ReceiveFromAsync(args)) {
+                Received(sock, args);
             }
         }
 
@@ -734,7 +780,9 @@ namespace gtalkchat {
             hasToken = false;
             registeredUri = null;
 
-            LoginIfNeeded();
+            if (--retries >= 0) {
+                LoginIfNeeded();
+            }
         }
 
         #endregion
