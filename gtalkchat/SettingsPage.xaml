@@ -25,6 +25,9 @@
                     <StackPanel>
                         <toolkit:ToggleSwitch Header="Lock screen rotation" Name="LandscapeCheckbox" Unchecked="LandscapeCheckbox_Checked" Checked="LandscapeCheckbox_Checked" />
                         <toolkit:ToggleSwitch Header="Reddit-style icons" Name="RagesCheckbox" Unchecked="RagesCheckbox_Checked" Checked="RagesCheckbox_Checked" />
+                        <toolkit:ToggleSwitch Header="Enable toast notifications" Name="ToastCheckbox" Unchecked="Notification_Checked" Checked="Notification_Checked" />
+                        <toolkit:ToggleSwitch Header="Enable tile notifications" Name="TileCheckbox" Unchecked="Notification_Checked" Checked="Notification_Checked" />
+                        <toolkit:ToggleSwitch Header="Enable secondary tile notifications" Name="SecondaryTileCheckbox" Unchecked="Notification_Checked" Checked="Notification_Checked" />
                     </StackPanel>
                 </ScrollViewer>
             </controls:PivotItem>
