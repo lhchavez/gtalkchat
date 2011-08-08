@@ -1,11 +1,15 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace gtalkchat {
+    [DataContract]
     public class ContactSession : INotifyPropertyChanged, IComparable<ContactSession> {
         #region Public properties
+
         private string jid;
+        [DataMember]
         public string JID {
             get { return jid; }
             set {
@@ -17,6 +21,7 @@ namespace gtalkchat {
         }
 
         private string show = "";
+        [DataMember]
         public string Show {
             get { return show; }
             set {
@@ -28,6 +33,7 @@ namespace gtalkchat {
         }
 
         private string status;
+        [DataMember]
         public string Status {
             get { return status; }
             set {
@@ -39,6 +45,7 @@ namespace gtalkchat {
         }
 
         private List<string> capabilities = new List<string>();
+        [DataMember]
         public List<string> Capabilities {
             get { return capabilities; }
             set {

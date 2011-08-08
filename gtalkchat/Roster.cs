@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Runtime.Serialization;
 
 namespace gtalkchat {
     public class Roster : List<Contact>, INotifyCollectionChanged {
@@ -19,7 +20,8 @@ namespace gtalkchat {
 
         public event NotifyCollectionChangedEventHandler CollectionChanged;
 
-        private readonly Dictionary<string, Contact> contacts;
+        [DataMember]
+        public readonly Dictionary<string, Contact> contacts;
         private bool pendingNotify;
 
         public Roster() {

@@ -1,12 +1,18 @@
-﻿using System.ComponentModel;
-using System;
-using System.Net;
+﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Net;
+using System.Runtime.Serialization;
 
 namespace gtalkchat {
+    [DataContract]
     public class Contact : INotifyPropertyChanged, IComparable<Contact> {
         #region Public Properties
 
+        // this is on purpose. this will make Contact non-serializable, and
+        // WILL except on exit, but at least that will let the rest of the data
+        // serialize.
+        [DataMember]
         private string email;
         public string Email {
             get { return email; }
@@ -24,6 +30,7 @@ namespace gtalkchat {
         }
 
         private string name;
+        [DataMember]
         public string Name {
             get { return name; }
             set {
@@ -35,7 +42,7 @@ namespace gtalkchat {
             }
         }
 
-        private string show;
+        private string show = "offline";
         public string Show {
             get { return show; }
             private set {
@@ -47,6 +54,7 @@ namespace gtalkchat {
         }
 
         private string photo;
+        [DataMember]
         public string Photo {
             get { return photo; }
             set {
@@ -58,6 +66,7 @@ namespace gtalkchat {
             }
         }
 
+        [DataMember]
         public Dictionary<string, ContactSession> sessions = new Dictionary<string, ContactSession>();
         public IEnumerable<ContactSession> Sessions {
             get { return sessions.Values; }
@@ -98,6 +107,7 @@ namespace gtalkchat {
         }
 
         private int unread;
+        [DataMember]
         public int UnreadCount {
             get { return unread; }
             set {
