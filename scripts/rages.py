@@ -34,7 +34,7 @@ for match in re.findall('(a\[href="/[^"]+"\]:after[^{]+){([^}]+)}', css, re.DOTA
 		for name in names:
 			icons[name]['height'] = int(hre[0])
 	
-	bpre = re.findall('background-position:\\s*(-?\\d+)px\\s+(-?\\d+)px', match[1])
+	bpre = re.findall('background-position:\\s*(-?\\d+)(?:px)?\\s+(-?\\d+)(?:px)?', match[1])
 	if bpre:
 		for name in names:
 			icons[name]['left'] = -int(bpre[0][0])
