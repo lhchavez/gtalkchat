@@ -64,10 +64,11 @@ for name in icons:
 	img = images[icon['url']]
 	copy = img.crop((icon['left'], icon['top'], icon['left'] + icon['width'], icon['top'] + icon['height']))
 	copy.load()
-	if icon['width'] >= icon['height']:
-		copy = copy.resize((25, int(round(25 * icon['height'] / float(icon['width'])))), Image.ANTIALIAS)
-	else:
-		copy = copy.resize((int(round(25 * icon['width'] / float(icon['height']))), 25), Image.ANTIALIAS)
+	if icon['width'] > 48 or icon['height'] > 48:
+		if icon['width'] >= icon['height']:
+			copy = copy.resize((48, int(round(48 * icon['height'] / float(icon['width'])))), Image.ANTIALIAS)
+		else:
+			copy = copy.resize((int(round(48 * icon['width'] / float(icon['height']))), 48), Image.ANTIALIAS)
 	
 	path = 'icons\\emoticon.rage.%s.png' % name.replace('!', '_')
 	copy.save('..\\gtalkchat\\' + path)

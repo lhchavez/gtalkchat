@@ -369,8 +369,9 @@ namespace gtalkchat {
                             new InlineUIContainer {
                                 Child = new Image {
                                     Source = new BitmapImage(rageUri),
-                                    MaxWidth = 25,
-                                    MaxHeight = 25
+                                    MaxWidth = 48,
+                                    MaxHeight = 48,
+                                    Stretch = Stretch.None
                                 }
                             }
                         );
