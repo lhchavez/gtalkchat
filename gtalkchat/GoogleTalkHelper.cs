@@ -44,8 +44,6 @@ namespace gtalkchat {
 
         public bool RosterLoaded { get; private set; }
 
-        private bool offlineMessagesDownloaded;
-
         #endregion
 
         #region Private Fields
@@ -56,6 +54,7 @@ namespace gtalkchat {
         private bool hasToken;
         private bool hasUri;
         private string registeredUri;
+        private bool offlineMessagesDownloaded;
         private static readonly Regex linkRegex = new Regex("(?:(\\B(?:;-?\\)|:-?\\)|:-?D|:-?P|:-?S|:-?/|:-?\\||:'\\(|:-?\\(|<3))|(https?://)?(([0-9]{1-3}\\.[0-9]{1-3}\\.[0-9]{1-3}\\.[0-9]{1-3})|([a-z0-9.-]+\\.[a-z]{2,4}))(/[-a-z0-9+&@#\\/%?=~_|!:,.;]*[-a-z0-9+&@#\\/%=~_|])?)", RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
 
         #endregion
@@ -157,7 +156,7 @@ namespace gtalkchat {
         }
 
         public void ShowToast(Message m) {
-            if (m.Body != null && m.Body != string.Empty) {
+            if (!m.Offline && !String.IsNullOrEmpty(m.Body)) {
                 App.Current.RootFrame.Dispatcher.BeginInvoke(() => {
                     Contact c = App.Current.Roster[m.From];
                     var t = new ToastPrompt {    
@@ -463,8 +462,26 @@ namespace gtalkchat {
         }
 
         public void GetOfflineMessages() {
+            Dictionary<string, string> firstMessage = new Dictionary<string, string>();
+            Dictionary<string, int> messageCount = new Dictionary<string, int>();
+
             gtalk.MessageQueue(
-                NotifyMessageReceived,
+                message => {
+                    message.Offline = true;
+                    NotifyMessageReceived(message);
+
+                    var email = message.From;
+                    if(email.Contains("/")) {
+                        email = email.Substring(0, email.IndexOf('/'));
+                    }
+
+                    if(!messageCount.ContainsKey(email)) {
+                        messageCount[email] = 1;
+                        firstMessage[email] = message.Body;
+                    } else {
+                        messageCount[email]++;
+                    }
+                },
                 error => {
                     if(error.Equals("")) {
                         ShowToast("Unable to get offline messages. Please retry later.");
@@ -474,7 +491,21 @@ namespace gtalkchat {
                         ShowToast(error, "Getting offline messages");
                     }
                 },
-                () => { }
+                () => {
+                    foreach(var mc in messageCount) {
+                        if(mc.Value == 1) {
+                            ShowToast(new Message {
+                                From = mc.Key,
+                                Body = firstMessage[mc.Key]
+                            });
+                        } else {
+                            ShowToast(new Message {
+                                From = mc.Key,
+                                Body = String.Format("{0} unread messages", mc.Value)
+                            });
+                        }
+                    }
+                }
             );
 
             App.Current.RootFrame.Dispatcher.BeginInvoke(() => {

@@ -53,9 +53,10 @@ namespace gtalkchat {
 
             if (App.Current.Roster.Contains(to)) {
                 Initialize();
-                gtalkHelper.RosterUpdated += RosterLoaded;
             } else if (gtalkHelper.RosterLoaded) {
-                gtalkHelper.GetOfflineMessages();
+                if(e.IsNavigationInitiator) {
+                    gtalkHelper.GetOfflineMessages();
+                }
             } else {
                 gtalkHelper.RosterUpdated += Initialize;
             }
@@ -276,11 +277,6 @@ namespace gtalkchat {
                     contact.UnreadCount = 0;
                 }
             });
-        }
-
-        private void RosterLoaded() {
-            gtalkHelper.RosterUpdated -= RosterLoaded;
-            gtalkHelper.GetOfflineMessages();
         }
 
         private void ScrollToBottom() {

@@ -70,6 +70,8 @@ namespace gtalkchat {
 
         public bool Outbound { get; set; }
 
+        public bool Offline { get; set; }
+
         #endregion
 
         #region INotifyPropertyChanged Members

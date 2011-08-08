@@ -48,7 +48,9 @@ namespace gtalkchat {
                 });
 
             if(gtalkHelper.RosterLoaded) {
-                gtalkHelper.GetOfflineMessages();
+                if (e.IsNavigationInitiator) {
+                    gtalkHelper.GetOfflineMessages();
+                }
             } else {
                 Dispatcher.BeginInvoke(() => OnlineContactsListBox.ItemsSource = App.Current.Roster.GetOnlineContacts());
             }
