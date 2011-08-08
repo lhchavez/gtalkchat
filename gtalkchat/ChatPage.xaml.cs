@@ -178,6 +178,7 @@ namespace gtalkchat {
             }), error => {
                 if (error.StartsWith("403")) {
                     settings.Remove("token");
+                    settings.Remove("rootUrl");
                     gtalkHelper.LoginIfNeeded();
                 } else {
                     Dispatcher.BeginInvoke(

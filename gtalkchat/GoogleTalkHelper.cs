@@ -86,9 +86,10 @@ namespace gtalkchat {
 
             Connected = false;
 
-            if (settings.Contains("token")) {
+            if (settings.Contains("token") && settings.Contains("rootUrl")) {
                 var tokenBytes = ProtectedData.Unprotect(settings["token"] as byte[], null);
                 App.Current.GtalkClient.SetToken(Encoding.UTF8.GetString(tokenBytes, 0, tokenBytes.Length));
+                App.Current.GtalkClient.RootUrl = settings["rootUrl"] as string;
 
                 TokenUpdated();
             } else {
@@ -98,6 +99,7 @@ namespace gtalkchat {
                     Encoding.UTF8.GetString(authBytes, 0, authBytes.Length),
                     token => {
                         settings["token"] = ProtectedData.Protect(Encoding.UTF8.GetBytes(token), null);
+                        settings["rootUrl"] = App.Current.GtalkClient.RootUrl;
 
                         TokenUpdated();
                     },
@@ -265,7 +267,7 @@ namespace gtalkchat {
 
                 var fileStream = isf.CreateFile(fileName);
 
-                var req = WebRequest.CreateHttp("https://gtalkjsonproxy.lhchavez.com/images/" + contact.Photo);
+                var req = WebRequest.CreateHttp(gtalk.RootUrl + "/images/" + contact.Photo);
 
                 req.BeginGetResponse(a => {
                     var response = (HttpWebResponse) req.EndGetResponse(a);
@@ -714,7 +716,11 @@ namespace gtalkchat {
 
         private void GracefulReLogin() {
             settings.Remove("token");
+            settings.Remove("rootUrl");
+
             gtalk.SetToken(null);
+            gtalk.RootUrl = GoogleTalk.DefaultRootUrl;
+
             hasToken = false;
             registeredUri = null;
 

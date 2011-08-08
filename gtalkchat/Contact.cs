@@ -90,9 +90,9 @@ namespace gtalkchat {
         public Uri PhotoUri {
             get {
                 if (Photo == null) {
-                    return new Uri("https://gtalkjsonproxy.lhchavez.com/images/00000000000000000000000000000000", UriKind.Absolute);
+                    return new Uri(App.Current.GtalkClient.RootUrl + "/images/0000000000000000000000000000000000000000", UriKind.Absolute);
                 } else {
-                    return new Uri("https://gtalkjsonproxy.lhchavez.com/images/" + HttpUtility.UrlEncode(Photo), UriKind.Absolute);
+                    return new Uri(App.Current.GtalkClient.RootUrl + "/images/" + HttpUtility.UrlEncode(Photo), UriKind.Absolute);
                 }
             }
         }

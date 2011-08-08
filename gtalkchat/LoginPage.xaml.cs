@@ -27,7 +27,7 @@ namespace gtalkchat {
 
         private void Login_Click(object sender, EventArgs e) {
             if (settings.Contains("username") && ((string) settings["username"]) == Username.Text &&
-                (settings.Contains("auth") || settings.Contains("token"))) {
+                (settings.Contains("auth") || (settings.Contains("token") && settings.Contains("rootUrl")))) {
                 NavigationService.GoBack();
                 return;
             }

@@ -11,6 +11,9 @@ namespace gtalkchat {
         private AesUtility aes;
         public const int MessageTimeout = 10000;
         public bool LoggedIn { get; private set; }
+        public const string DefaultRootUrl = "https://gtalkjsonproxy.lhchavez.com";
+        private string rootUrl = DefaultRootUrl;
+        public string RootUrl { get { return rootUrl; } set { rootUrl = value; } }
 
         private enum ReceiveMode {
             Blob,
@@ -55,9 +58,11 @@ namespace gtalkchat {
                 ReceiveMode.SingleString,
                 sw => sw.Write("username=" + HttpUtility.UrlEncode(username) + "&auth=" + HttpUtility.UrlEncode(auth)),
                 data => {
-                    token = data;
+                    var fragments = data.Split(new [] {'\n'});
+                    token = fragments[0];
+                    RootUrl = fragments[1];
                     LoggedIn = true;
-                    scb(data);
+                    scb(token);
                 },
                 null,
                 ecb,
@@ -119,6 +124,7 @@ namespace gtalkchat {
                     aes = null;
                     token = null;
                     LoggedIn = false;
+                    RootUrl = DefaultRootUrl;
                     scb(data);
                 },
                 null,
@@ -200,7 +206,7 @@ namespace gtalkchat {
                 throw new InvalidOperationException("Not logged in");
             }
 
-            var req = WebRequest.CreateHttp("https://gtalkjsonproxy.lhchavez.com" + uri);
+            var req = WebRequest.CreateHttp((uri.Equals("/login") ? DefaultRootUrl : RootUrl) + uri);
 
             req.ContentType = "application/x-www-form-urlencoded";
             req.Method = "POST";
