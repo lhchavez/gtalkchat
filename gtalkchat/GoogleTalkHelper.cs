@@ -189,6 +189,13 @@ namespace gtalkchat {
                     Background = (Brush)Application.Current.Resources["PhoneChromeBrush"],
                     Foreground = (Brush)Application.Current.Resources["PhoneForegroundBrush"]
                 };
+
+                toast.Completed += (s, ev) => {
+                    if (ev.PopUpResult == PopUpResult.Ok) {
+                        App.Current.RootFrame.Dispatcher.BeginInvoke(() => MessageBox.Show(message ?? "", title ?? "", MessageBoxButton.OK));
+                    }
+                };
+
                 toast.Show();
             });
         }
