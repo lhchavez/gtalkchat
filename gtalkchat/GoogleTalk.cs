@@ -349,11 +349,36 @@ namespace gtalkchat {
 
                 var contact = new Contact();
 
-                contact.JID = data["jid"] as string;
-                contact.Online = !data.ContainsKey("type") || !"unavailable".Equals(data["type"] as string);
+                contact.Email = data["jid"] as string;
                 if (data.ContainsKey("name")) contact.Name = data["name"] as string;
-                if (data.ContainsKey("show")) contact.Show = data["show"] as string;
                 if (data.ContainsKey("photo")) contact.Photo = data["photo"] as string;
+
+                var sessions = data["sessions"] as Dictionary<string, object>;
+
+                if (sessions != null) {
+                    foreach (var element in sessions) {
+                        var session = new ContactSession {
+                            JID = element.Key
+                        };
+
+                        var s = element.Value as Dictionary<string, object>;
+
+                        if (s != null) {
+                            if (s.ContainsKey("show")) session.Show = s["show"] as string;
+                            if (s.ContainsKey("status")) session.Status = s["status"] as string;
+                            if (s.ContainsKey("caps")) {
+                                var caps = s["caps"] as List<object>;
+                                if(caps != null) {
+                                    foreach(var o in caps) {
+                                        session.Capabilities.Add(o.ToString());
+                                    }
+                                }
+                            }
+
+                            contact.AddSession(session);
+                        }
+                    }
+                }
 
                 mcb(contact);
             } else {

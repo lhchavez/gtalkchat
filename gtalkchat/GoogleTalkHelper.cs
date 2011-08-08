@@ -540,14 +540,12 @@ namespace gtalkchat {
                                 var original =
                                     App.Current.Roster[contact.Email];
 
-                                original.JID = contact.JID;
                                 original.Name = contact.Name ??
                                                 original.Name;
-                                original.Online = contact.Online;
                                 original.Photo = contact.Photo ??
                                                  original.Photo;
-                                original.Show = contact.Show ??
-                                                original.Show;
+
+                                original.SetSessions(contact.Sessions);
                             } else {
                                 if (unread.ContainsKey(contact.Email)) {
                                     contact.UnreadCount = unread[contact.Email];
@@ -684,10 +682,6 @@ namespace gtalkchat {
                 if(contact == null) {
                     // TODO: only for sanity-of-mind-purposes. MUST remove eventually
                     return;
-                }
-
-                if(contact.JID != message.From) {
-                    App.Current.RootFrame.Dispatcher.BeginInvoke(() => contact.JID = message.From);
                 }
 
                 if (App.Current.CurrentChat == null || message.From.IndexOf(App.Current.CurrentChat) != 0) {

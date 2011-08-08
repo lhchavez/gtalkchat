@@ -7,42 +7,20 @@ namespace gtalkchat {
     public class Contact : INotifyPropertyChanged, IComparable<Contact> {
         #region Public Properties
 
-        private string jID;
-
-        public string JID {
-            get { return jID; }
+        private string email;
+        public string Email {
+            get { return email; }
             set {
-                if (value != jID) {
-                    jID = value;
-                    Changed("JID");
+                if (value != email) {
+                    email = value;
                     Changed("Email");
                     Changed("NameOrEmail");
                 }
             }
         }
 
-        private string email;
-        public string Email {
-            get {
-                if(email == null) {
-                    email = jID;
-                    if(email.Contains("/")) {
-                        email = email.Substring(0, email.IndexOf('/'));
-                    }
-                }
-                return email;
-            }
-        }
-
-        private bool online;
         public bool Online {
-            get { return online; }
-            set {
-                if (value != online) {
-                    online = value;
-                    Changed("Online");
-                }
-            }
+            get { return sessions.Count > 0; }
         }
 
         private string name;
@@ -60,11 +38,10 @@ namespace gtalkchat {
         private string show;
         public string Show {
             get { return show; }
-            set {
+            private set {
                 if (value != show) {
                     show = value;
                     Changed("Show");
-                    Changed("Status");
                 }
             }
         }
@@ -79,6 +56,11 @@ namespace gtalkchat {
                     Changed("PhotoUri");
                 }
             }
+        }
+
+        public Dictionary<string, ContactSession> sessions = new Dictionary<string, ContactSession>();
+        public IEnumerable<ContactSession> Sessions {
+            get { return sessions.Values; }
         }
 
         public string NameOrEmail {
@@ -100,7 +82,7 @@ namespace gtalkchat {
         public string Status {
             get {
                 if (show == null || show == string.Empty) {
-                    if (online) {
+                    if (Online) {
                         return "available";
                     } else {
                         return "offline";
@@ -124,6 +106,40 @@ namespace gtalkchat {
             }
         }
 
+        #endregion
+
+        #region Public methods
+        public void AddSession(ContactSession s) {
+            sessions[s.JID] = s;
+            UpdateStatusAndShow();
+        }
+
+        public void RemoveSession(string jid) {
+            sessions.Remove(jid);
+            UpdateStatusAndShow();
+        }
+
+        public void SetSessions(IEnumerable<ContactSession> value) {
+            sessions.Clear();
+            foreach(var sess in value) {
+                sessions[sess.JID] = sess;
+            }
+            UpdateStatusAndShow();
+        }
+
+        private void UpdateStatusAndShow() {
+            if (sessions.Count > 0) {
+                var sess = new List<ContactSession>(sessions.Values);
+                sess.Sort();
+                Show = sess[0].Show;
+                //Status = "";
+            } else {
+                Show = "offline";
+                //Status = "";
+            }
+            Changed("Show");
+            Changed("Online");
+        }
         #endregion
 
         #region INotifyPropertyChanged Members

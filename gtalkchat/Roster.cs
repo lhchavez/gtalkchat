@@ -29,8 +29,8 @@ namespace gtalkchat {
 
         public new void Add(Contact item) {
             base.Add(item);
-            this.Sort();
-            contacts.Add(GetEmail(item.JID), item);
+            Sort();
+            contacts.Add(item.Email, item);
 
             if (Notify) {
                 if (CollectionChanged != null) {
