@@ -9,11 +9,8 @@ namespace gtalkchat {
     public class Contact : INotifyPropertyChanged, IComparable<Contact> {
         #region Public Properties
 
-        // this is on purpose. this will make Contact non-serializable, and
-        // WILL except on exit, but at least that will let the rest of the data
-        // serialize.
-        [DataMember]
         private string email;
+        [DataMember]
         public string Email {
             get { return email; }
             set {

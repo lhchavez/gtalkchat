@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.IO;
 using System.Linq;
-using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
+using System.Text;
 
 namespace gtalkchat {
     public class Roster : List<Contact>, INotifyCollectionChanged {
@@ -20,8 +22,7 @@ namespace gtalkchat {
 
         public event NotifyCollectionChangedEventHandler CollectionChanged;
 
-        [DataMember]
-        public readonly Dictionary<string, Contact> contacts;
+        private readonly Dictionary<string, Contact> contacts;
         private bool pendingNotify;
 
         public Roster() {
@@ -78,7 +79,40 @@ namespace gtalkchat {
         }
 
         public void Save() {
-            App.Current.Settings["roster"] = this;
+            var ser = new DataContractJsonSerializer(typeof(Contact));
+
+            bool first = true;
+
+            using (var ms = new MemoryStream()) {
+                foreach (var contact in this) {
+                    if (!first) {
+                        ms.WriteByte((byte) '\n');
+                    }
+                    first = false;
+
+                    ser.WriteObject(ms, contact);
+                }
+
+                var buf = ms.GetBuffer();
+
+                App.Current.Settings["roster"] = Encoding.UTF8.GetString(buf, 0, (int)ms.Position);
+            }
+        }
+
+        public void Load() {
+            if (!App.Current.Settings.Contains("roster")) return;
+
+            var serialized = App.Current.Settings["roster"] as string;
+
+            if (serialized == null) return;
+
+            var ser = new DataContractJsonSerializer(typeof(Contact));
+
+            foreach (var line in serialized.Split(new[] {'\n'})) {
+                using (var ms = new MemoryStream(Encoding.UTF8.GetBytes(line))) {
+                    Add(ser.ReadObject(ms) as Contact);
+                }
+            }
         }
 
         private static string GetEmail(string jid) {

@@ -49,7 +49,7 @@ namespace gtalkchat {
         public List<string> Capabilities {
             get { return capabilities; }
             set {
-                if(!capabilities.Equals(value)) {
+                if(!value.Equals(capabilities)) {
                     capabilities = value;
                     Changed("Capabilities");
                 }
