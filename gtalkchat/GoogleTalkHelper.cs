@@ -158,7 +158,7 @@ namespace gtalkchat {
         }
 
         public void ShowToast(Message m) {
-            if (!m.Offline && !String.IsNullOrEmpty(m.Body)) {
+            if (!m.Offline && !string.IsNullOrEmpty(m.Body)) {
                 App.Current.RootFrame.Dispatcher.BeginInvoke(() => {
                     Contact c = App.Current.Roster[m.From];
                     var t = new ToastPrompt {    
@@ -312,7 +312,7 @@ namespace gtalkchat {
                     );
                 }
 
-                if (m.Groups[1].Value != null && m.Groups[1].Value.Length > 0) {
+                if (m.Groups[1].Value != string.Empty) {
                     var smiley = m.Groups[0].Value.ToUpperInvariant();
                     string smileyName = "smile.8";
 
@@ -511,7 +511,7 @@ namespace gtalkchat {
                         } else {
                             ShowToast(new Message {
                                 From = mc.Key,
-                                Body = String.Format("{0} unread messages", mc.Value)
+                                Body = string.Format("{0} unread messages", mc.Value)
                             });
                         }
                     }

@@ -45,7 +45,7 @@ namespace gtalkchat {
 
             var encryptor = aes.CreateEncryptor(key, iv);
 
-            return String.Format(
+            return string.Format(
                 "{0}:{1}:{2}", plainData.Length, salt,
                 Convert.ToBase64String(encryptor.TransformFinalBlock(plainData, 0, plainData.Length)));
         }

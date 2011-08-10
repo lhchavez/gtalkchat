@@ -87,7 +87,7 @@ namespace gtalkchat {
 
         public string Status {
             get {
-                if (show == null || show == string.Empty) {
+                if (String.IsNullOrEmpty(show)) {
                     if (Online) {
                         return "available";
                     } else {

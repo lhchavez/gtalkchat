@@ -253,7 +253,7 @@ namespace gtalkchat {
                                                 string line;
 
                                                 while ((line = sr.ReadLine()) != null) {
-                                                    if (line.Length > 0) {
+                                                    if (line != string.Empty) {
                                                         scb(line);
                                                     }
                                                 }
