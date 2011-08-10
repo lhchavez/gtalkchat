@@ -4,6 +4,7 @@ using System.Security.Cryptography;
 using System.Text;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using System.Windows;
 
 namespace gtalkchat {
     public partial class LoginPage : PhoneApplicationPage {
@@ -32,7 +33,7 @@ namespace gtalkchat {
                 return;
             }
 
-            ProgressBar.Visibility = System.Windows.Visibility.Visible;
+            ProgressBar.Visibility = Visibility.Visible;
             ProgressBar.IsIndeterminate = true;
             Username.IsEnabled = false;
             Password.IsEnabled = false;
@@ -54,21 +55,27 @@ namespace gtalkchat {
                     settings.Save();
 
                     NavigationService.GoBack();
+                }),
+                error =>
+                Dispatcher.BeginInvoke(() => {
+                    MessageBox.Show("Authentication error: " + error);
+
+                    ProgressBar.Visibility = Visibility.Collapsed;
+                    ProgressBar.IsIndeterminate = false;
+                    Username.IsEnabled = true;
+                    Password.IsEnabled = true;
+                    (ApplicationBar.Buttons[0] as ApplicationBarIconButton).IsEnabled = true;
                 })
             );
         }
 
         protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e) {
-            if (!settings.Contains("username") || !settings.Contains("password")) {
-                throw new QuitException();
-            }
-
-            base.OnBackKeyPress(e);
+            throw new QuitException();
         }
 
         private void Password_KeyUp(object sender, System.Windows.Input.KeyEventArgs e) {
             if (e.Key == System.Windows.Input.Key.Enter) {
-                this.Focus();
+                Focus();
                 Login_Click(sender, e);
             }
         }

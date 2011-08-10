@@ -24,6 +24,8 @@ namespace gtalkchat {
 
         public delegate void LoginCallback(string token);
 
+        public delegate void ErrorCallback(string token);
+
         public delegate void MessageReceivedEventHandler(Message message);
 
         public event MessageReceivedEventHandler MessageReceived;
@@ -413,7 +415,7 @@ namespace gtalkchat {
             return paragraph;
         }
 
-        public static void GoogleLogin(string username, string password, LoginCallback callback) {
+        public static void GoogleLogin(string username, string password, LoginCallback callback, ErrorCallback error) {
             var data = Encoding.UTF8.GetBytes(
                 "accountType=HOSTED_OR_GOOGLE" +
                 "&Email=" + HttpUtility.UrlEncode(username) +
@@ -455,12 +457,16 @@ namespace gtalkchat {
                                 try {
                                     using (var responseStream = response.GetResponseStream()) {
                                         using (var sr = new StreamReader(responseStream)) {
-                                            ShowToast("Authentication error:\n" + sr.ReadToEnd());
+                                            if(error != null) {
+                                                error(sr.ReadToEnd());
+                                            }
                                         }
                                     }
                                 } catch (Exception ex) {
                                     // What is wrong with this platform?!
-                                    ShowToast("Authentication error:\n" + ex.Message + "\n" + e.Message);
+                                    if(error != null) {
+                                        error(ex.Message + "\n" + e.Message);
+                                    }
                                 }
                             }
                         },
