@@ -69,17 +69,19 @@ namespace gtalkchat {
             Settings = IsolatedStorageSettings.ApplicationSettings;
             PushHelper = new PushHelper();
             GtalkClient = new GoogleTalk();
-            Roster = new Roster();
-            Roster.Load();
 
-            if(!Settings.Contains("chatlog")) {
-                Settings["chatlog"] = new Dictionary<string,List<Message>>();
+            if (!Settings.Contains("chatlog")) {
+                Settings["chatlog"] = new Dictionary<string, List<Message>>();
             }
             if (!Settings.Contains("unread")) {
                 Settings["unread"] = new Dictionary<string, int>();
             }
 
+            Roster = new Roster();
+
             GtalkHelper = new GoogleTalkHelper();
+
+            Roster.Load();
 
             PushHelper.RegisterPushNotifications();
         }
@@ -90,8 +92,6 @@ namespace gtalkchat {
             if(Settings == null) Settings = IsolatedStorageSettings.ApplicationSettings;
             if(PushHelper == null) PushHelper = new PushHelper();
             if (GtalkClient == null) GtalkClient = new GoogleTalk();
-            Roster = new Roster();
-            Roster.Load();
 
             if (!Settings.Contains("chatlog")) {
                 Settings["chatlog"] = new Dictionary<string, List<Message>>();
@@ -100,7 +100,11 @@ namespace gtalkchat {
                 Settings["unread"] = new Dictionary<string, int>();
             }
 
-            if(GtalkHelper == null) GtalkHelper = new GoogleTalkHelper();
+            Roster = new Roster();
+
+            if (GtalkHelper == null) GtalkHelper = new GoogleTalkHelper();
+
+            Roster.Load();
             
             PushHelper.RegisterPushNotifications();
         }

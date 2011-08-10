@@ -1,8 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Net;
+using System.IO;
+using System.IO.IsolatedStorage;
 using System.Runtime.Serialization;
+using System.Windows;
+using System.Windows.Media;
+using Microsoft.Phone;
+using System.Windows.Media.Imaging;
 
 namespace gtalkchat {
     [DataContract]
@@ -58,7 +63,32 @@ namespace gtalkchat {
                 if (value != photo) {
                     photo = value;
                     Changed("Photo");
-                    Changed("PhotoUri");
+
+                    App.Current.GtalkHelper.DownloadImage(this, () => {
+                        if (!string.IsNullOrEmpty(Photo)) {
+                            using (var isf = IsolatedStorageFile.GetUserStoreForApplication()) {
+                                var fileName = "Shared/ShellContent/" + Photo + ".jpg";
+                                if (isf.FileExists(fileName)) {
+                                    try {
+                                        var file = isf.OpenFile(fileName, FileMode.Open, FileAccess.Read);
+                                        if (file.Length != 0) {
+                                            App.Current.RootFrame.Dispatcher.BeginInvoke(() => {
+                                                PhotoUri = new BitmapImage();
+                                                PhotoUri.SetSource(file);
+                                                file.Close();
+                                                Changed("PhotoUri");
+                                            });
+                                        } else {
+                                            file.Close();
+                                        }
+                                    } catch (Exception ex) {
+                                        System.Diagnostics.Debug.WriteLine(
+                                            "For " + NameOrEmail + " (" + Photo + "): " + ex);
+                                    }
+                                }
+                            }
+                        }
+                    });
                 }
             }
         }
@@ -75,15 +105,7 @@ namespace gtalkchat {
             }
         }
 
-        public Uri PhotoUri {
-            get {
-                if (Photo == null) {
-                    return new Uri(App.Current.GtalkClient.RootUrl + "/images/0000000000000000000000000000000000000000", UriKind.Absolute);
-                } else {
-                    return new Uri(App.Current.GtalkClient.RootUrl + "/images/" + HttpUtility.UrlEncode(Photo), UriKind.Absolute);
-                }
-            }
-        }
+        public BitmapImage PhotoUri { get; private set; }
 
         public string Status {
             get {

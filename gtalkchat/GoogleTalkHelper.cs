@@ -287,8 +287,8 @@ namespace gtalkchat {
                                     0,
                                     data.Length,
                                     async => {
-                                        finished();
                                         fileStream.Close();
+                                        finished();
                                     },
                                     null
                                 )
