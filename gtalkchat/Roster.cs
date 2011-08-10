@@ -104,7 +104,7 @@ namespace gtalkchat {
 
             var serialized = App.Current.Settings["roster"] as string;
 
-            if (serialized == null) return;
+            if (serialized == null || serialized == string.Empty) return;
 
             var ser = new DataContractJsonSerializer(typeof(Contact));
 
