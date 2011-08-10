@@ -149,7 +149,7 @@
                         
                     </StackPanel>
                     <TextBlock Name="TypingStatus" Visibility="Collapsed" Grid.Row="1" FontSize="{StaticResource PhoneFontSizeNormal}" />
-                    <TextBox VerticalAlignment="Bottom" AcceptsReturn="True" Margin="98,12,-4,6" Name="MessageText" InputScope="Chat" Grid.Row="2" TextWrapping="Wrap" FontSize="{StaticResource PhoneFontSizeMedium}" Background="{x:Null}" BorderBrush="{x:Null}" Style="{StaticResource InputBubbleStyle}" />
+                    <TextBox VerticalAlignment="Bottom" AcceptsReturn="True" Margin="98,12,-4,6" Name="MessageText" InputScope="Chat" Grid.Row="2" TextWrapping="Wrap" FontSize="{StaticResource PhoneFontSizeMedium}" Background="{x:Null}" BorderBrush="{x:Null}" Style="{StaticResource InputBubbleStyle}" KeyUp="MessageText_KeyUp" />
                 </StackPanel>
             </ScrollViewer>
         </Grid>

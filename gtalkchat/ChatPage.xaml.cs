@@ -363,5 +363,9 @@ namespace gtalkchat {
                 }
             }
         }
+
+        private void MessageText_KeyUp(object sender, System.Windows.Input.KeyEventArgs e) {
+            ScrollToBottom();
+        }
     }
 }
