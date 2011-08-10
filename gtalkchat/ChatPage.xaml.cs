@@ -347,5 +347,21 @@ namespace gtalkchat {
                 });
             }
         }
+
+        private void DeleteThread_Click(object sender, EventArgs e) {
+            MessageBoxResult delete = MessageBox.Show(
+                "All messages in this thread will be deleted from the app. They may still persist in your Gmail chat history.",
+                "Delete thread?",
+                MessageBoxButton.OKCancel
+            );
+
+            if (delete == MessageBoxResult.OK) {
+                MessageList.Children.Clear();
+
+                lock (chatLog) {
+                    chatLog.Clear();
+                }
+            }
+        }
     }
 }
