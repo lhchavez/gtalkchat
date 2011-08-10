@@ -211,7 +211,7 @@ namespace gtalkchat {
                 TypingStatus.Text = displayName + " is typing...";
 
                 if (IsPinned()) {
-                    (ApplicationBar.Buttons[1] as ApplicationBarIconButton).IsEnabled = false;
+                    (ApplicationBar.Buttons[2] as ApplicationBarIconButton).IsEnabled = false;
                 }
 
                 chatLog = gtalkHelper.ChatLog(to);
