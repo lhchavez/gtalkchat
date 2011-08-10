@@ -104,4 +104,21 @@ namespace gtalkchat {
             throw new NotImplementedException();
         }
     }
+
+    public class StatusToColorConverter : IValueConverter {
+
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture) {
+            string status = (string)value;
+
+            if (status == "available") {
+                return App.Current.Resources["PhoneAccentBrush"];
+            } else {
+                return App.Current.Resources["PhoneSubtleBrush"];
+            }
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture) {
+            throw new NotImplementedException();
+        }
+    }
 }

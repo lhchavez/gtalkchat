@@ -18,6 +18,7 @@
     
     <phone:PhoneApplicationPage.Resources>
         <local:NumberToVisibilityConverter x:Key="NumberToVisibilityConverter" />
+        <local:StatusToColorConverter x:Key="StatusToColorConverter" />
         
         <DataTemplate x:Key="ContactTemplate">
             <Grid Margin="0,0,0,6">
@@ -39,7 +40,7 @@
                 </Grid>
                 
                 <TextBlock Grid.Column="2" Grid.Row="0" Style="{StaticResource PhoneTextLargeStyle}" Margin="12,0,0,0" Text="{Binding NameOrEmail}" />
-                <TextBlock Grid.Column="2" Grid.Row="1" Style="{StaticResource PhoneTextSubtleStyle}" Text="{Binding Status}" />
+                <TextBlock Grid.Column="2" Grid.Row="1" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="{Binding Status, Converter={StaticResource StatusToColorConverter}}" Text="{Binding Status}" />
             </Grid>
         </DataTemplate>
     </phone:PhoneApplicationPage.Resources>
