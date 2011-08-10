@@ -31,8 +31,8 @@
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <ScrollViewer>
-                <StackPanel>
+            <ScrollViewer Margin="-12,0,-12,0">
+                <StackPanel Margin="12,0,12,0">
                     <TextBlock Text="Google username or email" Style="{StaticResource PhoneTextSubtleStyle}" />
                     <TextBox Name="Username" InputScope="EmailUserName" Margin="0,0,0,12" />
                     <TextBlock Text="Google password" Style="{StaticResource PhoneTextSubtleStyle}" />
@@ -44,6 +44,12 @@
                     Margin="0,24,0,0">
                         Create a Google account
                     </HyperlinkButton>
+                    
+                    <TextBlock TextWrapping="Wrap" Style="{StaticResource PhoneTextSubtleStyle}" Margin="12,48,12,6">
+                        After logging in, toast and tile notifications will be enabled.
+                        You can disable them individually in the settings page at any time.
+                    </TextBlock>
+                    
                 </StackPanel>
             </ScrollViewer>
         </Grid>
