@@ -22,19 +22,11 @@ namespace gtalkchat {
                 gtalkHelper = App.Current.GtalkHelper;
 
                 Dispatcher.BeginInvoke(() => AllContactsListBox.ItemsSource = App.Current.Roster);
-
-                gtalkHelper.RosterUpdated += () =>
-                    Dispatcher.BeginInvoke(
-                        () => {
-                            ProgressBar.Visibility = Visibility.Collapsed;
-                            ProgressBar.IsIndeterminate = false;
-                            OnlineContactsListBox.ItemsSource =
-                                App.Current.Roster.GetOnlineContacts();
-                        }
-                    );
             }
 
-            App.Current.GtalkHelper.SetCorrectOrientation(this);
+            gtalkHelper.RosterUpdated += RosterLoaded;
+
+            gtalkHelper.SetCorrectOrientation(this);
 
             Dispatcher.BeginInvoke(
                 () => {
@@ -59,6 +51,17 @@ namespace gtalkchat {
             gtalkHelper.MessageReceived += gtalkHelper.ShowToast;
         }
 
+        private void RosterLoaded() {
+            Dispatcher.BeginInvoke(
+                () => {
+                    ProgressBar.Visibility = Visibility.Collapsed;
+                    ProgressBar.IsIndeterminate = false;
+                    OnlineContactsListBox.ItemsSource =
+                        App.Current.Roster.GetOnlineContacts();
+                }
+            );
+        }
+
         protected override void OnNavigatedFrom(System.Windows.Navigation.NavigationEventArgs e) {
             base.OnNavigatedFrom(e);
 
@@ -78,8 +81,17 @@ namespace gtalkchat {
         }
 
         private void RefreshButton_Click(object sender, EventArgs e) {
-            ProgressBar.Visibility = Visibility.Visible;
-            gtalkHelper.LoadRoster();
+            Dispatcher.BeginInvoke(
+                () => {
+                    ProgressBar.IsIndeterminate = true;
+                    ProgressBar.Visibility = Visibility.Visible;
+                });
+
+            if (gtalkHelper.Connected) {
+                gtalkHelper.LoadRoster();
+            } else {
+                gtalkHelper.LoginIfNeeded();
+            }
         }
 
         private void Logout_Click(object sender, EventArgs e) {
