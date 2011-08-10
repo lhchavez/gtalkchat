@@ -60,7 +60,12 @@ namespace gtalkchat {
             } else {
                 gtalkHelper.RosterUpdated += Initialize;
             }
-
+            
+            object savedText;
+            if (State.TryGetValue("message", out savedText)) {
+                MessageText.Text = (string) savedText;
+            }
+            
             gtalkHelper.LoginIfNeeded();
 
             ScrollToBottom();
@@ -72,6 +77,8 @@ namespace gtalkchat {
             gtalkHelper.MessageReceived -= DisplayMessage;
 
             App.Current.CurrentChat = null;
+
+            State["message"] = MessageText.Text;
         }
 
         private void DisplayMessage(Message message) {
