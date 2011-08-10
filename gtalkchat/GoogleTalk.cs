@@ -25,7 +25,7 @@ namespace gtalkchat {
 
         public delegate void SuccessCallback(string data);
 
-        public delegate void BinarySuccessCallback(String contentType, byte[] data);
+        public delegate void BinarySuccessCallback(string contentType, byte[] data);
 
         public delegate void ContactCallback(Contact contact);
 
