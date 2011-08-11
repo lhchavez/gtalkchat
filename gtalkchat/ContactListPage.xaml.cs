@@ -3,10 +3,12 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using Microsoft.Phone.Controls;
+using System.Threading;
 
 namespace gtalkchat {
     public partial class ContactListPage : PhoneApplicationPage {
         private GoogleTalkHelper gtalkHelper;
+        private bool reloadedRoster;
 
         public ContactListPage() {
             InitializeComponent();
@@ -54,10 +56,20 @@ namespace gtalkchat {
         private void RosterLoaded() {
             Dispatcher.BeginInvoke(
                 () => {
-                    ProgressBar.Visibility = Visibility.Collapsed;
-                    ProgressBar.IsIndeterminate = false;
-                    OnlineContactsListBox.ItemsSource =
-                        App.Current.Roster.GetOnlineContacts();
+                    var onlineContacts = App.Current.Roster.GetOnlineContacts();
+
+                    if(!reloadedRoster && onlineContacts.Count == 0) {
+                        reloadedRoster = true;
+                        var timer = new Timer(state => {
+                            (state as Timer).Dispose();
+                            gtalkHelper.LoadRoster();
+                        });
+                        timer.Change(1000, Timeout.Infinite);
+                    } else {
+                        ProgressBar.Visibility = Visibility.Collapsed;
+                        ProgressBar.IsIndeterminate = false;
+                        OnlineContactsListBox.ItemsSource = onlineContacts;
+                    }
                 }
             );
         }
