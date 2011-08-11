@@ -6,12 +6,11 @@
     mc:Ignorable="d"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
-    Foreground="{StaticResource PhoneForegroundBrush}"
     d:DesignHeight="480" d:DesignWidth="480">
     
     <Grid x:Name="LayoutRoot">
         <StackPanel>
-            <RichTextBox x:Name="RichText" TextWrapping="Wrap" FontSize="{StaticResource PhoneFontSizeMedium}" />
+            <RichTextBox x:Name="RichText" TextWrapping="Wrap" FontSize="{StaticResource PhoneFontSizeMedium}" Foreground="White" />
         </StackPanel>
     </Grid>
 </UserControl>

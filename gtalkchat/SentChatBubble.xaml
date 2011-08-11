@@ -13,18 +13,18 @@
 		<Grid d:LayoutOverrides="Width">
 			<Grid.RowDefinitions>
 				<RowDefinition Height="Auto" />
-				<RowDefinition Height="16" />
+				<RowDefinition Height="14" />
 			</Grid.RowDefinitions>
 			<Grid>
 				<Grid.RowDefinitions>
 					<RowDefinition Height="Auto" />
 					<RowDefinition Height="Auto" />
 				</Grid.RowDefinitions>
-				<Rectangle Grid.RowSpan="2" Fill="{StaticResource PhoneAccentBrush}" Opacity="0.7" />
-                <local:LinkifiedTextBox Text="{Binding Text}" x:Name="MessageText" Foreground="White" Margin="0,6,0,0" />
+				<Rectangle Name="BubbleBg" Grid.RowSpan="2" />
+                <local:LinkifiedTextBox Text="{Binding Text}" x:Name="MessageText" Margin="0,6,0,0" />
                 <TextBlock Grid.Row="1" Text="{Binding TimeStamp}" Foreground="#99FFFFFF" HorizontalAlignment="Right" Margin="12,0,12,6" FontSize="{StaticResource PhoneFontSizeNormal}" />
 			</Grid>
-			<Path Data="M0,0 L1,1 L1,0" Fill="{StaticResource PhoneAccentBrush}" HorizontalAlignment="Right" Margin="0,0,12,0" Grid.Row="1" Stretch="Fill" UseLayoutRounding="False" Width="20" Opacity="0.7"/>
+			<Path Name="BubblePoint" Data="M0,0 L1,1 L1,0" HorizontalAlignment="Right" Margin="0,0,12,0" Grid.Row="1" Stretch="Fill" UseLayoutRounding="False" Width="16" />
 		</Grid>
 	</Grid>
 </local:ChatBubble>

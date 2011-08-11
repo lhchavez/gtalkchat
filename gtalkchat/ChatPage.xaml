@@ -106,13 +106,13 @@
 								<Grid Name="InputBubbleGrid" Grid.Row="1">
 									<Grid.RowDefinitions>
 										<RowDefinition Height="Auto" />
-										<RowDefinition Height="16" />
+										<RowDefinition Height="14" />
 									</Grid.RowDefinitions>
 									<Grid>
-										<Rectangle x:Name="BubbleBackground" Grid.RowSpan="2" Fill="{StaticResource PhoneTextBoxBrush}" Opacity="0.7" />
-										<ContentControl x:Name="ContentElement" BorderThickness="0" HorizontalContentAlignment="Stretch" Margin="12,12,12,12" Foreground="{TemplateBinding Foreground}" VerticalContentAlignment="Stretch"/>
+										<Rectangle x:Name="BubbleBackground" Grid.RowSpan="2" Fill="{StaticResource PhoneTextBoxBrush}" />
+										<ContentControl x:Name="ContentElement" BorderThickness="0" HorizontalContentAlignment="Stretch" Margin="12,6,12,6" Foreground="{TemplateBinding Foreground}" VerticalContentAlignment="Stretch"/>
 									</Grid>
-									<Path Name="BubblePoint" Data="M0,0 L1,1 L1,0" Fill="{StaticResource PhoneTextBoxBrush}" HorizontalAlignment="Right" Margin="0,0,12,0" Grid.Row="1" Stretch="Fill" UseLayoutRounding="False" Width="20" Opacity="0.7"/>
+									<Path Name="BubblePoint" Data="M0,0 L1,1 L1,0" Fill="{StaticResource PhoneTextBoxBrush}" HorizontalAlignment="Right" Margin="0,0,12,0" Grid.Row="1" Stretch="Fill" UseLayoutRounding="False" Width="16" />
 								</Grid>
 							</Border>
 							<Border x:Name="DisabledOrReadonlyBorder" BorderBrush="{StaticResource PhoneDisabledBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="Transparent" Margin="{StaticResource PhoneTouchTargetOverhang}" Visibility="Collapsed">

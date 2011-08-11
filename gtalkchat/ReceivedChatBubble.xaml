@@ -12,17 +12,17 @@
 	<Grid x:Name="LayoutRoot" Background="Transparent" Margin="0,0,100,12">
 		<Grid d:LayoutOverrides="Width, Height" Margin="0">
 			<Grid.RowDefinitions>
-				<RowDefinition Height="16" />
+				<RowDefinition Height="14" />
 				<RowDefinition Height="Auto" />
 			</Grid.RowDefinitions>
-			<Path Data="M0,0 L1,1 L0,1" Fill="{StaticResource PhoneAccentBrush}" HorizontalAlignment="Left" Margin="12,0,0,0" Stretch="Fill" UseLayoutRounding="False" Width="20"/>
+			<Path Data="M0,0 L1,1 L0,1" Fill="{StaticResource PhoneAccentBrush}" HorizontalAlignment="Left" Margin="12,0,0,0" Stretch="Fill" UseLayoutRounding="False" Width="16"/>
 			<Grid Grid.Row="1">
 				<Grid.RowDefinitions>
 					<RowDefinition Height="Auto" />
 					<RowDefinition Height="Auto" />
 				</Grid.RowDefinitions>
 				<Rectangle Grid.RowSpan="2" Fill="{StaticResource PhoneAccentBrush}" />
-                <local:LinkifiedTextBox Text="{Binding Text}" x:Name="MessageText" Foreground="White" Margin="0,6,0,0" />
+                <local:LinkifiedTextBox Text="{Binding Text}" x:Name="MessageText" Margin="0,6,0,0" />
                 <TextBlock Grid.Row="1" Text="{Binding TimeStamp}" Foreground="#99FFFFFF" HorizontalAlignment="Right" Margin="12,0,12,6" FontSize="{StaticResource PhoneFontSizeNormal}" />
 			</Grid>
 		</Grid>

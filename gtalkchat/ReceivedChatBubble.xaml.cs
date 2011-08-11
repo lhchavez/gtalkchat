@@ -10,9 +10,6 @@ using System.Windows.Shapes;
 
 namespace gtalkchat {
     public partial class ReceivedChatBubble : ChatBubble {
-        // TODO: Make a superclass for SentChatBubble and ReceivedChatBubble 
-        // (when I understand how XAML inheritance works u__u)
-
         public ReceivedChatBubble() {
             // Required to initialize variables
             InitializeComponent();
