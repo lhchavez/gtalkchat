@@ -50,8 +50,8 @@
                             </Paragraph>
                             <Paragraph>
                                 <Hyperlink TargetName="_blank" NavigateUri="http://lhchavez.com">Luis Héctor Chávez</Hyperlink>
-                                <Run Text=" - @" />
-                                <Hyperlink TargetName="_blank" NavigateUri="http://twitter.com/lhchavez">lhchavez</Hyperlink>
+                                <Run Text=" – " />
+                                <Hyperlink TargetName="_blank" NavigateUri="http://twitter.com/lhchavez">@lhchavez</Hyperlink>
                             </Paragraph>
 
                             <Paragraph>
@@ -63,8 +63,8 @@
                             </Paragraph>
                             <Paragraph>
                                 <Hyperlink TargetName="_blank" NavigateUri="http://julianapena.com">Juliana Peña</Hyperlink>
-                                <Run Text=" - @" />
-                                <Hyperlink TargetName="_blank" NavigateUri="http://twitter.com/limitedmage">limitedmage</Hyperlink>
+                                <Run Text=" – " />
+                                <Hyperlink TargetName="_blank" NavigateUri="http://twitter.com/limitedmage">@limitedmage</Hyperlink>
                             </Paragraph>
 
                             <Paragraph>
