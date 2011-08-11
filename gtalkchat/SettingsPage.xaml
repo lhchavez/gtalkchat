@@ -81,7 +81,9 @@
                             </Paragraph>
 
                             <Paragraph>
-                                <Run Text="Do you like this application? Let us know! Did you find a bug? " />
+                                <Run Text="Do you like this application? "/> 
+                                <Hyperlink Click="Review_Click">Let us know!</Hyperlink>
+                                <Run Text="Did you find a bug? " />
                                 <Hyperlink TargetName="_blank" NavigateUri="https://github.com/lhchavez/gtalkchat/issues">Report it!</Hyperlink>
                             </Paragraph>
 

@@ -51,5 +51,10 @@ namespace gtalkchat {
                 }
             );
         }
+
+        private void Review_Click(object sender, RoutedEventArgs e) {
+            var t = new Microsoft.Phone.Tasks.MarketplaceReviewTask();
+            t.Show();
+        }
     }
 }
