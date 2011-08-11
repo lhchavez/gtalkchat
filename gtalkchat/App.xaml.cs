@@ -148,9 +148,11 @@ namespace gtalkchat {
         // Code to execute on Unhandled Exceptions
         private void Application_UnhandledException(object sender, ApplicationUnhandledExceptionEventArgs e) {
             try {
-                Settings["lastError"] = e.ExceptionObject + "\n" + e.ExceptionObject.StackTrace;
-                Settings.Save();
-            } catch(Exception) {
+                if (!(e.ExceptionObject is QuitException)) {
+                    Settings["lastError"] = e.ExceptionObject + "\n" + e.ExceptionObject.StackTrace;
+                    Settings.Save();
+                }
+            } catch (Exception) {
                 // just hope for the best.
             }
 
