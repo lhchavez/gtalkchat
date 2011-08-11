@@ -50,6 +50,8 @@
                             </Paragraph>
                             <Paragraph>
                                 <Hyperlink TargetName="_blank" NavigateUri="http://lhchavez.com">Luis Héctor Chávez</Hyperlink>
+                                <Run Text=" - @" />
+                                <Hyperlink TargetName="_blank" NavigateUri="http://twitter.com/lhchavez">lhchavez</Hyperlink>
                             </Paragraph>
 
                             <Paragraph>
@@ -61,6 +63,8 @@
                             </Paragraph>
                             <Paragraph>
                                 <Hyperlink TargetName="_blank" NavigateUri="http://julianapena.com">Juliana Peña</Hyperlink>
+                                <Run Text=" - @" />
+                                <Hyperlink TargetName="_blank" NavigateUri="http://twitter.com/limitedmage">limitedmage</Hyperlink>
                             </Paragraph>
 
                             <Paragraph>
@@ -70,6 +74,15 @@
                             <Paragraph>
                                 <Run Text="Open source! " />
                                 <Hyperlink TargetName="_blank" NavigateUri="https://github.com/lhchavez/gtalkchat">Get the code at GitHub</Hyperlink>
+                            </Paragraph>
+
+                            <Paragraph>
+                                <Run Text="" />
+                            </Paragraph>
+
+                            <Paragraph>
+                                <Run Text="Do you like this application? Let us know! Did you find a bug? " />
+                                <Hyperlink TargetName="_blank" NavigateUri="https://github.com/lhchavez/gtalkchat/issues">Report it!</Hyperlink>
                             </Paragraph>
 
                             <Paragraph>
