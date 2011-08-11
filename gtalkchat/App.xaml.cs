@@ -84,6 +84,20 @@ namespace gtalkchat {
             Roster.Load();
 
             PushHelper.RegisterPushNotifications();
+
+            if(Settings.Contains("lastError")) {
+                var result = MessageBox.Show(
+                    "The application crashed the last time you used it. Do you want to send the exception information to the developers?",
+                    "Application crash",
+                    MessageBoxButton.OKCancel
+                );
+
+                if(result == MessageBoxResult.OK) {
+                    GtalkClient.CrashReport(Settings["lastError"] as string, success => Settings.Remove("lastError"), error => {});
+                } else {
+                    Settings.Remove("lastError");
+                }
+            }
         }
 
         // Code to execute when the application is activated (brought to foreground)
@@ -134,6 +148,7 @@ namespace gtalkchat {
         // Code to execute on Unhandled Exceptions
         private void Application_UnhandledException(object sender, ApplicationUnhandledExceptionEventArgs e) {
             try {
+                Settings["lastError"] = e.ExceptionObject + "\n" + e.ExceptionObject.StackTrace;
                 Settings.Save();
             } catch(Exception) {
                 // just hope for the best.

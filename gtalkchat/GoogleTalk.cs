@@ -58,12 +58,24 @@ namespace gtalkchat {
                 ReceiveMode.SingleString,
                 sw => sw.Write("username=" + HttpUtility.UrlEncode(username) + "&auth=" + HttpUtility.UrlEncode(auth)),
                 data => {
-                    var fragments = data.Split(new [] {'\n'});
+                    var fragments = data.Split(new[] { '\n' });
                     token = fragments[0];
                     RootUrl = fragments[1];
                     LoggedIn = true;
                     scb(token);
                 },
+                null,
+                ecb,
+                null
+            );
+        }
+
+        public void CrashReport(string exception, SuccessCallback scb, ErrorCallback ecb) {
+            Send(
+                "/crashreport",
+                ReceiveMode.SingleString,
+                sw => sw.Write("exception=" + HttpUtility.UrlEncode(exception)),
+                scb,
                 null,
                 ecb,
                 null
@@ -202,11 +214,11 @@ namespace gtalkchat {
         private void Send(
             string uri, ReceiveMode mode, WriteDataCallback wdcb, SuccessCallback scb, BinarySuccessCallback bcb,
             ErrorCallback ecb, FinishedCallback fcb) {
-            if (!LoggedIn && !uri.Equals("/login")) {
+            if (!LoggedIn && uri != "/login" && uri != "/crashreport") {
                 throw new InvalidOperationException("Not logged in");
             }
 
-            var req = WebRequest.CreateHttp((uri.Equals("/login") ? DefaultRootUrl : RootUrl) + uri);
+            var req = WebRequest.CreateHttp(((uri == "/login" || uri == "/crashreport") ? DefaultRootUrl : RootUrl) + uri);
 
             req.ContentType = "application/x-www-form-urlencoded";
             req.Method = "POST";
