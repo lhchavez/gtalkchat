@@ -641,8 +641,15 @@ namespace gtalkchat {
                 gtalk.SetKey(Encoding.UTF8.GetString(clientKeyBytes, 0, clientKeyBytes.Length));
             }
 
+            var secondaryTilePrefix = "/ChatPage.xaml?from=";
+
+            var tiles = ShellTile.ActiveTiles
+                .Where(tile => tile.NavigationUri.OriginalString.StartsWith(secondaryTilePrefix))
+                .Select(tile => HttpUtility.UrlDecode(tile.NavigationUri.OriginalString.Substring(secondaryTilePrefix.Length)));
+
             gtalk.Register(
                 uri,
+                tiles,
                 data => {
                     LoadRoster();
 

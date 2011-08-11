@@ -1,9 +1,10 @@
 ﻿using System;
-using System.Net;
-using System.IO;
-using Procurios.Public;
 using System.Collections.Generic;
+using System.IO;
+using System.Net;
+using System.Text;
 using System.Threading;
+using Procurios.Public;
 
 namespace gtalkchat {
     public class GoogleTalk {
@@ -118,6 +119,33 @@ namespace gtalkchat {
                 ReceiveMode.SingleString,
                 sw => {
                     string data = "token=" + HttpUtility.UrlEncode(token) + "&url=" + HttpUtility.UrlEncode(url);
+                    sw.Write(data);
+                },
+                scb,
+                null,
+                ecb,
+                null
+            );
+        }
+
+        public void Register(string url, IEnumerable<string> tiles, SuccessCallback scb, ErrorCallback ecb) {
+            var tileArray = new StringBuilder();
+            var first = true;
+
+            tileArray.Append('[');
+            foreach(var contact in tiles) {
+                if (!first) tileArray.Append(',');
+                first = false;
+
+                tileArray.AppendFormat("\"{0}\"", contact.Replace("\"", "\\\""));
+            }
+            tileArray.Append(']');
+
+            Send(
+                "/register",
+                ReceiveMode.SingleString,
+                sw => {
+                    string data = "token=" + HttpUtility.UrlEncode(token) + "&url=" + HttpUtility.UrlEncode(url) + "&tiles=" + HttpUtility.UrlEncode(tileArray.ToString());
                     sw.Write(data);
                 },
                 scb,
