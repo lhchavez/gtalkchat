@@ -1,5 +1,7 @@
 ﻿gtalkchat - A Windows Phone client for the Google Talk™ instant messaging service
 
+[![Gchat](http://julianapena.com/wp-content/uploads/8d7345256bae_11CD8/album_3.jpg)](http://bit.ly/ogXu7e)
+
 A beautiful, fast, privacy-conscious client to use your favorite IM messaging service. Supports cool features such as:
 
 * Push notifications for messages
