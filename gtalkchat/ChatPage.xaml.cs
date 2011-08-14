@@ -191,7 +191,7 @@ namespace gtalkchat {
                     Dispatcher.BeginInvoke(
                         () => {
                             (ApplicationBar.Buttons[0] as ApplicationBarIconButton).IsEnabled = true;
-                            GoogleTalkHelper.ShowToast("Message not sent. Please try again later");
+                            gtalkHelper.ShowToast("Message not sent. Please try again later");
                         }
                     );
                 }
