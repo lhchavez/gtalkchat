@@ -10,7 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 
-namespace gtalkchat {
+namespace Gchat {
     public partial class LinkifiedTextBox : UserControl {
         public static DependencyProperty TextProperty = 
             DependencyProperty.Register("Text", typeof(string), typeof(LinkifiedTextBox), 

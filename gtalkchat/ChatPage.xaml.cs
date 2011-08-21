@@ -10,7 +10,7 @@ using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 
-namespace gtalkchat {
+namespace Gchat {
     public partial class ChatPage : PhoneApplicationPage {
         private GoogleTalk gtalk;
         private GoogleTalkHelper gtalkHelper;
@@ -117,7 +117,7 @@ namespace gtalkchat {
                     if (message.Body != null) {
                         var bubble = new ReceivedChatBubble();
                         bubble.Text = message.Body;
-                        bubble.TimeStamp = message.Time > DateTime.Now ? DateTime.Now : message.Time;
+                        bubble.TimeStamp = message.Time;
 
                         MessageList.Children.Add(bubble);
 

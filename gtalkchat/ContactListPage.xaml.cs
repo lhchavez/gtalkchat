@@ -5,7 +5,7 @@ using System.Windows.Data;
 using Microsoft.Phone.Controls;
 using System.Threading;
 
-namespace gtalkchat {
+namespace Gchat {
     public partial class ContactListPage : PhoneApplicationPage {
         private GoogleTalkHelper gtalkHelper;
         private bool reloadedRoster;
@@ -41,7 +41,7 @@ namespace gtalkchat {
                     }
                 });
 
-            if(gtalkHelper.RosterLoaded) {
+            if (gtalkHelper.RosterLoaded) {
                 if (e.IsNavigationInitiator) {
                     gtalkHelper.GetOfflineMessages();
                 }
@@ -58,7 +58,7 @@ namespace gtalkchat {
                 () => {
                     var onlineContacts = App.Current.Roster.GetOnlineContacts();
 
-                    if(!reloadedRoster && onlineContacts.Count == 0) {
+                    if (!reloadedRoster && onlineContacts.Count == 0) {
                         reloadedRoster = true;
                         var timer = new Timer(state => {
                             (state as Timer).Dispose();

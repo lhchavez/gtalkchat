@@ -8,7 +8,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 
-namespace gtalkchat {
+namespace Gchat {
     public partial class ReceivedChatBubble : ChatBubble {
         public ReceivedChatBubble() {
             // Required to initialize variables

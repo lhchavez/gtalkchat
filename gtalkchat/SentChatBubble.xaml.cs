@@ -9,7 +9,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Windows.Data;
 
-namespace gtalkchat {
+namespace Gchat {
     public partial class SentChatBubble : ChatBubble {
         public SentChatBubble() {
             // Required to initialize variables

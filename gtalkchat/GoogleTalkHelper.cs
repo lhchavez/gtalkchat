@@ -16,7 +16,7 @@ using Coding4Fun.Phone.Controls;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 
-namespace gtalkchat {
+namespace Gchat {
     public class GoogleTalkHelper {
         public const int MaximumChatLogSize = 500;
 

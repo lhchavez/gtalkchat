@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using Microsoft.Phone.Controls;
 
-namespace gtalkchat {
+namespace Gchat {
     public partial class SettingsPage : PhoneApplicationPage {
         private bool fireEvents;
 

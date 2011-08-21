@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-namespace gtalkchat {
+namespace Gchat {
     [DataContract]
     public class ContactSession : INotifyPropertyChanged, IComparable<ContactSession> {
         #region Public properties

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Runtime.Serialization.Json;
 using System.Text;
 
-namespace gtalkchat {
+namespace Gchat {
     public class Roster : List<Contact>, INotifyCollectionChanged {
         private bool notify;
         public bool Notify {

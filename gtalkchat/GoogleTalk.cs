@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading;
 using Procurios.Public;
 
-namespace gtalkchat {
+namespace Gchat {
     public class GoogleTalk {
         private string token;
         private AesUtility aes;

@@ -2,7 +2,7 @@
 using System.Text;
 using System.Security.Cryptography;
 
-namespace gtalkchat {
+namespace Gchat {
     internal class AesUtility {
         private readonly string password;
         private readonly Aes aes;

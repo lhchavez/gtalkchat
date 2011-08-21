@@ -9,7 +9,7 @@ using System.Windows.Media;
 using Microsoft.Phone;
 using System.Windows.Media.Imaging;
 
-namespace gtalkchat {
+namespace Gchat {
     [DataContract]
     public class Contact : INotifyPropertyChanged, IComparable<Contact> {
         #region Public Properties

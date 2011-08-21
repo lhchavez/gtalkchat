@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 using System;
 using System.Linq;
 
-namespace gtalkchat {
+namespace Gchat {
     public static class Extensions {
         public static ObservableCollection<T> ToObservableCollection<T>(this IEnumerable<T> collection) {
             var o = new ObservableCollection<T>();

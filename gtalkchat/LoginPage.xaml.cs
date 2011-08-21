@@ -6,7 +6,7 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using System.Windows;
 
-namespace gtalkchat {
+namespace Gchat {
     public partial class LoginPage : PhoneApplicationPage {
         private readonly IsolatedStorageSettings settings;
 

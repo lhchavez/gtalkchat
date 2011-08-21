@@ -1,12 +1,12 @@
 ﻿<local:ChatBubble
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:gtalkchat"
+    xmlns:local="clr-namespace:Gchat"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	mc:Ignorable="d"
-	x:Class="gtalkchat.SentChatBubble"
+	x:Class="Gchat.SentChatBubble"
 	d:DesignWidth="332" d:DesignHeight="86"
     DataContext="{Binding RelativeSource={RelativeSource Self}}">
     
