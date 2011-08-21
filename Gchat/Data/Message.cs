@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace Gchat {
+namespace Gchat.Data {
     public class Message : INotifyPropertyChanged {
         #region Public Properties
 

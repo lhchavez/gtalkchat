@@ -4,6 +4,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 using System.Threading;
+using Gchat.Data;
 using Procurios.Public;
 
 namespace Gchat {

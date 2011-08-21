@@ -1,9 +1,9 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Runtime.Serialization;
 
-namespace Gchat {
+namespace Gchat.Data {
     [DataContract]
     public class ContactSession : INotifyPropertyChanged, IComparable<ContactSession> {
         #region Public properties

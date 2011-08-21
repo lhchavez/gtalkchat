@@ -6,8 +6,10 @@ using System.Linq;
 using System.Runtime.Serialization.Json;
 using System.Text;
 
-namespace Gchat {
+namespace Gchat.Data {
     public class Roster : List<Contact>, INotifyCollectionChanged {
+        #region Public Properties
+
         private bool notify;
         public bool Notify {
             get { return notify; }
@@ -20,10 +22,22 @@ namespace Gchat {
             }
         }
 
+        #endregion
+
+        #region Public Events
+
         public event NotifyCollectionChangedEventHandler CollectionChanged;
+
+        #endregion
+
+        #region Private Fields
 
         private readonly Dictionary<string, Contact> contacts;
         private bool pendingNotify;
+
+        #endregion
+
+        #region Public Methods
 
         public Roster() {
             contacts = new Dictionary<string, Contact>();
@@ -115,6 +129,10 @@ namespace Gchat {
             }
         }
 
+        #endregion
+
+        #region Private Methods
+
         private static string GetEmail(string jid) {
             var email = jid;
 
@@ -124,5 +142,7 @@ namespace Gchat {
 
             return email;
         }
+
+        #endregion
     }
 }

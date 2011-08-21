@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO.IsolatedStorage;
 using System.Windows;
 using System.Windows.Navigation;
+using Gchat.Data;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
-using System;
 
 namespace Gchat {
     public partial class App : Application {

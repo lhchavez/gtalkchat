@@ -13,6 +13,7 @@ using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Coding4Fun.Phone.Controls;
+using Gchat.Data;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 
@@ -660,7 +661,7 @@ namespace Gchat {
                 gtalk.SetKey(Encoding.UTF8.GetString(clientKeyBytes, 0, clientKeyBytes.Length));
             }
 
-            var secondaryTilePrefix = "/ChatPage.xaml?from=";
+            var secondaryTilePrefix = "/Pages/ChatPage.xaml?from=";
 
             var tiles = ShellTile.ActiveTiles
                 .Where(tile => tile.NavigationUri.OriginalString.StartsWith(secondaryTilePrefix))

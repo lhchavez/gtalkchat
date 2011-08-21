@@ -4,12 +4,9 @@ using System.ComponentModel;
 using System.IO;
 using System.IO.IsolatedStorage;
 using System.Runtime.Serialization;
-using System.Windows;
-using System.Windows.Media;
-using Microsoft.Phone;
 using System.Windows.Media.Imaging;
 
-namespace Gchat {
+namespace Gchat.Data {
     [DataContract]
     public class Contact : INotifyPropertyChanged, IComparable<Contact> {
         #region Public Properties

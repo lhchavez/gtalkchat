@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using Gchat.Data;
 using Microsoft.Phone.Controls;
-using System.Threading;
 
 namespace Gchat {
     public partial class ContactListPage : PhoneApplicationPage {
