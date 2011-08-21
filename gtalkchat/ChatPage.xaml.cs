@@ -117,7 +117,7 @@ namespace gtalkchat {
                     if (message.Body != null) {
                         var bubble = new ReceivedChatBubble();
                         bubble.Text = message.Body;
-                        bubble.TimeStamp = message.Time;
+                        bubble.TimeStamp = message.Time > DateTime.Now ? DateTime.Now : message.Time;
 
                         MessageList.Children.Add(bubble);
 
