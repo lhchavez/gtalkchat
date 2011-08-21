@@ -80,12 +80,12 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="ChatBubble.cs" />
-    <Compile Include="ChatPage.xaml.cs">
-      <DependentUpon>ChatPage.xaml</DependentUpon>
+    <Compile Include="Pages\Chat.xaml.cs">
+      <DependentUpon>Chat.xaml</DependentUpon>
     </Compile>
     <Compile Include="Contact.cs" />
-    <Compile Include="ContactListPage.xaml.cs">
-      <DependentUpon>ContactListPage.xaml</DependentUpon>
+    <Compile Include="Pages\ContactList.xaml.cs">
+      <DependentUpon>ContactList.xaml</DependentUpon>
     </Compile>
     <Compile Include="ContactSession.cs" />
     <Compile Include="Extensions.cs" />
@@ -95,8 +95,8 @@
     <Compile Include="LinkifiedTextBox.xaml.cs">
       <DependentUpon>LinkifiedTextBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="LoginPage.xaml.cs">
-      <DependentUpon>LoginPage.xaml</DependentUpon>
+    <Compile Include="Pages\Login.xaml.cs">
+      <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
     <Compile Include="MD5.cs" />
     <Compile Include="Message.cs" />
@@ -110,8 +110,8 @@
       <DependentUpon>SentChatBubble.xaml</DependentUpon>
     </Compile>
     <Compile Include="Roster.cs" />
-    <Compile Include="SettingsPage.xaml.cs">
-      <DependentUpon>SettingsPage.xaml</DependentUpon>
+    <Compile Include="Pages\Settings.xaml.cs">
+      <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -119,11 +119,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
-    <Page Include="ChatPage.xaml">
+    <Page Include="Pages\Chat.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ContactListPage.xaml">
+    <Page Include="Pages\ContactList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -131,7 +131,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="LoginPage.xaml">
+    <Page Include="Pages\Login.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -143,7 +143,7 @@
       <Generator>MSBuild:MarkupCompilePass1</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="SettingsPage.xaml">
+    <Page Include="Pages\Settings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

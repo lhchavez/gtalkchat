@@ -78,7 +78,7 @@ namespace gtalkchat {
         public void LoginIfNeeded() {
             if (!App.Current.Settings.Contains("auth")) {
                 App.Current.RootFrame.Dispatcher.BeginInvoke(
-                    () => App.Current.RootFrame.Navigate(new Uri("/LoginPage.xaml", UriKind.Relative))
+                    () => App.Current.RootFrame.Navigate(new Uri("/Pages/Login.xaml", UriKind.Relative))
                 );
 
                 return;
@@ -124,7 +124,7 @@ namespace gtalkchat {
                                         "Authentication error",
                                         MessageBoxButton.OK
                                     );
-                                    App.Current.RootFrame.Navigate(new Uri("/LoginPage.xaml", UriKind.Relative));
+                                    App.Current.RootFrame.Navigate(new Uri("/Pages/Login.xaml", UriKind.Relative));
                                 });
                         } else {
                             ShowToast(error, "Login");
@@ -157,7 +157,7 @@ namespace gtalkchat {
             }
 
             App.Current.RootFrame.Dispatcher.BeginInvoke(
-                () => App.Current.RootFrame.Navigate(new Uri("/LoginPage.xaml", UriKind.Relative))
+                () => App.Current.RootFrame.Navigate(new Uri("/Pages/Login.xaml", UriKind.Relative))
             );
         }
 
@@ -173,7 +173,7 @@ namespace gtalkchat {
 
                     t.Completed += (s, ev) => {
                         if (ev.PopUpResult == PopUpResult.Ok) {
-                            App.Current.RootFrame.Navigate(new Uri("/ChatPage.xaml?from=" + m.From, UriKind.Relative));
+                            App.Current.RootFrame.Navigate(new Uri("/Pages/Chat.xaml?from=" + m.From, UriKind.Relative));
                         }
 
                         lock(messageQueue) {
@@ -673,7 +673,7 @@ namespace gtalkchat {
                 gtalk.SetKey(Encoding.UTF8.GetString(clientKeyBytes, 0, clientKeyBytes.Length));
             }
 
-            var secondaryTilePrefix = "/ChatPage.xaml?from=";
+            var secondaryTilePrefix = "/Pages/Chat.xaml?from=";
 
             var tiles = ShellTile.ActiveTiles
                 .Where(tile => tile.NavigationUri.OriginalString.StartsWith(secondaryTilePrefix))

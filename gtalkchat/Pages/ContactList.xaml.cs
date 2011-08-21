@@ -5,12 +5,12 @@ using System.Windows.Data;
 using Microsoft.Phone.Controls;
 using System.Threading;
 
-namespace gtalkchat {
-    public partial class ContactListPage : PhoneApplicationPage {
+namespace gtalkchat.Pages {
+    public partial class ContactList : PhoneApplicationPage {
         private GoogleTalkHelper gtalkHelper;
         private bool reloadedRoster;
 
-        public ContactListPage() {
+        public ContactList() {
             InitializeComponent();
 
             AllContactsListBox.ItemsSource = App.Current.Roster;
@@ -84,12 +84,12 @@ namespace gtalkchat {
             if (e.AddedItems.Count > 0) {
                 var to = (e.AddedItems[0] as Contact).Email;
                 (sender as ListBox).SelectedIndex = -1;
-                NavigationService.Navigate(new Uri("/ChatPage.xaml?from=" + to, UriKind.Relative));
+                NavigationService.Navigate(new Uri("/Pages/Chat.xaml?from=" + to, UriKind.Relative));
             }
         }
 
         private void SettingsButton_Click(object sender, EventArgs e) {
-            NavigationService.Navigate(new Uri("/SettingsPage.xaml", UriKind.Relative));
+            NavigationService.Navigate(new Uri("/Pages/Settings.xaml", UriKind.Relative));
         }
 
         private void RefreshButton_Click(object sender, EventArgs e) {
