@@ -168,7 +168,7 @@ namespace gtalkchat {
                     var t = new ToastPrompt {    
                         Title = c != null ? c.NameOrEmail : m.From,
                         Message = m.Body,
-                        ImageSource = new BitmapImage(new Uri("/ApplicationIcon.png", UriKind.RelativeOrAbsolute))
+                        ImageSource = new BitmapImage(new Uri("/ToastIcon.png", UriKind.RelativeOrAbsolute))
                     };
 
                     t.Completed += (s, ev) => {
@@ -206,7 +206,6 @@ namespace gtalkchat {
                 var toast = new ToastPrompt {
                     Title = title ?? "",
                     Message = message ?? "",
-                    ImageSource = new BitmapImage(new Uri("/ApplicationIcon.png", UriKind.RelativeOrAbsolute)),
                     Background = (Brush)Application.Current.Resources["PhoneChromeBrush"],
                     Foreground = (Brush)Application.Current.Resources["PhoneForegroundBrush"]
                 };
