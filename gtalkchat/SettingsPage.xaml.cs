@@ -39,17 +39,19 @@ namespace gtalkchat {
         private void Notification_Checked(object sender, RoutedEventArgs e) {
             if (!fireEvents) return;
 
-            App.Current.GtalkClient.Notifications(
-                ToastCheckbox.IsChecked.GetValueOrDefault(true),
-                TileCheckbox.IsChecked.GetValueOrDefault(true),
-                SecondaryTileCheckbox.IsChecked.GetValueOrDefault(true),
-                data => Dispatcher.BeginInvoke(() => { 
-                    App.Current.Settings["toastNotification"] = ToastCheckbox.IsChecked;
-                    App.Current.Settings["tileNotification"] = TileCheckbox.IsChecked;
-                    App.Current.Settings["secondaryTileNotification"] = SecondaryTileCheckbox.IsChecked;
-                }), error => {
-                }
-            );
+            if (App.Current.GtalkClient.LoggedIn) {
+                App.Current.GtalkClient.Notifications(
+                    ToastCheckbox.IsChecked.GetValueOrDefault(true),
+                    TileCheckbox.IsChecked.GetValueOrDefault(true),
+                    SecondaryTileCheckbox.IsChecked.GetValueOrDefault(true),
+                    data => Dispatcher.BeginInvoke(() => {
+                        App.Current.Settings["toastNotification"] = ToastCheckbox.IsChecked;
+                        App.Current.Settings["tileNotification"] = TileCheckbox.IsChecked;
+                        App.Current.Settings["secondaryTileNotification"] = SecondaryTileCheckbox.IsChecked;
+                    }), error => {
+                    }
+                );
+            }
         }
 
         private void Review_Click(object sender, RoutedEventArgs e) {
