@@ -10,7 +10,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 
-namespace Gchat {
+namespace Gchat.Controls {
     public class ChatBubble : UserControl {
 
         public static DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string), typeof(ChatBubble), new PropertyMetadata(""));
