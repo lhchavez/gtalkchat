@@ -20,10 +20,10 @@ namespace gtalkchat {
             set { SetValue(TextProperty, value); }
         }
 
-        public static DependencyProperty TimeStampProperty = DependencyProperty.Register("TimeStamp", typeof(string), typeof(ChatBubble), new PropertyMetadata(""));
+        public static DependencyProperty TimeStampProperty = DependencyProperty.Register("TimeStamp", typeof(DateTime), typeof(ChatBubble), new PropertyMetadata(DateTime.Now));
 
-        public string TimeStamp {
-            get { return (string)GetValue(TimeStampProperty); }
+        public DateTime TimeStamp {
+            get { return (DateTime)GetValue(TimeStampProperty); }
             set { SetValue(TimeStampProperty, value); }
         }
 

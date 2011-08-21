@@ -28,10 +28,6 @@ namespace gtalkchat {
             }
         }
 
-        public string PrettyTime {
-            get { return App.Current.GtalkHelper.FormatMessageDate(time); }
-        }
-
         private string type;
         public string Type {
             get { return type; }

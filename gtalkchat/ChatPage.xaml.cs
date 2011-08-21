@@ -117,7 +117,7 @@ namespace gtalkchat {
                     if (message.Body != null) {
                         var bubble = new ReceivedChatBubble();
                         bubble.Text = message.Body;
-                        bubble.TimeStamp = message.PrettyTime;
+                        bubble.TimeStamp = message.Time;
 
                         MessageList.Children.Add(bubble);
 
@@ -159,7 +159,7 @@ namespace gtalkchat {
             gtalk.SendMessage(to, MessageText.Text, data => Dispatcher.BeginInvoke(() => {
                 var bubble = new SentChatBubble();
                 bubble.Text = MessageText.Text;
-                bubble.TimeStamp = gtalkHelper.FormatMessageDate(DateTime.Now);
+                bubble.TimeStamp = DateTime.Now;
 
                 MessageList.Children.Add(bubble);
 
@@ -247,12 +247,12 @@ namespace gtalkchat {
                             bubble = new SentChatBubble();
 
                             (bubble as SentChatBubble).Text = message.Body;
-                            (bubble as SentChatBubble).TimeStamp = message.PrettyTime;
+                            (bubble as SentChatBubble).TimeStamp = message.Time;
                         } else {
                             bubble = new ReceivedChatBubble();
 
                             (bubble as ReceivedChatBubble).Text = message.Body;
-                            (bubble as ReceivedChatBubble).TimeStamp = message.PrettyTime;
+                            (bubble as ReceivedChatBubble).TimeStamp = message.Time;
                         }
 
                         MessageList.Children.Add(bubble);
