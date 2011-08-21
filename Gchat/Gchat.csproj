@@ -79,12 +79,12 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ChatBubble.cs" />
-    <Compile Include="ChatPage.xaml.cs">
+    <Compile Include="Controls\ChatBubble.cs" />
+    <Compile Include="Gui\ChatPage.xaml.cs">
       <DependentUpon>ChatPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Contact.cs" />
-    <Compile Include="ContactListPage.xaml.cs">
+    <Compile Include="Gui\ContactListPage.xaml.cs">
       <DependentUpon>ContactListPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="ContactSession.cs" />
@@ -92,10 +92,10 @@
     <Compile Include="GoogleTalk.cs" />
     <Compile Include="GoogleTalkHelper.cs" />
     <Compile Include="JSON.cs" />
-    <Compile Include="LinkifiedTextBox.xaml.cs">
+    <Compile Include="Controls\LinkifiedTextBox.xaml.cs">
       <DependentUpon>LinkifiedTextBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="LoginPage.xaml.cs">
+    <Compile Include="Gui\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="MD5.cs" />
@@ -103,14 +103,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PushHelper.cs" />
     <Compile Include="QuitException.cs" />
-    <Compile Include="ReceivedChatBubble.xaml.cs">
+    <Compile Include="Controls\ReceivedChatBubble.xaml.cs">
       <DependentUpon>ReceivedChatBubble.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SentChatBubble.xaml.cs">
+    <Compile Include="Controls\SentChatBubble.xaml.cs">
       <DependentUpon>SentChatBubble.xaml</DependentUpon>
     </Compile>
     <Compile Include="Roster.cs" />
-    <Compile Include="SettingsPage.xaml.cs">
+    <Compile Include="Gui\SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
@@ -119,31 +119,31 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
-    <Page Include="ChatPage.xaml">
+    <Page Include="Gui\ChatPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ContactListPage.xaml">
+    <Page Include="Gui\ContactListPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="LinkifiedTextBox.xaml">
+    <Page Include="Controls\LinkifiedTextBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="LoginPage.xaml">
+    <Page Include="Gui\LoginPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ReceivedChatBubble.xaml">
+    <Page Include="Controls\ReceivedChatBubble.xaml">
       <Generator>MSBuild:MarkupCompilePass1</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="SentChatBubble.xaml">
+    <Page Include="Controls\SentChatBubble.xaml">
       <Generator>MSBuild:MarkupCompilePass1</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="SettingsPage.xaml">
+    <Page Include="Gui\SettingsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -554,6 +554,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
