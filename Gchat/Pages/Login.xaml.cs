@@ -6,12 +6,12 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using System.Windows;
 
-namespace Gchat {
-    public partial class LoginPage : PhoneApplicationPage {
+namespace Gchat.Pages {
+    public partial class Login : PhoneApplicationPage {
         private readonly IsolatedStorageSettings settings;
 
         // Constructor
-        public LoginPage() {
+        public Login() {
             InitializeComponent();
 
             settings = IsolatedStorageSettings.ApplicationSettings;

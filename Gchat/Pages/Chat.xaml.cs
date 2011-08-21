@@ -11,8 +11,8 @@ using Gchat.Data;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 
-namespace Gchat {
-    public partial class ChatPage : PhoneApplicationPage {
+namespace Gchat.Pages {
+    public partial class Chat : PhoneApplicationPage {
         private GoogleTalk gtalk;
         private GoogleTalkHelper gtalkHelper;
         private IsolatedStorageSettings settings;
@@ -23,7 +23,7 @@ namespace Gchat {
 
         private bool otr;
 
-        public ChatPage() {
+        public Chat() {
             InitializeComponent();
         }
 
@@ -295,7 +295,7 @@ namespace Gchat {
         }
 
         private Uri GetPinUri() {
-            return new Uri("/ChatPage.xaml?from=" + HttpUtility.UrlEncode(email), UriKind.Relative);
+            return new Uri("/Pages/Chat.xaml?from=" + HttpUtility.UrlEncode(email), UriKind.Relative);
         }
 
         private bool IsPinned() {

@@ -1,11 +1,11 @@
 ﻿using System.Windows;
 using Microsoft.Phone.Controls;
 
-namespace Gchat {
-    public partial class SettingsPage : PhoneApplicationPage {
+namespace Gchat.Pages {
+    public partial class Settings : PhoneApplicationPage {
         private bool fireEvents;
 
-        public SettingsPage() {
+        public Settings() {
             InitializeComponent();
         }
 
