@@ -8,13 +8,13 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Coding4Fun.Phone.Controls;
-using Microsoft.Phone.Shell;
-using System.Windows.Controls;
 using Microsoft.Phone.Controls;
+using Microsoft.Phone.Shell;
 
 namespace gtalkchat {
     public class GoogleTalkHelper {
@@ -58,6 +58,8 @@ namespace gtalkchat {
         private string registeredUri;
         private bool offlineMessagesDownloaded;
         private static readonly Regex linkRegex = new Regex("(?:(\\B(?:;-?\\)|:-?\\)|:-?D|:-?P|:-?S|:-?/|:-?\\||:'\\(|:-?\\(|<3))|(https?://)?(([0-9]{1-3}\\.[0-9]{1-3}\\.[0-9]{1-3}\\.[0-9]{1-3})|([a-z0-9.-]+\\.[a-z]{2,4}))(/[-a-z0-9+&@#\\/%?=~_|!:,.;]*[-a-z0-9+&@#\\/%=~_|])?)", RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
+        private Queue<ToastPrompt> messageQueue = new Queue<ToastPrompt>();
+        private bool messageShowing;
 
         #endregion
 
@@ -173,18 +175,33 @@ namespace gtalkchat {
                         if (ev.PopUpResult == PopUpResult.Ok) {
                             App.Current.RootFrame.Navigate(new Uri("/ChatPage.xaml?from=" + m.From, UriKind.Relative));
                         }
+
+                        lock(messageQueue) {
+                            if(messageQueue.Count == 0) {
+                                messageShowing = false;
+                            } else {
+                                messageQueue.Dequeue().Show();
+                            }
+                        }
                     };
 
-                    t.Show();
+                    messageQueue.Enqueue(t);
+
+                    lock(messageQueue) {
+                        if(!messageShowing) {
+                            messageShowing = true;
+                            messageQueue.Dequeue().Show();
+                        }
+                    }
                 });
             }
         }
 
-        public static void ShowToast(string message) {
+        public void ShowToast(string message) {
             ShowToast(message, null);
         }
 
-        public static void ShowToast(string message, string title) {
+        public void ShowToast(string message, string title) {
             App.Current.RootFrame.Dispatcher.BeginInvoke(() => {
                 var toast = new ToastPrompt {
                     Title = title ?? "",
@@ -198,9 +215,24 @@ namespace gtalkchat {
                     if (ev.PopUpResult == PopUpResult.Ok) {
                         App.Current.RootFrame.Dispatcher.BeginInvoke(() => MessageBox.Show(message ?? "", title ?? "", MessageBoxButton.OK));
                     }
+
+                    lock (messageQueue) {
+                        if (messageQueue.Count == 0) {
+                            messageShowing = false;
+                        } else {
+                            messageQueue.Dequeue().Show();
+                        }
+                    }
                 };
 
-                toast.Show();
+                messageQueue.Enqueue(toast);
+
+                lock (messageQueue) {
+                    if (!messageShowing) {
+                        messageShowing = true;
+                        messageQueue.Dequeue().Show();
+                    }
+                }
             });
         }
 
