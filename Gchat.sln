@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gchat", "gtalkchat\Gchat.csproj", "{C19ECD6A-A497-4550-8CF1-41841C71F757}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gchat", "Gchat\Gchat.csproj", "{C19ECD6A-A497-4550-8CF1-41841C71F757}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
