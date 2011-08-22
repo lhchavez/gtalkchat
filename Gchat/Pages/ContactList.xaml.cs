@@ -112,6 +112,25 @@ namespace Gchat.Pages {
             var gtalkHelper = App.Current.GtalkHelper;
             gtalkHelper.Logout();
         }
+
+        private void ContextMenu_Opened(object sender, RoutedEventArgs e) {
+            ContextMenu menu = sender as ContextMenu;
+            Contact c = menu.DataContext as Contact;
+            MenuItem item = menu.Items[0] as MenuItem;
+
+            if (gtalkHelper.IsContactPinned(c.Email)) {
+                item.IsEnabled = false;
+            } else {
+                item.IsEnabled = true;
+            }
+        }
+
+        private void PinContact_Click(object sender, RoutedEventArgs e) {
+            MenuItem item = sender as MenuItem;
+            Contact c = item.DataContext as Contact;
+
+            gtalkHelper.PinContact(c.Email);
+        }
     }
 
     public class NumberToVisibilityConverter : IValueConverter {

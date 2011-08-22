@@ -626,6 +626,47 @@ namespace Gchat.Utilities {
             }
         }
 
+        public Uri GetPinUri(string email) {
+            return new Uri("/Pages/Chat.xaml?from=" + HttpUtility.UrlEncode(email), UriKind.Relative);
+        }
+
+        public bool IsContactPinned(string email) {
+            Uri url = GetPinUri(email);
+            ShellTile existing = ShellTile.ActiveTiles.FirstOrDefault(x => x.NavigationUri == url);
+
+            return existing != null;
+        }
+
+        public void PinContact(string email) {
+            if (!IsContactPinned(email)) {
+                Contact contact = App.Current.Roster[email];
+                StandardTileData tile;
+
+                if (contact != null) {
+                    tile = new StandardTileData {
+                        Title = contact.NameOrEmail
+                    };
+
+                    if (contact.Photo != null) {
+                        DownloadImage(contact, () => {
+                            tile.BackgroundImage =
+                                new Uri("isostore:/Shared/ShellContent/" + contact.Photo + ".jpg");
+
+                            ShellTile.Create(GetPinUri(email), tile);
+                        });
+                    } else {
+                        ShellTile.Create(GetPinUri(email), tile);
+                    }
+                } else {
+                    tile = new StandardTileData {
+                        Title = email
+                    };
+
+                    ShellTile.Create(GetPinUri(email), tile);
+                }
+            }
+        }
+
         #endregion
 
         #region Private Methods

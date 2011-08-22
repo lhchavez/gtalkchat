@@ -220,7 +220,7 @@ namespace Gchat.Pages {
 
                 TypingStatus.Text = displayName + " is typing...";
 
-                if (IsPinned()) {
+                if (gtalkHelper.IsContactPinned(email)) {
                     (ApplicationBar.Buttons[2] as ApplicationBarIconButton).IsEnabled = false;
                 }
 
@@ -271,7 +271,7 @@ namespace Gchat.Pages {
                     unread[email] = 0;
                 }
 
-                Uri url = GetPinUri();
+                Uri url = gtalkHelper.GetPinUri(email);
                 ShellTile existing = ShellTile.ActiveTiles.FirstOrDefault(x => x.NavigationUri == url);
 
                 if (existing != null) {
@@ -299,45 +299,8 @@ namespace Gchat.Pages {
             Scroller.ScrollToVerticalOffset(Scroller.ExtentHeight);
         }
 
-        private Uri GetPinUri() {
-            return new Uri("/Pages/Chat.xaml?from=" + HttpUtility.UrlEncode(email), UriKind.Relative);
-        }
-
-        private bool IsPinned() {
-            Uri url = GetPinUri();
-            ShellTile existing = ShellTile.ActiveTiles.FirstOrDefault(x => x.NavigationUri == url);
-
-            return existing != null;
-        }
-
         private void PinButton_Click(object sender, EventArgs e) {
-            if (!IsPinned()) {
-                Contact contact = App.Current.Roster[email];
-                StandardTileData tile;
-
-                if (contact != null) {
-                    tile = new StandardTileData {
-                        Title = contact.NameOrEmail
-                    };
-
-                    if (contact.Photo != null) {
-                        gtalkHelper.DownloadImage(contact, () => {
-                            tile.BackgroundImage =
-                                new Uri("isostore:/Shared/ShellContent/" + contact.Photo + ".jpg");
-
-                            ShellTile.Create(GetPinUri(), tile);
-                        });
-                    } else {
-                        ShellTile.Create(GetPinUri(), tile);
-                    }
-                } else {
-                    tile = new StandardTileData {
-                        Title = email
-                    };
-
-                    ShellTile.Create(GetPinUri(), tile);
-                }
-            }
+            gtalkHelper.PinContact(email);
         }
 
         private void OTRButton_Click(object sender, EventArgs e) {
