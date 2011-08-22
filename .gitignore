@@ -1,6 +1,6 @@
 gtalkchat/obj
 gtalkchat/Bin
-_ReSharper.gtalkchat
+_ReSharper.*
 
 *.suo
 *.user
