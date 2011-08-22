@@ -29,12 +29,7 @@ namespace Gchat.Pages {
             }
 
             gtalkHelper.RosterUpdated += RosterLoaded;
-
-            gtalkHelper.ConnectFailed += () => Dispatcher.BeginInvoke(
-                () => {
-                    ProgressBar.Visibility = Visibility.Collapsed;
-                    ProgressBar.IsIndeterminate = false;
-                });
+            gtalkHelper.ConnectFailed += ConnectFailed;
 
             gtalkHelper.SetCorrectOrientation(this);
 
@@ -82,10 +77,20 @@ namespace Gchat.Pages {
             );
         }
 
+        private void ConnectFailed(string message, string title) {
+            Dispatcher.BeginInvoke(
+                () => {
+                    ProgressBar.Visibility = Visibility.Collapsed;
+                    ProgressBar.IsIndeterminate = false;
+                    gtalkHelper.ShowToast(message, title);
+                });
+        }
+
         protected override void OnNavigatedFrom(System.Windows.Navigation.NavigationEventArgs e) {
             base.OnNavigatedFrom(e);
 
             gtalkHelper.MessageReceived -= gtalkHelper.ShowToast;
+            gtalkHelper.ConnectFailed -= ConnectFailed;
         }
 
         private void ContactsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {

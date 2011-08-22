@@ -36,7 +36,7 @@ namespace Gchat.Utilities {
 
         public event ConnectEventHandler Connect;
 
-        public delegate void ConnectFailedEventHandler();
+        public delegate void ConnectFailedEventHandler(string message, string title);
 
         public event ConnectFailedEventHandler ConnectFailed;
 
@@ -115,10 +115,12 @@ namespace Gchat.Utilities {
                     },
                     error => {
                         if (error.Equals("")) {
-                            ShowToast(
-                                "Unable to contact server. Please retry later.",
-                                "Connection error"
-                            );
+                            if (ConnectFailed != null) {
+                                ConnectFailed(
+                                    "Unable to contact server. Please retry later.",
+                                    "Connection error"
+                                );
+                            }
                         } else if (error.StartsWith("401")) {
                             // stale auth token. get a new one and we should be all happy again.
                             settings.Remove("auth");
@@ -133,11 +135,9 @@ namespace Gchat.Utilities {
                                     App.Current.RootFrame.Navigate(new Uri("/Pages/Login.xaml", UriKind.Relative));
                                 });
                         } else {
-                            ShowToast(error, "Login");
-                        }
-
-                        if (ConnectFailed != null) {
-                            ConnectFailed();
+                            if (ConnectFailed != null) {
+                                ConnectFailed(error, "Login");
+                            }
                         }
                     }
                 );
@@ -616,18 +616,14 @@ namespace Gchat.Utilities {
                 ),
                 error => {
                     if (error.Equals("")) {
-                        ShowToast("Unable to get your contact list. Please retry later.");
-
                         if (ConnectFailed != null) {
-                            ConnectFailed();
+                            ConnectFailed("Unable to get your contact list. Please retry later.", "Contact list");
                         }
                     } else if (error.StartsWith("403")) {
                         GracefulReLogin();
                     } else {
-                        ShowToast(error, "Load roster");
-
                         if (ConnectFailed != null) {
-                            ConnectFailed();
+                            ConnectFailed(error, "Contact list");
                         }
                     }
                 }
@@ -697,21 +693,17 @@ namespace Gchat.Utilities {
                     },
                     error => {
                         if (error.Equals("")) {
-                            ShowToast(
-                                "Unable to contact server. Please retry later.",
-                                "Connection error"
-                            );
-
                             if (ConnectFailed != null) {
-                                ConnectFailed();
+                                ConnectFailed(
+                                    "Unable to contact server. Please retry later.",
+                                    "Connection error"
+                                );
                             }
                         } else if (error.StartsWith("403")) {
                             GracefulReLogin();
                         } else {
-                            ShowToast(error, "Register");
-
                             if (ConnectFailed != null) {
-                                ConnectFailed();
+                                ConnectFailed(error, "Register");
                             }
                         }
                     }
@@ -746,21 +738,17 @@ namespace Gchat.Utilities {
                 },
                 error => {
                     if (error.Equals("")) {
-                        ShowToast(
-                            "Unable to contact server. Please retry later.",
-                            "Connection error"
-                        );
-
                         if (ConnectFailed != null) {
-                            ConnectFailed();
+                            ConnectFailed(
+                                "Unable to contact server. Please retry later.",
+                                "Connection error"
+                            );
                         }
                     } else if (error.StartsWith("403")) {
                         GracefulReLogin();
                     } else {
-                        ShowToast(error, "Register");
-
                         if (ConnectFailed != null) {
-                            ConnectFailed();
+                            ConnectFailed(error, "Register");
                         }
                     }
                 }
