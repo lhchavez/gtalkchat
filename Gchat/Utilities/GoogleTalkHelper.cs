@@ -36,6 +36,10 @@ namespace Gchat.Utilities {
 
         public event ConnectEventHandler Connect;
 
+        public delegate void ConnectFailedEventHandler();
+
+        public event ConnectFailedEventHandler ConnectFailed;
+
         public delegate void RosterUpdatedEventHandler();
 
         public event RosterUpdatedEventHandler RosterUpdated;
@@ -130,6 +134,10 @@ namespace Gchat.Utilities {
                                 });
                         } else {
                             ShowToast(error, "Login");
+                        }
+
+                        if (ConnectFailed != null) {
+                            ConnectFailed();
                         }
                     }
                 );
@@ -609,10 +617,18 @@ namespace Gchat.Utilities {
                 error => {
                     if (error.Equals("")) {
                         ShowToast("Unable to get your contact list. Please retry later.");
+
+                        if (ConnectFailed != null) {
+                            ConnectFailed();
+                        }
                     } else if (error.StartsWith("403")) {
                         GracefulReLogin();
                     } else {
                         ShowToast(error, "Load roster");
+
+                        if (ConnectFailed != null) {
+                            ConnectFailed();
+                        }
                     }
                 }
             );
@@ -685,10 +701,18 @@ namespace Gchat.Utilities {
                                 "Unable to contact server. Please retry later.",
                                 "Connection error"
                             );
+
+                            if (ConnectFailed != null) {
+                                ConnectFailed();
+                            }
                         } else if (error.StartsWith("403")) {
                             GracefulReLogin();
                         } else {
                             ShowToast(error, "Register");
+
+                            if (ConnectFailed != null) {
+                                ConnectFailed();
+                            }
                         }
                     }
                 );
@@ -726,10 +750,18 @@ namespace Gchat.Utilities {
                             "Unable to contact server. Please retry later.",
                             "Connection error"
                         );
+
+                        if (ConnectFailed != null) {
+                            ConnectFailed();
+                        }
                     } else if (error.StartsWith("403")) {
                         GracefulReLogin();
                     } else {
                         ShowToast(error, "Register");
+
+                        if (ConnectFailed != null) {
+                            ConnectFailed();
+                        }
                     }
                 }
             );

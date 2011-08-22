@@ -1,5 +1,5 @@
 glob:*.suo
 glob:Bin
 glob:obj
-glob:_ReSharper.gtalkchat
+glob:_ReSharper.*
 glob:*.user
