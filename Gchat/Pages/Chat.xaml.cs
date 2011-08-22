@@ -47,13 +47,12 @@ namespace Gchat.Pages {
 
                 App.Current.CurrentChat = email;
 
-                // TODO: make this optional
                 to = email;
             }
 
             gtalkHelper.MessageReceived += DisplayMessage;
 
-            if (App.Current.Roster.Contains(to)) {
+            if (App.Current.Roster.Contains(email)) {
                 Initialize();
             } else if (gtalkHelper.RosterLoaded) {
                 if(e.IsNavigationInitiator) {
@@ -286,6 +285,9 @@ namespace Gchat.Pages {
                 if (contact != null) {
                     contact.UnreadCount = 0;
                 }
+
+                // Sets to broadcast the first message in a conversation
+                to = email;
             });
         }
 
