@@ -30,6 +30,12 @@ namespace Gchat.Pages {
 
             gtalkHelper.RosterUpdated += RosterLoaded;
 
+            gtalkHelper.ConnectFailed += () => Dispatcher.BeginInvoke(
+                () => {
+                    ProgressBar.Visibility = Visibility.Collapsed;
+                    ProgressBar.IsIndeterminate = false;
+                });
+
             gtalkHelper.SetCorrectOrientation(this);
 
             Dispatcher.BeginInvoke(
