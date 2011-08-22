@@ -2,6 +2,7 @@
 using System.IO.IsolatedStorage;
 using System.Security.Cryptography;
 using System.Text;
+using Gchat.Utilities;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using System.Windows;

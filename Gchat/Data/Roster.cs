@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Json;
 using System.Text;
+using Gchat.Utilities;
 
 namespace Gchat.Data {
     public class Roster : List<Contact>, INotifyCollectionChanged {
