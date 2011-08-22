@@ -5,9 +5,10 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using Gchat.Data;
+using Gchat.Utilities;
 using Procurios.Public;
 
-namespace Gchat {
+namespace Gchat.Protocol {
     public class GoogleTalk {
         private string token;
         private AesUtility aes;

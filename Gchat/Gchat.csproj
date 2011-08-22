@@ -75,7 +75,7 @@
     <Reference Include="mscorlib.extensions" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AESUtility.cs" />
+    <Compile Include="Utilities\AESUtility.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
@@ -88,21 +88,21 @@
       <DependentUpon>ContactList.xaml</DependentUpon>
     </Compile>
     <Compile Include="Data\ContactSession.cs" />
-    <Compile Include="Extensions.cs" />
-    <Compile Include="GoogleTalk.cs" />
-    <Compile Include="GoogleTalkHelper.cs" />
-    <Compile Include="JSON.cs" />
+    <Compile Include="Utilities\Extensions.cs" />
+    <Compile Include="Protocol\GoogleTalk.cs" />
+    <Compile Include="Utilities\GoogleTalkHelper.cs" />
+    <Compile Include="Utilities\JSON.cs" />
     <Compile Include="Controls\LinkifiedTextBox.xaml.cs">
       <DependentUpon>LinkifiedTextBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MD5.cs" />
+    <Compile Include="Utilities\MD5.cs" />
     <Compile Include="Data\Message.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PushHelper.cs" />
-    <Compile Include="QuitException.cs" />
+    <Compile Include="Utilities\PushHelper.cs" />
+    <Compile Include="Utilities\QuitException.cs" />
     <Compile Include="Controls\ReceivedChatBubble.xaml.cs">
       <DependentUpon>ReceivedChatBubble.xaml</DependentUpon>
     </Compile>

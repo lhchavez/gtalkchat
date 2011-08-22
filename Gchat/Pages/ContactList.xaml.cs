@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using Gchat.Data;
+using Gchat.Utilities;
 using Microsoft.Phone.Controls;
 
 namespace Gchat.Pages {

@@ -14,10 +14,11 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Coding4Fun.Phone.Controls;
 using Gchat.Data;
+using Gchat.Protocol;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 
-namespace Gchat {
+namespace Gchat.Utilities {
     public class GoogleTalkHelper {
         public const int MaximumChatLogSize = 500;
 

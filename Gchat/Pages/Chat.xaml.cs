@@ -9,6 +9,8 @@ using System.Windows.Media;
 using System.Windows.Navigation;
 using Gchat.Controls;
 using Gchat.Data;
+using Gchat.Protocol;
+using Gchat.Utilities;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 

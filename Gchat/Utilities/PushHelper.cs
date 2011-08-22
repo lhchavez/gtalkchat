@@ -1,7 +1,7 @@
 ﻿using Microsoft.Phone.Notification;
 using System;
 
-namespace Gchat {
+namespace Gchat.Utilities {
     public class PushHelper {
         #region Public Events
 

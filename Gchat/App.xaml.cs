@@ -4,6 +4,8 @@ using System.IO.IsolatedStorage;
 using System.Windows;
 using System.Windows.Navigation;
 using Gchat.Data;
+using Gchat.Protocol;
+using Gchat.Utilities;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 
