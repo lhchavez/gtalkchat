@@ -38,7 +38,7 @@
                     <ScrollViewer>
                         <RichTextBox VerticalAlignment="Top" FontSize="{StaticResource PhoneFontSizeMedium}">
                             <Paragraph>
-                                <Run Text="Gchat 1.0" FontSize="{StaticResource PhoneFontSizeLarge}" />
+                                <Run Text="Gchat 1.1" FontSize="{StaticResource PhoneFontSizeLarge}" />
                             </Paragraph>
 
                             <Paragraph>

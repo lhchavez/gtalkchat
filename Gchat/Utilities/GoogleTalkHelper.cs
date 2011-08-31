@@ -462,7 +462,7 @@ namespace Gchat.Utilities {
                 "&Email=" + HttpUtility.UrlEncode(username) +
                 "&Passwd=" + HttpUtility.UrlEncode(password) +
                 "&service=mail" +
-                "&source=lhchavez.com-gtalkchat-1.0"
+                "&source=lhchavez.com-gtalkchat-1.1"
             );
 
             var req = WebRequest.CreateHttp("https://www.google.com/accounts/ClientLogin");

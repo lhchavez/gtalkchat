@@ -30,7 +30,7 @@ Grab the source code for the client at https://github.com/lhchavez/gtalkchat and
 Released under the terms of the Microsoft Public License.
 
 = Feature app description (en) =
-IM client for Google Talk™
+Google Talk™ IM client
 
 = Keywords (en) =
 gtalk, google talk, gchat, im

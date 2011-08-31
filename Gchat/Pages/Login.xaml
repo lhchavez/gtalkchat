@@ -45,9 +45,8 @@
                         Create a Google account
                     </HyperlinkButton>
                     
-                    <TextBlock TextWrapping="Wrap" Style="{StaticResource PhoneTextSubtleStyle}" Margin="12,48,12,6">
-                        After logging in, toast and tile notifications will be enabled.
-                        You can disable them individually in the settings page at any time.
+                    <TextBlock TextWrapping="Wrap" Style="{StaticResource PhoneTextNormalStyle}" Margin="12,48,12,6">
+                        By logging in, you are also opting in to raw, toast and tile push notifications for incoming chat messages. You can disable toast and tile notifications individually in the settings page at any time. Raw notifications are required for the app to function properly and can be disabled at any time by logging out.
                     </TextBlock>
                     
                 </StackPanel>
