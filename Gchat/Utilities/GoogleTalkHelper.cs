@@ -304,8 +304,18 @@ namespace Gchat.Utilities {
 
             using (IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication()) {
                 if (isf.FileExists(fileName)) {
-                    finished();
-                    return;
+                    long len;
+
+                    using (var file = isf.OpenFile(fileName, FileMode.Open)) {
+                        len = file.Length;
+                    }
+
+                    if (len == 0) {
+                        isf.DeleteFile(fileName);
+                    } else {
+                        finished();
+                        return;
+                    }
                 }
 
                 var fileStream = isf.CreateFile(fileName);
