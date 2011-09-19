@@ -13,6 +13,8 @@ namespace Gchat.Pages {
             base.OnNavigatedTo(e);
             App.Current.GtalkHelper.SetCorrectOrientation(this);
 
+            App.Current.LastPage = e.Uri.OriginalString;
+
             fireEvents = false;
 
             RagesCheckbox.IsChecked = App.Current.Settings.Contains("rages") && (bool)App.Current.Settings["rages"];

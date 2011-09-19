@@ -29,6 +29,8 @@ namespace Gchat {
 
         public string CurrentChat { get; set; }
 
+        public string LastPage { get; set; }
+
         public new static App Current {
             get { return (App) Application.Current; }
         }
@@ -151,10 +153,8 @@ namespace Gchat {
         // Code to execute on Unhandled Exceptions
         private void Application_UnhandledException(object sender, ApplicationUnhandledExceptionEventArgs e) {
             try {
-                if (!(e.ExceptionObject is QuitException)) {
-                    Settings["lastError"] = e.ExceptionObject + "\n" + e.ExceptionObject.StackTrace;
-                    Settings.Save();
-                }
+                Settings["lastError"] = e.ExceptionObject + "\n" + e.ExceptionObject.StackTrace;
+                Settings.Save();
             } catch (Exception) {
                 // just hope for the best.
             }

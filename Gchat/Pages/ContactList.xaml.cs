@@ -6,6 +6,7 @@ using System.Windows.Data;
 using Gchat.Data;
 using Gchat.Utilities;
 using Microsoft.Phone.Controls;
+using System.Linq;
 
 namespace Gchat.Pages {
     public partial class ContactList : PhoneApplicationPage {
@@ -21,6 +22,11 @@ namespace Gchat.Pages {
 
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e) {
             base.OnNavigatedTo(e);
+
+            if (App.Current.LastPage != null && App.Current.LastPage.StartsWith("/Pages/Chat.xaml?from=") && App.Current.RootFrame.BackStack.Count() > 0) {
+                App.Current.RootFrame.RemoveBackEntry();
+            }
+            App.Current.LastPage = e.Uri.OriginalString;
 
             if (gtalkHelper != App.Current.GtalkHelper) {
                 gtalkHelper = App.Current.GtalkHelper;

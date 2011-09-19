@@ -33,12 +33,14 @@ namespace Gchat.Pages {
         protected override void OnNavigatedTo(NavigationEventArgs e) {
             base.OnNavigatedTo(e);
 
+            App.Current.LastPage = e.Uri.OriginalString;
+
             gtalk = App.Current.GtalkClient;
             gtalkHelper = App.Current.GtalkHelper;
             settings = App.Current.Settings;
 
             App.Current.GtalkHelper.SetCorrectOrientation(this);
-
+            
             if (NavigationContext.QueryString.ContainsKey("from")) {
                 to = NavigationContext.QueryString["from"];
                 email = to;
@@ -324,20 +326,27 @@ namespace Gchat.Pages {
             }
         }
 
-        private void DeleteThread_Click(object sender, EventArgs e) {
+        private void DeleteThread_Click(object sender, EventArgs e)
+        {
             MessageBoxResult delete = MessageBox.Show(
                 "All messages in this thread will be deleted from the app. They may still persist in your Gmail chat history.",
                 "Delete thread?",
                 MessageBoxButton.OKCancel
             );
 
-            if (delete == MessageBoxResult.OK) {
+            if (delete == MessageBoxResult.OK)
+            {
                 MessageList.Children.Clear();
 
-                lock (chatLog) {
+                lock (chatLog)
+                {
                     chatLog.Clear();
                 }
             }
+        }
+
+        private void ViewContactList_Click(object sender, EventArgs e) {
+            Dispatcher.BeginInvoke(() => App.Current.RootFrame.Navigate(new Uri("/Pages/ContactList.xaml", UriKind.Relative)));
         }
 
         private void MessageText_KeyUp(object sender, System.Windows.Input.KeyEventArgs e) {
