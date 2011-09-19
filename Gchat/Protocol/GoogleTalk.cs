@@ -12,7 +12,7 @@ namespace Gchat.Protocol {
     public class GoogleTalk {
         private string token;
         private AesUtility aes;
-        public const int MessageTimeout = 10000;
+        public const int MessageTimeout = 30000;
         public bool LoggedIn { get; private set; }
         public const string DefaultRootUrl = "https://gtalkjsonproxy.lhchavez.com";
         private string rootUrl = DefaultRootUrl;

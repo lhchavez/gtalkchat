@@ -163,6 +163,7 @@
             <shell:ApplicationBarIconButton x:Name="PinButton" IconUri="/icons/appbar.pin.rest.png" Text="pin to start" Click="PinButton_Click"/>
             <shell:ApplicationBar.MenuItems>
                 <shell:ApplicationBarMenuItem Text="delete thread" Click="DeleteThread_Click" />
+                <shell:ApplicationBarMenuItem Text="view contact list" Click="ViewContactList_Click" />
             </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
