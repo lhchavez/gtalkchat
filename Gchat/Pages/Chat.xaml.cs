@@ -104,7 +104,7 @@ namespace Gchat.Pages {
                         otr = message.OTR;
 
                         lock (chatLog) {
-                            if (chatLog.Count >= GoogleTalkHelper.MaximumChatLogSize) {
+                            while (chatLog.Count >= GoogleTalkHelper.MaximumChatLogSize) {
                                 chatLog.RemoveAt(0);
                             }
                             chatLog.Add(new Message {
@@ -175,7 +175,7 @@ namespace Gchat.Pages {
                 Scroller.ScrollToVerticalOffset(Scroller.ExtentHeight);
 
                 lock (chatLog) {
-                    if (chatLog.Count >= GoogleTalkHelper.MaximumChatLogSize) {
+                    while (chatLog.Count >= GoogleTalkHelper.MaximumChatLogSize) {
                         chatLog.RemoveAt(0);
                     }
                     chatLog.Add(new Message {
@@ -228,6 +228,8 @@ namespace Gchat.Pages {
 
                 chatLog = gtalkHelper.ChatLog(to);
 
+                MessageList.Visibility = System.Windows.Visibility.Collapsed;
+
                 MessageList.Children.Clear();
 
                 lock (chatLog) {
@@ -264,6 +266,7 @@ namespace Gchat.Pages {
                     }
                 }
 
+                MessageList.Visibility = System.Windows.Visibility.Visible;
                 MessageList.UpdateLayout();
                 Scroller.UpdateLayout();
                 Scroller.ScrollToVerticalOffset(Scroller.ExtentHeight);
@@ -315,7 +318,7 @@ namespace Gchat.Pages {
             }
 
             lock (chatLog) {
-                if (chatLog.Count >= GoogleTalkHelper.MaximumChatLogSize) {
+                while (chatLog.Count >= GoogleTalkHelper.MaximumChatLogSize) {
                     chatLog.RemoveAt(0);
                 }
                 chatLog.Add(new Message {

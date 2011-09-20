@@ -337,7 +337,7 @@ namespace Gchat.Protocol {
                             }
                         }, null
                     );
-                } catch(WebException e) {
+                } catch(WebException) {
                     // The request was aborted
                     ecb("");
                 }
@@ -393,7 +393,7 @@ namespace Gchat.Protocol {
 
                 contact.Email = data["jid"] as string;
                 if (data.ContainsKey("name")) contact.Name = data["name"] as string;
-                if (data.ContainsKey("photo")) contact.Photo = data["photo"] as string;
+                if (data.ContainsKey("photo")) contact.PhotoHash = data["photo"] as string;
 
                 var sessions = data["sessions"] as Dictionary<string, object>;
 

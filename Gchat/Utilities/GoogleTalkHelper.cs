@@ -17,10 +17,11 @@ using Gchat.Data;
 using Gchat.Protocol;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using System.Threading;
 
 namespace Gchat.Utilities {
     public class GoogleTalkHelper {
-        public const int MaximumChatLogSize = 500;
+        public const int MaximumChatLogSize = 50;
 
         #region Public Events
 
@@ -44,6 +45,8 @@ namespace Gchat.Utilities {
 
         public event RosterUpdatedEventHandler RosterUpdated;
 
+        public delegate void ImageDownloaded(BitmapImage image);
+
         #endregion
 
         #region Public Properties
@@ -66,6 +69,7 @@ namespace Gchat.Utilities {
         private static readonly Regex linkRegex = new Regex("(?:(\\B(?:;-?\\)|:-?\\)|:-?D|:-?P|:-?S|:-?/|:-?\\||:'\\(|:-?\\(|<3))|(https?://)?(([0-9]{1-3}\\.[0-9]{1-3}\\.[0-9]{1-3}\\.[0-9]{1-3})|([a-z0-9.-]+\\.[a-z]{2,4}))(/[-a-z0-9+&@#\\/%?=~_|!:,.;]*[-a-z0-9+&@#\\/%=~_|])?)", RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
         private Queue<ToastPrompt> messageQueue = new Queue<ToastPrompt>();
         private bool messageShowing;
+        private Dictionary<string, ManualResetEvent> photoLocks = new Dictionary<string, ManualResetEvent>();
 
         #endregion
 
@@ -300,27 +304,19 @@ namespace Gchat.Utilities {
         }
 
         public void DownloadImage(Contact contact, Action finished) {
-            var fileName = "Shared/ShellContent/" + contact.Photo + ".jpg";
+            var fileName = "Shared/ShellContent/" + contact.PhotoHash + ".jpg";
+
+            System.Diagnostics.Debug.WriteLine("Downloading " + fileName + " for " + contact);
 
             using (IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication()) {
                 if (isf.FileExists(fileName)) {
-                    long len;
-
-                    using (var file = isf.OpenFile(fileName, FileMode.Open)) {
-                        len = file.Length;
-                    }
-
-                    if (len == 0) {
-                        isf.DeleteFile(fileName);
-                    } else {
-                        finished();
-                        return;
-                    }
+                    finished();
+                    return;
                 }
 
                 var fileStream = isf.CreateFile(fileName);
 
-                var req = WebRequest.CreateHttp(gtalk.RootUrl + "/images/" + contact.Photo);
+                var req = WebRequest.CreateHttp(gtalk.RootUrl + "/images/" + contact.PhotoHash);
 
                 req.BeginGetResponse(a => {
                     var response = (HttpWebResponse) req.EndGetResponse(a);
@@ -331,7 +327,7 @@ namespace Gchat.Utilities {
                         responseStream.BeginRead(
                             data,
                             0,
-                            (int) response.ContentLength,
+                            data.Length,
                             result =>
                                 fileStream.BeginWrite(
                                     data,
@@ -339,6 +335,8 @@ namespace Gchat.Utilities {
                                     data.Length,
                                     async => {
                                         fileStream.Close();
+
+                                        System.Diagnostics.Debug.WriteLine("Finished downloading " + fileName + " for " + contact);
                                         finished();
                                     },
                                     null
@@ -599,8 +597,8 @@ namespace Gchat.Utilities {
 
                                 original.Name = contact.Name ??
                                                 original.Name;
-                                original.Photo = contact.Photo ??
-                                                 original.Photo;
+                                original.PhotoHash = contact.PhotoHash ??
+                                                 original.PhotoHash;
 
                                 original.SetSessions(contact.Sessions);
                             } else {
@@ -669,10 +667,10 @@ namespace Gchat.Utilities {
                         Title = contact.NameOrEmail
                     };
 
-                    if (contact.Photo != null) {
+                    if (contact.PhotoHash != null) {
                         DownloadImage(contact, () => {
                             tile.BackgroundImage =
-                                new Uri("isostore:/Shared/ShellContent/" + contact.Photo + ".jpg");
+                                new Uri("isostore:/Shared/ShellContent/" + contact.PhotoHash + ".jpg");
 
                             ShellTile.Create(GetPinUri(email), tile);
                         });
@@ -770,7 +768,7 @@ namespace Gchat.Utilities {
                 List<Message> chatLog = ChatLog(message.From);
 
                 lock (chatLog) {
-                    if (chatLog.Count >= MaximumChatLogSize) {
+                    while (chatLog.Count >= MaximumChatLogSize) {
                         chatLog.RemoveAt(0);
                     }
                     chatLog.Add(message);
