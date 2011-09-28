@@ -148,6 +148,13 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Gchat_2011_09_18_22_59_18.sap" />
+    <None Include="Gchat_2011_09_18_23_09_48.sap" />
+    <None Include="Gchat_2011_09_18_23_26_01.sap" />
+    <None Include="Gchat_2011_09_18_23_30_39.sap" />
+    <None Include="Gchat_2011_09_19_23_18_47.sap" />
+    <None Include="Gchat_2011_09_20_00_06_44.sap" />
+    <None Include="Gchat_2011_09_20_00_09_50.sap" />
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml">
       <SubType>Designer</SubType>

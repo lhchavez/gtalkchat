@@ -38,7 +38,7 @@
                     <ScrollViewer>
                         <RichTextBox VerticalAlignment="Top" FontSize="{StaticResource PhoneFontSizeMedium}">
                             <Paragraph>
-                                <Run Text="Gchat 1.1" FontSize="{StaticResource PhoneFontSizeLarge}" />
+                                <Run Text="Gchat 1.2" FontSize="{StaticResource PhoneFontSizeLarge}" />
                             </Paragraph>
 
                             <Paragraph>
@@ -93,6 +93,42 @@
 
                             <Paragraph>
                                 <Run Text="This is a third party app and is not endorsed or supported by Google." />
+                            </Paragraph>
+
+                            <Paragraph>
+                                <Run Text="" />
+                            </Paragraph>
+
+                            <Paragraph>
+                                <Run Text="Changelist" />
+                            </Paragraph>
+
+                            <Paragraph>
+                                <Run Text="1.2 Codename Mousse" />
+                            </Paragraph>
+
+                            <Paragraph>
+                                <Run Text="· Fixed a bug with the display pictures" />
+                            </Paragraph>
+
+                            <Paragraph>
+                                <Run Text="· Extended timeout period to 30 seconds" />
+                            </Paragraph>
+
+                            <Paragraph>
+                                <Run Text="· Fixed a couple of crashes" />
+                            </Paragraph>
+
+                            <Paragraph>
+                                <Run Text="" />
+                            </Paragraph>
+
+                            <Paragraph>
+                                <Run Text="1.1 Codename Jelly" />
+                            </Paragraph>
+
+                            <Paragraph>
+                                <Run Text="· Initial release!" />
                             </Paragraph>
                         </RichTextBox>
                     </ScrollViewer>
