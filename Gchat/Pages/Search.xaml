@@ -5,6 +5,7 @@
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
 	xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:local="clr-namespace:Gchat.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
@@ -34,8 +35,14 @@
                     <Rectangle Fill="{StaticResource PhoneAccentBrush}" Grid.RowSpan="2" />
                     <TextBlock Text="{Binding UnreadCount}" Foreground="White" Margin="6,0" FontSize="18" />
                 </Grid>
+                
+                <local:HighlightedTextBlock Grid.Column="2" Grid.Row="0" 
+                                            Margin="12,0,0,0"
+                                            FontSize="{StaticResource PhoneFontSizeLarge}"
+                                            Text="{Binding NameOrEmail}"
+                                            HighlightBrush="{StaticResource PhoneAccentBrush}" 
+                                            HighlightText="{Binding ElementName=SearchBox, Path=Text}" />
 
-                <TextBlock Grid.Column="2" Grid.Row="0" Style="{StaticResource PhoneTextLargeStyle}" Margin="12,0,0,0" Text="{Binding NameOrEmail}" />
                 <TextBlock Grid.Column="2" Grid.Row="1" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="{Binding Status, Converter={StaticResource StatusToColorConverter}}" Text="{Binding Status}" />
 
                 <toolkit:ContextMenuService.ContextMenu>
@@ -55,7 +62,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <TextBox Name="SearchBox" InputScope="Search" />
+            <TextBox Name="SearchBox" InputScope="Search" KeyUp="SearchBox_KeyUp" />
 
             <ListBox Grid.Row="1" 
                      Name="SearchResults" 

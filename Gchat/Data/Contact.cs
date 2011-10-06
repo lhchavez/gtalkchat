@@ -191,6 +191,14 @@ namespace Gchat.Data {
             Changed("Show");
             Changed("Online");
         }
+
+        public bool Matches(string search) {
+            if (Name != null) {
+                return Name.ToLower().Contains(search.ToLower());
+            } else {
+                return Email.ToLower().Contains(search.ToLower());
+            }
+        }
         #endregion
 
         #region INotifyPropertyChanged Members

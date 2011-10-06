@@ -50,5 +50,10 @@ namespace Gchat.Pages {
                 NavigationService.Navigate(new Uri("/Pages/Chat.xaml?from=" + to, UriKind.Relative));
             }
         }
+
+        private void SearchBox_KeyUp(object sender, KeyEventArgs e) {
+            var results = App.Current.Roster.Where(c => c.Matches(SearchBox.Text));
+            SearchResults.ItemsSource = results;
+        }
     }
 }
