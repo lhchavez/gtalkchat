@@ -138,9 +138,9 @@ namespace Gchat.Data {
                         return "offline";
                     }
                 } else if (show == "dnd") {
-                    return "do not disturb";
+                    return "busy";
                 } else if (show == "xa") {
-                    return "extended away";
+                    return "away";
                 } else {
                     return show;
                 }

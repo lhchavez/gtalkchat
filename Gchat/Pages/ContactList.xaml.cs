@@ -7,17 +7,27 @@ using Gchat.Data;
 using Gchat.Utilities;
 using Microsoft.Phone.Controls;
 using System.Linq;
+using System.Collections.Generic;
+using Gchat.Protocol;
 
 namespace Gchat.Pages {
     public partial class ContactList : PhoneApplicationPage {
         private GoogleTalkHelper gtalkHelper;
         private bool reloadedRoster;
 
+        private Dictionary<UserStatus, string> status = new Dictionary<UserStatus,string> { 
+            {UserStatus.Available, "available"}, 
+            {UserStatus.Dnd, "busy"}, 
+            {UserStatus.Away, "away"}
+        };
+
         public ContactList() {
             InitializeComponent();
 
             AllContactsListBox.ItemsSource = App.Current.Roster;
             OnlineContactsListBox.ItemsSource = App.Current.Roster.GetOnlineContacts();
+
+            StatusPicker.ItemsSource = status;
         }
 
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e) {
@@ -151,6 +161,19 @@ namespace Gchat.Pages {
 
         private void SearchButton_Click(object sender, EventArgs e) {
             NavigationService.Navigate(new Uri("/Pages/Search.xaml", UriKind.Relative));
+        }
+
+        private void StatusButton_Click(object sender, EventArgs e) {
+            StatusPicker.Open();
+        }
+
+        private void StatusPicker_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            if (e.AddedItems.Count > 0) {
+                // TODO: complete this
+                // note: this event is fired on first page load, take that into account
+                var status = ((KeyValuePair<UserStatus, string>)e.AddedItems[0]).Key;
+                App.Current.GtalkClient.SetStatus(status, (t) => { }, (t) => { });
+            }
         }
     }
 

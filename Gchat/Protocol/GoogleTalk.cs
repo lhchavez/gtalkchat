@@ -9,6 +9,14 @@ using Gchat.Utilities;
 using Procurios.Public;
 
 namespace Gchat.Protocol {
+    public enum UserStatus {
+        Available,
+        Away,
+        ExtendedAway,
+        Dnd,
+        Offline
+    };
+
     public class GoogleTalk {
         private string token;
         private AesUtility aes;
@@ -23,6 +31,8 @@ namespace Gchat.Protocol {
             SingleString,
             Lines
         };
+
+        
 
         public delegate void WriteDataCallback(StreamWriter sw);
 
@@ -173,6 +183,11 @@ namespace Gchat.Protocol {
                 ecb,
                 null
             );
+        }
+
+        public void SetStatus(UserStatus status, SuccessCallback scb, ErrorCallback ecb) {
+            // TODO: complete this
+            scb(string.Empty);
         }
 
         public void GetRoster(RosterCallback rcb, ErrorCallback ecb) {
