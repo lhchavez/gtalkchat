@@ -148,6 +148,10 @@ namespace Gchat.Pages {
 
             gtalkHelper.PinContact(c.Email);
         }
+
+        private void SearchButton_Click(object sender, EventArgs e) {
+            NavigationService.Navigate(new Uri("/Pages/Search.xaml", UriKind.Relative));
+        }
     }
 
     public class NumberToVisibilityConverter : IValueConverter {
