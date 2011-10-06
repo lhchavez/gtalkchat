@@ -8,6 +8,7 @@ using Gchat.Protocol;
 using Gchat.Utilities;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using System.Collections.ObjectModel;
 
 namespace Gchat {
     public partial class App : Application {
@@ -26,6 +27,8 @@ namespace Gchat {
         public GoogleTalkHelper GtalkHelper { get; set; }
 
         public Roster Roster { get; set; }
+
+        public ObservableCollection<Contact> RecentContacts { get; set; }
 
         public string CurrentChat { get; set; }
 
@@ -81,12 +84,17 @@ namespace Gchat {
             if (!Settings.Contains("unread")) {
                 Settings["unread"] = new Dictionary<string, int>();
             }
+            if (!Settings.Contains("recent")) {
+                Settings["recent"] = new ObservableCollection<Contact>();
+            }
 
             Roster = new Roster();
 
             GtalkHelper = new GoogleTalkHelper();
 
             Roster.Load();
+
+            RecentContacts = Settings["recent"] as ObservableCollection<Contact>;
 
             PushHelper.RegisterPushNotifications();
 
@@ -108,9 +116,10 @@ namespace Gchat {
         // Code to execute when the application is activated (brought to foreground)
         // This code will not execute when the application is first launched
         private void Application_Activated(object sender, ActivatedEventArgs e) {
-            if(Settings == null) Settings = IsolatedStorageSettings.ApplicationSettings;
-            if(PushHelper == null) PushHelper = new PushHelper();
+            if (Settings == null) Settings = IsolatedStorageSettings.ApplicationSettings;
+            if (PushHelper == null) PushHelper = new PushHelper();
             if (GtalkClient == null) GtalkClient = new GoogleTalk();
+            if (RecentContacts == null) Settings["recent"] = RecentContacts = new ObservableCollection<Contact>();
 
             if (!Settings.Contains("chatlog")) {
                 Settings["chatlog"] = new Dictionary<string, List<Message>>();

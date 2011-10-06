@@ -22,6 +22,7 @@ using System.Threading;
 namespace Gchat.Utilities {
     public class GoogleTalkHelper {
         public const int MaximumChatLogSize = 50;
+        public const int RecentContactsCount = 10;
 
         #region Public Events
 
@@ -809,6 +810,13 @@ namespace Gchat.Utilities {
                     // TODO: only for sanity-of-mind-purposes. MUST remove eventually
                     return;
                 }
+
+                App.Current.RootFrame.Dispatcher.BeginInvoke(() => {
+                    if (!App.Current.RecentContacts.Remove(contact) && App.Current.RecentContacts.Count == RecentContactsCount) {
+                        App.Current.RecentContacts.RemoveAt(App.Current.RecentContacts.Count - 1);
+                    }
+                    App.Current.RecentContacts.Insert(0, contact);
+                });
 
                 if (App.Current.CurrentChat == null || message.From.IndexOf(App.Current.CurrentChat) != 0) {
                     var unread = settings["unread"] as Dictionary<string, int>;
