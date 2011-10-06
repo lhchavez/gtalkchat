@@ -8,7 +8,7 @@
 	mc:Ignorable="d"
 	x:Class="Gchat.Controls.SentChatBubble"
 	d:DesignWidth="332" d:DesignHeight="86"
-    DataContext="{Binding RelativeSource={RelativeSource Self}}">
+    DataContext="{Binding RelativeSource={RelativeSource Self}, Mode=OneTime}">
     
     <local:ChatBubble.Resources>
         <toolkit:ThreadDateTimeConverter x:Key="TimeConverter" />
@@ -26,8 +26,8 @@
 					<RowDefinition Height="Auto" />
 				</Grid.RowDefinitions>
 				<Rectangle Name="BubbleBg" Grid.RowSpan="2" />
-                <local:LinkifiedTextBox Text="{Binding Text}" x:Name="MessageText" Margin="0,6,0,0" />
-                <TextBlock Grid.Row="1" Text="{Binding TimeStamp, Converter={StaticResource TimeConverter}}" Foreground="#99FFFFFF" HorizontalAlignment="Right" Margin="12,0,12,6" FontSize="{StaticResource PhoneFontSizeNormal}" />
+                <local:LinkifiedTextBox Text="{Binding Text, Mode=OneTime}" x:Name="MessageText" Margin="0,6,0,0" />
+                <TextBlock Grid.Row="1" Text="{Binding TimeStamp, Converter={StaticResource TimeConverter}, Mode=OneTime}" Foreground="#99FFFFFF" HorizontalAlignment="Right" Margin="12,0,12,6" FontSize="{StaticResource PhoneFontSizeNormal}" />
 			</Grid>
 			<Path Name="BubblePoint" Data="M0,0 L1,1 L1,0" HorizontalAlignment="Right" Margin="0,0,12,0" Grid.Row="1" Stretch="Fill" UseLayoutRounding="False" Width="16" />
 		</Grid>

@@ -9,10 +9,18 @@ using Gchat.Utilities;
 using Procurios.Public;
 
 namespace Gchat.Protocol {
+    public enum UserStatus {
+        Available,
+        Away,
+        ExtendedAway,
+        Dnd,
+        Offline
+    };
+
     public class GoogleTalk {
         private string token;
         private AesUtility aes;
-        public const int MessageTimeout = 10000;
+        public const int MessageTimeout = 30000;
         public bool LoggedIn { get; private set; }
         public const string DefaultRootUrl = "https://gtalkjsonproxy.lhchavez.com";
         private string rootUrl = DefaultRootUrl;
@@ -23,6 +31,8 @@ namespace Gchat.Protocol {
             SingleString,
             Lines
         };
+
+        
 
         public delegate void WriteDataCallback(StreamWriter sw);
 
@@ -173,6 +183,11 @@ namespace Gchat.Protocol {
                 ecb,
                 null
             );
+        }
+
+        public void SetStatus(UserStatus status, SuccessCallback scb, ErrorCallback ecb) {
+            // TODO: complete this
+            scb(string.Empty);
         }
 
         public void GetRoster(RosterCallback rcb, ErrorCallback ecb) {
@@ -337,7 +352,7 @@ namespace Gchat.Protocol {
                             }
                         }, null
                     );
-                } catch(WebException e) {
+                } catch(WebException) {
                     // The request was aborted
                     ecb("");
                 }
@@ -393,7 +408,7 @@ namespace Gchat.Protocol {
 
                 contact.Email = data["jid"] as string;
                 if (data.ContainsKey("name")) contact.Name = data["name"] as string;
-                if (data.ContainsKey("photo")) contact.Photo = data["photo"] as string;
+                if (data.ContainsKey("photo")) contact.PhotoHash = data["photo"] as string;
 
                 var sessions = data["sessions"] as Dictionary<string, object>;
 

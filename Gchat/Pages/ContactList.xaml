@@ -17,9 +17,6 @@
     shell:SystemTray.IsVisible="True">
     
     <phone:PhoneApplicationPage.Resources>
-        <local:NumberToVisibilityConverter x:Key="NumberToVisibilityConverter" />
-        <local:StatusToColorConverter x:Key="StatusToColorConverter" />
-        
         <DataTemplate x:Key="ContactTemplate">
             <Grid Margin="0,0,0,6">
                 <Grid.ColumnDefinitions>
@@ -71,12 +68,26 @@
                 </Grid>
             </controls:PivotItem>
         </controls:Pivot>
+
+        <toolkit:ListPicker Name="StatusPicker" 
+                            ExpansionMode="FullScreenOnly" 
+                            Visibility="Collapsed" 
+                            FullModeHeader="SET CHAT STATUS"
+                            SelectionChanged="StatusPicker_SelectionChanged">
+            <toolkit:ListPicker.FullModeItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Value}" FontSize="{StaticResource PhoneFontSizeExtraLarge}" Margin="0,12" />
+                </DataTemplate>
+            </toolkit:ListPicker.FullModeItemTemplate>
+        </toolkit:ListPicker>
     </Grid>
 
     
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
             <shell:ApplicationBarIconButton x:Name="RefreshButton" IconUri="/icons/appbar.refresh.rest.png" Text="refresh" Click="RefreshButton_Click" />
+            <shell:ApplicationBarIconButton x:Name="StatusButton" IconUri="/icons/appbar.status.rest.png" Text="status" Click="StatusButton_Click"/>
+            <shell:ApplicationBarIconButton x:Name="SearchButton" IconUri="/icons/appbar.feature.search.rest.png" Text="search" Click="SearchButton_Click"/>
             <shell:ApplicationBarIconButton x:Name="SettingsButton" IconUri="/icons/appbar.feature.settings.rest.png" Text="settings" Click="SettingsButton_Click"/>
             <shell:ApplicationBar.MenuItems>
                 <shell:ApplicationBarMenuItem Text="log out" Click="Logout_Click" />

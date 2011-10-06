@@ -6,6 +6,7 @@ using Gchat.Utilities;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using System.Windows;
+using System.Linq;
 
 namespace Gchat.Pages {
     public partial class Login : PhoneApplicationPage {
@@ -71,7 +72,11 @@ namespace Gchat.Pages {
         }
 
         protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e) {
-            throw new QuitException();
+            base.OnBackKeyPress(e);
+
+            if (App.Current.RootFrame.BackStack.Count() > 0) {
+                App.Current.RootFrame.RemoveBackEntry();
+            }
         }
 
         private void Password_KeyUp(object sender, System.Windows.Input.KeyEventArgs e) {

@@ -19,7 +19,7 @@ namespace Gchat.Pages {
         private GoogleTalk gtalk;
         private GoogleTalkHelper gtalkHelper;
         private IsolatedStorageSettings settings;
-        private List<Message> chatLog;
+        private List<Message> chatLog = new List<Message>();
 
         private string to;
         private string email;
@@ -33,12 +33,14 @@ namespace Gchat.Pages {
         protected override void OnNavigatedTo(NavigationEventArgs e) {
             base.OnNavigatedTo(e);
 
+            App.Current.LastPage = e.Uri.OriginalString;
+
             gtalk = App.Current.GtalkClient;
             gtalkHelper = App.Current.GtalkHelper;
             settings = App.Current.Settings;
 
             App.Current.GtalkHelper.SetCorrectOrientation(this);
-
+            
             if (NavigationContext.QueryString.ContainsKey("from")) {
                 to = NavigationContext.QueryString["from"];
                 email = to;
@@ -56,7 +58,7 @@ namespace Gchat.Pages {
 
             if (App.Current.Roster.Contains(email)) {
                 Initialize();
-            } else if (gtalkHelper.RosterLoaded) {
+            } else if (gtalkHelper.RosterLoaded && gtalk.LoggedIn) {
                 if(e.IsNavigationInitiator) {
                     gtalkHelper.GetOfflineMessages();
                 }
@@ -102,7 +104,7 @@ namespace Gchat.Pages {
                         otr = message.OTR;
 
                         lock (chatLog) {
-                            if (chatLog.Count >= GoogleTalkHelper.MaximumChatLogSize) {
+                            while (chatLog.Count >= GoogleTalkHelper.MaximumChatLogSize) {
                                 chatLog.RemoveAt(0);
                             }
                             chatLog.Add(new Message {
@@ -159,46 +161,59 @@ namespace Gchat.Pages {
 
             (ApplicationBar.Buttons[0] as ApplicationBarIconButton).IsEnabled = false;
 
-            gtalk.SendMessage(to, MessageText.Text, data => Dispatcher.BeginInvoke(() => {
-                var bubble = new SentChatBubble();
-                bubble.Text = MessageText.Text;
-                bubble.TimeStamp = DateTime.Now;
+            try {
+                gtalk.SendMessage(to, MessageText.Text, data => Dispatcher.BeginInvoke(() => {
+                    var bubble = new SentChatBubble();
+                    bubble.Text = MessageText.Text;
+                    bubble.TimeStamp = DateTime.Now;
 
-                MessageList.Children.Add(bubble);
+                    MessageList.Children.Add(bubble);
 
-                (ApplicationBar.Buttons[0] as ApplicationBarIconButton).IsEnabled = true;
+                    (ApplicationBar.Buttons[0] as ApplicationBarIconButton).IsEnabled = true;
 
-                MessageList.UpdateLayout();
-                Scroller.UpdateLayout();
-                Scroller.ScrollToVerticalOffset(Scroller.ExtentHeight);
+                    MessageList.UpdateLayout();
+                    Scroller.UpdateLayout();
+                    Scroller.ScrollToVerticalOffset(Scroller.ExtentHeight);
 
-                lock (chatLog) {
-                    if (chatLog.Count >= GoogleTalkHelper.MaximumChatLogSize) {
-                        chatLog.RemoveAt(0);
-                    }
-                    chatLog.Add(new Message {
-                        Body = MessageText.Text,
-                        Outbound = true,
-                        Time = DateTime.Now,
-                        OTR = otr
-                    });
-                }
-
-                MessageText.Text = "";
-            }), error => {
-                if (error.StartsWith("403")) {
-                    settings.Remove("token");
-                    settings.Remove("rootUrl");
-                    gtalkHelper.LoginIfNeeded();
-                } else {
-                    Dispatcher.BeginInvoke(
-                        () => {
-                            (ApplicationBar.Buttons[0] as ApplicationBarIconButton).IsEnabled = true;
-                            gtalkHelper.ShowToast("Message not sent. Please try again later");
+                    lock (chatLog) {
+                        while (chatLog.Count >= GoogleTalkHelper.MaximumChatLogSize) {
+                            chatLog.RemoveAt(0);
                         }
-                    );
-                }
-            });
+                        chatLog.Add(new Message {
+                            Body = MessageText.Text,
+                            Outbound = true,
+                            Time = DateTime.Now,
+                            OTR = otr
+                        });
+                    }
+
+                    MessageText.Text = "";
+                }), error => {
+                    if (error.StartsWith("403")) {
+                        settings.Remove("token");
+                        settings.Remove("rootUrl");
+                        gtalkHelper.LoginIfNeeded();
+                    } else {
+                        Dispatcher.BeginInvoke(
+                            () => {
+                                (ApplicationBar.Buttons[0] as ApplicationBarIconButton).IsEnabled = true;
+                                gtalkHelper.ShowToast("Message not sent. Please try again later");
+                            }
+                        );
+                    }
+                });
+            } catch (InvalidOperationException) {
+                Dispatcher.BeginInvoke(
+                    () => {
+                        MessageBox.Show(
+                            "Your session has expired. Try logging in again.",
+                            "Authentication error",
+                            MessageBoxButton.OK
+                        );
+                        App.Current.RootFrame.Navigate(new Uri("/Pages/Login.xaml", UriKind.Relative));
+                    }
+                );
+            }
         }
 
         private void Initialize() {
@@ -225,6 +240,8 @@ namespace Gchat.Pages {
                 }
 
                 chatLog = gtalkHelper.ChatLog(to);
+
+                MessageList.Visibility = System.Windows.Visibility.Collapsed;
 
                 MessageList.Children.Clear();
 
@@ -262,6 +279,7 @@ namespace Gchat.Pages {
                     }
                 }
 
+                MessageList.Visibility = System.Windows.Visibility.Visible;
                 MessageList.UpdateLayout();
                 Scroller.UpdateLayout();
                 Scroller.ScrollToVerticalOffset(Scroller.ExtentHeight);
@@ -313,7 +331,7 @@ namespace Gchat.Pages {
             }
 
             lock (chatLog) {
-                if (chatLog.Count >= GoogleTalkHelper.MaximumChatLogSize) {
+                while (chatLog.Count >= GoogleTalkHelper.MaximumChatLogSize) {
                     chatLog.RemoveAt(0);
                 }
                 chatLog.Add(new Message {
@@ -324,20 +342,27 @@ namespace Gchat.Pages {
             }
         }
 
-        private void DeleteThread_Click(object sender, EventArgs e) {
+        private void DeleteThread_Click(object sender, EventArgs e)
+        {
             MessageBoxResult delete = MessageBox.Show(
                 "All messages in this thread will be deleted from the app. They may still persist in your Gmail chat history.",
                 "Delete thread?",
                 MessageBoxButton.OKCancel
             );
 
-            if (delete == MessageBoxResult.OK) {
+            if (delete == MessageBoxResult.OK)
+            {
                 MessageList.Children.Clear();
 
-                lock (chatLog) {
+                lock (chatLog)
+                {
                     chatLog.Clear();
                 }
             }
+        }
+
+        private void ViewContactList_Click(object sender, EventArgs e) {
+            Dispatcher.BeginInvoke(() => App.Current.RootFrame.Navigate(new Uri("/Pages/ContactList.xaml", UriKind.Relative)));
         }
 
         private void MessageText_KeyUp(object sender, System.Windows.Input.KeyEventArgs e) {

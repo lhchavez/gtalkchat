@@ -8,6 +8,7 @@ using Gchat.Protocol;
 using Gchat.Utilities;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using System.Collections.ObjectModel;
 
 namespace Gchat {
     public partial class App : Application {
@@ -27,7 +28,11 @@ namespace Gchat {
 
         public Roster Roster { get; set; }
 
+        public ObservableCollection<Contact> RecentContacts { get; set; }
+
         public string CurrentChat { get; set; }
+
+        public string LastPage { get; set; }
 
         public new static App Current {
             get { return (App) Application.Current; }
@@ -79,12 +84,17 @@ namespace Gchat {
             if (!Settings.Contains("unread")) {
                 Settings["unread"] = new Dictionary<string, int>();
             }
+            if (!Settings.Contains("recent")) {
+                Settings["recent"] = new ObservableCollection<Contact>();
+            }
 
             Roster = new Roster();
 
             GtalkHelper = new GoogleTalkHelper();
 
             Roster.Load();
+
+            RecentContacts = Settings["recent"] as ObservableCollection<Contact>;
 
             PushHelper.RegisterPushNotifications();
 
@@ -106,9 +116,10 @@ namespace Gchat {
         // Code to execute when the application is activated (brought to foreground)
         // This code will not execute when the application is first launched
         private void Application_Activated(object sender, ActivatedEventArgs e) {
-            if(Settings == null) Settings = IsolatedStorageSettings.ApplicationSettings;
-            if(PushHelper == null) PushHelper = new PushHelper();
+            if (Settings == null) Settings = IsolatedStorageSettings.ApplicationSettings;
+            if (PushHelper == null) PushHelper = new PushHelper();
             if (GtalkClient == null) GtalkClient = new GoogleTalk();
+            if (RecentContacts == null) Settings["recent"] = RecentContacts = new ObservableCollection<Contact>();
 
             if (!Settings.Contains("chatlog")) {
                 Settings["chatlog"] = new Dictionary<string, List<Message>>();
@@ -150,18 +161,16 @@ namespace Gchat {
 
         // Code to execute on Unhandled Exceptions
         private void Application_UnhandledException(object sender, ApplicationUnhandledExceptionEventArgs e) {
-            try {
-                if (!(e.ExceptionObject is QuitException)) {
-                    Settings["lastError"] = e.ExceptionObject + "\n" + e.ExceptionObject.StackTrace;
-                    Settings.Save();
-                }
-            } catch (Exception) {
-                // just hope for the best.
-            }
-
             if (System.Diagnostics.Debugger.IsAttached) {
                 // An unhandled exception has occurred; break into the debugger
                 System.Diagnostics.Debugger.Break();
+            } else {
+                try {
+                    Settings["lastError"] = e.ExceptionObject + "\n" + e.ExceptionObject.StackTrace;
+                    Settings.Save();
+                } catch (Exception) {
+                    // just hope for the best.
+                }
             }
         }
 

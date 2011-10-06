@@ -54,38 +54,82 @@ namespace Gchat.Data {
 
         private string photo;
         [DataMember]
-        public string Photo {
+        public string PhotoHash {
             get { return photo; }
             set {
                 if (value != photo) {
                     photo = value;
-                    Changed("Photo");
+                    Changed("PhotoHash");
 
-                    App.Current.GtalkHelper.DownloadImage(this, () => {
-                        if (!string.IsNullOrEmpty(Photo)) {
-                            using (var isf = IsolatedStorageFile.GetUserStoreForApplication()) {
-                                var fileName = "Shared/ShellContent/" + Photo + ".jpg";
-                                if (isf.FileExists(fileName)) {
-                                    try {
-                                        var file = isf.OpenFile(fileName, FileMode.Open, FileAccess.Read);
-                                        if (file.Length != 0) {
-                                            App.Current.RootFrame.Dispatcher.BeginInvoke(() => {
-                                                PhotoUri = new BitmapImage();
-                                                PhotoUri.SetSource(file);
+                    if (!string.IsNullOrEmpty(photo)) {
+                        var fileName = "Shared/ShellContent/" + photo + ".jpg";
+
+                        using (IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication()) {
+                            if (isf.FileExists(fileName)) {
+                                IsolatedStorageFileStream file;
+
+                                try {
+                                    file = isf.OpenFile(fileName, FileMode.Open);
+                                } catch (IsolatedStorageException e) {
+                                    System.Diagnostics.Debug.WriteLine(e);
+                                    return;
+                                }
+
+                                if (file.Length == 0) {
+                                    file.Close();
+                                    isf.DeleteFile(fileName);
+                                } else {
+                                    App.Current.RootFrame.Dispatcher.BeginInvoke(() => {
+                                        try {
+                                            PhotoUri = new BitmapImage();
+                                            PhotoUri.SetSource(file);
+                                            Changed("PhotoUri");
+                                        } catch (Exception e) {
+                                            System.Diagnostics.Debug.WriteLine(e);
+                                        } finally {
+                                            try {
                                                 file.Close();
-                                                Changed("PhotoUri");
-                                            });
-                                        } else {
-                                            file.Close();
+                                            } catch (Exception) { }
                                         }
-                                    } catch (Exception ex) {
-                                        System.Diagnostics.Debug.WriteLine(
-                                            "For " + NameOrEmail + " (" + Photo + "): " + ex);
-                                    }
+                                    });
+
+                                    return;
                                 }
                             }
                         }
-                    });
+
+                        App.Current.GtalkHelper.DownloadImage(
+                            this,
+                            () => {
+                                try {
+                                    using (var isf = IsolatedStorageFile.GetUserStoreForApplication()) {
+                                        var file = isf.OpenFile(fileName, FileMode.Open);
+
+                                        App.Current.RootFrame.Dispatcher.BeginInvoke(() => {
+                                            try {
+                                                PhotoUri = new BitmapImage();
+                                                PhotoUri.SetSource(file);
+                                                Changed("PhotoUri");
+                                            } catch (Exception e) {
+                                                System.Diagnostics.Debug.WriteLine(e);
+                                            } finally {
+                                                try {
+                                                    file.Close();
+                                                } catch (Exception) { }
+                                            }
+                                        });
+                                    }
+                                } catch (IsolatedStorageException e) {
+                                    System.Diagnostics.Debug.WriteLine(e);
+                                }
+                            },
+                            () => {
+                            }
+                        );
+                    } else {
+                        PhotoUri = null;
+                        Changed("PhotoUri");
+                    }
                 }
             }
         }
@@ -113,9 +157,9 @@ namespace Gchat.Data {
                         return "offline";
                     }
                 } else if (show == "dnd") {
-                    return "do not disturb";
+                    return "busy";
                 } else if (show == "xa") {
-                    return "extended away";
+                    return "away";
                 } else {
                     return show;
                 }
@@ -165,6 +209,14 @@ namespace Gchat.Data {
             }
             Changed("Show");
             Changed("Online");
+        }
+
+        public bool Matches(string search) {
+            if (Name != null) {
+                return Name.ToLower().Contains(search.ToLower());
+            } else {
+                return Email.ToLower().Contains(search.ToLower());
+            }
         }
         #endregion
 

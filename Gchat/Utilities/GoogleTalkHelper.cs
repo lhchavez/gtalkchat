@@ -17,10 +17,12 @@ using Gchat.Data;
 using Gchat.Protocol;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using System.Threading;
 
 namespace Gchat.Utilities {
     public class GoogleTalkHelper {
-        public const int MaximumChatLogSize = 500;
+        public const int MaximumChatLogSize = 50;
+        public const int RecentContactsCount = 10;
 
         #region Public Events
 
@@ -44,6 +46,8 @@ namespace Gchat.Utilities {
 
         public event RosterUpdatedEventHandler RosterUpdated;
 
+        public delegate void ImageDownloaded(BitmapImage image);
+
         #endregion
 
         #region Public Properties
@@ -66,6 +70,7 @@ namespace Gchat.Utilities {
         private static readonly Regex linkRegex = new Regex("(?:(\\B(?:;-?\\)|:-?\\)|:-?D|:-?P|:-?S|:-?/|:-?\\||:'\\(|:-?\\(|<3))|(https?://)?(([0-9]{1-3}\\.[0-9]{1-3}\\.[0-9]{1-3}\\.[0-9]{1-3})|([a-z0-9.-]+\\.[a-z]{2,4}))(/[-a-z0-9+&@#\\/%?=~_|!:,.;]*[-a-z0-9+&@#\\/%=~_|])?)", RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
         private Queue<ToastPrompt> messageQueue = new Queue<ToastPrompt>();
         private bool messageShowing;
+        private Dictionary<string, ManualResetEvent> photoLocks = new Dictionary<string, ManualResetEvent>();
 
         #endregion
 
@@ -299,8 +304,10 @@ namespace Gchat.Utilities {
             }
         }
 
-        public void DownloadImage(Contact contact, Action finished) {
-            var fileName = "Shared/ShellContent/" + contact.Photo + ".jpg";
+        public void DownloadImage(Contact contact, Action finished, Action error) {
+            var fileName = "Shared/ShellContent/" + contact.PhotoHash + ".jpg";
+
+            System.Diagnostics.Debug.WriteLine("Downloading " + fileName + " for " + contact);
 
             using (IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication()) {
                 if (isf.FileExists(fileName)) {
@@ -310,10 +317,18 @@ namespace Gchat.Utilities {
 
                 var fileStream = isf.CreateFile(fileName);
 
-                var req = WebRequest.CreateHttp(gtalk.RootUrl + "/images/" + contact.Photo);
+                var req = WebRequest.CreateHttp(gtalk.RootUrl + "/images/" + contact.PhotoHash);
 
                 req.BeginGetResponse(a => {
-                    var response = (HttpWebResponse) req.EndGetResponse(a);
+                    HttpWebResponse response;
+
+                    try {
+                        response = (HttpWebResponse)req.EndGetResponse(a);
+                    } catch (Exception e) {
+                        System.Diagnostics.Debug.WriteLine(e);
+                        error();
+                        return;
+                    }
 
                     using (var responseStream = response.GetResponseStream()) {
                         var data = new byte[response.ContentLength];
@@ -321,7 +336,7 @@ namespace Gchat.Utilities {
                         responseStream.BeginRead(
                             data,
                             0,
-                            (int) response.ContentLength,
+                            data.Length,
                             result =>
                                 fileStream.BeginWrite(
                                     data,
@@ -329,6 +344,8 @@ namespace Gchat.Utilities {
                                     data.Length,
                                     async => {
                                         fileStream.Close();
+
+                                        System.Diagnostics.Debug.WriteLine("Finished downloading " + fileName + " for " + contact);
                                         finished();
                                     },
                                     null
@@ -432,13 +449,22 @@ namespace Gchat.Utilities {
                             uri = uri.Insert(0, "http://");
                         }
 
-                        var link = new Hyperlink {
-                            NavigateUri = new Uri(uri),
-                            TargetName = "_blank"
-                        };
-                        link.Inlines.Add(m.Groups[0].Value);
+                        // TODO: Investigate why this crashes instead of just ignoring the error.
+                        try {
+                            var link = new Hyperlink {
+                                NavigateUri = new Uri(uri),
+                                TargetName = "_blank"
+                            };
+                            link.Inlines.Add(m.Groups[0].Value);
 
-                        paragraph.Inlines.Add(link);
+                            paragraph.Inlines.Add(link);
+                        } catch (Exception) {
+                            paragraph.Inlines.Add(
+                                new Run {
+                                    Text = uri
+                                }
+                            );
+                        }
                     }
                 }
 
@@ -589,8 +615,8 @@ namespace Gchat.Utilities {
 
                                 original.Name = contact.Name ??
                                                 original.Name;
-                                original.Photo = contact.Photo ??
-                                                 original.Photo;
+                                original.PhotoHash = contact.PhotoHash ??
+                                                 original.PhotoHash;
 
                                 original.SetSessions(contact.Sessions);
                             } else {
@@ -659,13 +685,19 @@ namespace Gchat.Utilities {
                         Title = contact.NameOrEmail
                     };
 
-                    if (contact.Photo != null) {
-                        DownloadImage(contact, () => {
-                            tile.BackgroundImage =
-                                new Uri("isostore:/Shared/ShellContent/" + contact.Photo + ".jpg");
+                    if (contact.PhotoHash != null) {
+                        DownloadImage(
+                            contact,
+                            () => {
+                                tile.BackgroundImage =
+                                    new Uri("isostore:/Shared/ShellContent/" + contact.PhotoHash + ".jpg");
 
-                            ShellTile.Create(GetPinUri(email), tile);
-                        });
+                                ShellTile.Create(GetPinUri(email), tile);
+                            },
+                            () => {
+                                ShellTile.Create(GetPinUri(email), tile);
+                            }
+                        );
                     } else {
                         ShellTile.Create(GetPinUri(email), tile);
                     }
@@ -760,7 +792,7 @@ namespace Gchat.Utilities {
                 List<Message> chatLog = ChatLog(message.From);
 
                 lock (chatLog) {
-                    if (chatLog.Count >= MaximumChatLogSize) {
+                    while (chatLog.Count >= MaximumChatLogSize) {
                         chatLog.RemoveAt(0);
                     }
                     chatLog.Add(message);
@@ -778,6 +810,13 @@ namespace Gchat.Utilities {
                     // TODO: only for sanity-of-mind-purposes. MUST remove eventually
                     return;
                 }
+
+                App.Current.RootFrame.Dispatcher.BeginInvoke(() => {
+                    if (!App.Current.RecentContacts.Remove(contact) && App.Current.RecentContacts.Count == RecentContactsCount) {
+                        App.Current.RecentContacts.RemoveAt(App.Current.RecentContacts.Count - 1);
+                    }
+                    App.Current.RecentContacts.Insert(0, contact);
+                });
 
                 if (App.Current.CurrentChat == null || message.From.IndexOf(App.Current.CurrentChat) != 0) {
                     var unread = settings["unread"] as Dictionary<string, int>;
