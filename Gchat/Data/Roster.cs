@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using Gchat.Utilities;
+using System;
 
 namespace Gchat.Data {
     public class Roster : List<Contact>, INotifyCollectionChanged {
@@ -117,16 +118,22 @@ namespace Gchat.Data {
         public void Load() {
             if (!App.Current.Settings.Contains("roster")) return;
 
-            var serialized = App.Current.Settings["roster"] as string;
+            try {
+                var serialized = App.Current.Settings["roster"] as string;
 
-            if (string.IsNullOrEmpty(serialized)) return;
+                if (string.IsNullOrEmpty(serialized)) return;
 
-            var ser = new DataContractJsonSerializer(typeof(Contact));
+                var ser = new DataContractJsonSerializer(typeof(Contact));
 
-            foreach (var line in serialized.Split(new[] {'\n'})) {
-                using (var ms = new MemoryStream(Encoding.UTF8.GetBytes(line))) {
-                    Add(ser.ReadObject(ms) as Contact);
+                foreach (var line in serialized.Split(new[] { '\n' })) {
+                    using (var ms = new MemoryStream(Encoding.UTF8.GetBytes(line))) {
+                        Add(ser.ReadObject(ms) as Contact);
+                    }
                 }
+            } catch (Exception e) {
+                App.Current.Settings.Remove("roster");
+
+                System.Diagnostics.Debug.WriteLine(e);
             }
         }
 

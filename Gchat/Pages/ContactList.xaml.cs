@@ -60,7 +60,7 @@ namespace Gchat.Pages {
                     }
                 });
 
-            if (gtalkHelper.RosterLoaded) {
+            if (gtalkHelper.RosterLoaded && App.Current.GtalkClient.LoggedIn) {
                 if (e.IsNavigationInitiator) {
                     gtalkHelper.GetOfflineMessages();
                 }

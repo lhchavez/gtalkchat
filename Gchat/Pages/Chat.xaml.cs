@@ -19,7 +19,7 @@ namespace Gchat.Pages {
         private GoogleTalk gtalk;
         private GoogleTalkHelper gtalkHelper;
         private IsolatedStorageSettings settings;
-        private List<Message> chatLog;
+        private List<Message> chatLog = new List<Message>();
 
         private string to;
         private string email;
@@ -58,7 +58,7 @@ namespace Gchat.Pages {
 
             if (App.Current.Roster.Contains(email)) {
                 Initialize();
-            } else if (gtalkHelper.RosterLoaded) {
+            } else if (gtalkHelper.RosterLoaded && gtalk.LoggedIn) {
                 if(e.IsNavigationInitiator) {
                     gtalkHelper.GetOfflineMessages();
                 }
@@ -161,46 +161,59 @@ namespace Gchat.Pages {
 
             (ApplicationBar.Buttons[0] as ApplicationBarIconButton).IsEnabled = false;
 
-            gtalk.SendMessage(to, MessageText.Text, data => Dispatcher.BeginInvoke(() => {
-                var bubble = new SentChatBubble();
-                bubble.Text = MessageText.Text;
-                bubble.TimeStamp = DateTime.Now;
+            try {
+                gtalk.SendMessage(to, MessageText.Text, data => Dispatcher.BeginInvoke(() => {
+                    var bubble = new SentChatBubble();
+                    bubble.Text = MessageText.Text;
+                    bubble.TimeStamp = DateTime.Now;
 
-                MessageList.Children.Add(bubble);
+                    MessageList.Children.Add(bubble);
 
-                (ApplicationBar.Buttons[0] as ApplicationBarIconButton).IsEnabled = true;
+                    (ApplicationBar.Buttons[0] as ApplicationBarIconButton).IsEnabled = true;
 
-                MessageList.UpdateLayout();
-                Scroller.UpdateLayout();
-                Scroller.ScrollToVerticalOffset(Scroller.ExtentHeight);
+                    MessageList.UpdateLayout();
+                    Scroller.UpdateLayout();
+                    Scroller.ScrollToVerticalOffset(Scroller.ExtentHeight);
 
-                lock (chatLog) {
-                    while (chatLog.Count >= GoogleTalkHelper.MaximumChatLogSize) {
-                        chatLog.RemoveAt(0);
-                    }
-                    chatLog.Add(new Message {
-                        Body = MessageText.Text,
-                        Outbound = true,
-                        Time = DateTime.Now,
-                        OTR = otr
-                    });
-                }
-
-                MessageText.Text = "";
-            }), error => {
-                if (error.StartsWith("403")) {
-                    settings.Remove("token");
-                    settings.Remove("rootUrl");
-                    gtalkHelper.LoginIfNeeded();
-                } else {
-                    Dispatcher.BeginInvoke(
-                        () => {
-                            (ApplicationBar.Buttons[0] as ApplicationBarIconButton).IsEnabled = true;
-                            gtalkHelper.ShowToast("Message not sent. Please try again later");
+                    lock (chatLog) {
+                        while (chatLog.Count >= GoogleTalkHelper.MaximumChatLogSize) {
+                            chatLog.RemoveAt(0);
                         }
-                    );
-                }
-            });
+                        chatLog.Add(new Message {
+                            Body = MessageText.Text,
+                            Outbound = true,
+                            Time = DateTime.Now,
+                            OTR = otr
+                        });
+                    }
+
+                    MessageText.Text = "";
+                }), error => {
+                    if (error.StartsWith("403")) {
+                        settings.Remove("token");
+                        settings.Remove("rootUrl");
+                        gtalkHelper.LoginIfNeeded();
+                    } else {
+                        Dispatcher.BeginInvoke(
+                            () => {
+                                (ApplicationBar.Buttons[0] as ApplicationBarIconButton).IsEnabled = true;
+                                gtalkHelper.ShowToast("Message not sent. Please try again later");
+                            }
+                        );
+                    }
+                });
+            } catch (InvalidOperationException) {
+                Dispatcher.BeginInvoke(
+                    () => {
+                        MessageBox.Show(
+                            "Your session has expired. Try logging in again.",
+                            "Authentication error",
+                            MessageBoxButton.OK
+                        );
+                        App.Current.RootFrame.Navigate(new Uri("/Pages/Login.xaml", UriKind.Relative));
+                    }
+                );
+            }
         }
 
         private void Initialize() {

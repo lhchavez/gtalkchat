@@ -152,16 +152,16 @@ namespace Gchat {
 
         // Code to execute on Unhandled Exceptions
         private void Application_UnhandledException(object sender, ApplicationUnhandledExceptionEventArgs e) {
-            try {
-                Settings["lastError"] = e.ExceptionObject + "\n" + e.ExceptionObject.StackTrace;
-                Settings.Save();
-            } catch (Exception) {
-                // just hope for the best.
-            }
-
             if (System.Diagnostics.Debugger.IsAttached) {
                 // An unhandled exception has occurred; break into the debugger
                 System.Diagnostics.Debugger.Break();
+            } else {
+                try {
+                    Settings["lastError"] = e.ExceptionObject + "\n" + e.ExceptionObject.StackTrace;
+                    Settings.Save();
+                } catch (Exception) {
+                    // just hope for the best.
+                }
             }
         }
 

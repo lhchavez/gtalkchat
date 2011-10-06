@@ -80,10 +80,17 @@ namespace Gchat.Data {
                                     isf.DeleteFile(fileName);
                                 } else {
                                     App.Current.RootFrame.Dispatcher.BeginInvoke(() => {
-                                        PhotoUri = new BitmapImage();
-                                        PhotoUri.SetSource(file);
-                                        file.Close();
-                                        Changed("PhotoUri");
+                                        try {
+                                            PhotoUri = new BitmapImage();
+                                            PhotoUri.SetSource(file);
+                                            Changed("PhotoUri");
+                                        } catch (Exception e) {
+                                            System.Diagnostics.Debug.WriteLine(e);
+                                        } finally {
+                                            try {
+                                                file.Close();
+                                            } catch (Exception) { }
+                                        }
                                     });
 
                                     return;
@@ -91,22 +98,34 @@ namespace Gchat.Data {
                             }
                         }
 
-                        App.Current.GtalkHelper.DownloadImage(this, () => {
-                            try {
-                                using (var isf = IsolatedStorageFile.GetUserStoreForApplication()) {
-                                    var file = isf.OpenFile(fileName, FileMode.Open);
+                        App.Current.GtalkHelper.DownloadImage(
+                            this,
+                            () => {
+                                try {
+                                    using (var isf = IsolatedStorageFile.GetUserStoreForApplication()) {
+                                        var file = isf.OpenFile(fileName, FileMode.Open);
 
-                                    App.Current.RootFrame.Dispatcher.BeginInvoke(() => {
-                                        PhotoUri = new BitmapImage();
-                                        PhotoUri.SetSource(file);
-                                        file.Close();
-                                        Changed("PhotoUri");
-                                    });
+                                        App.Current.RootFrame.Dispatcher.BeginInvoke(() => {
+                                            try {
+                                                PhotoUri = new BitmapImage();
+                                                PhotoUri.SetSource(file);
+                                                Changed("PhotoUri");
+                                            } catch (Exception e) {
+                                                System.Diagnostics.Debug.WriteLine(e);
+                                            } finally {
+                                                try {
+                                                    file.Close();
+                                                } catch (Exception) { }
+                                            }
+                                        });
+                                    }
+                                } catch (IsolatedStorageException e) {
+                                    System.Diagnostics.Debug.WriteLine(e);
                                 }
-                            } catch (IsolatedStorageException e) {
-                                System.Diagnostics.Debug.WriteLine(e);
+                            },
+                            () => {
                             }
-                        });
+                        );
                     } else {
                         PhotoUri = null;
                         Changed("PhotoUri");

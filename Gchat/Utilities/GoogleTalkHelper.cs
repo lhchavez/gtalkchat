@@ -303,7 +303,7 @@ namespace Gchat.Utilities {
             }
         }
 
-        public void DownloadImage(Contact contact, Action finished) {
+        public void DownloadImage(Contact contact, Action finished, Action error) {
             var fileName = "Shared/ShellContent/" + contact.PhotoHash + ".jpg";
 
             System.Diagnostics.Debug.WriteLine("Downloading " + fileName + " for " + contact);
@@ -319,7 +319,15 @@ namespace Gchat.Utilities {
                 var req = WebRequest.CreateHttp(gtalk.RootUrl + "/images/" + contact.PhotoHash);
 
                 req.BeginGetResponse(a => {
-                    var response = (HttpWebResponse) req.EndGetResponse(a);
+                    HttpWebResponse response;
+
+                    try {
+                        response = (HttpWebResponse)req.EndGetResponse(a);
+                    } catch (Exception e) {
+                        System.Diagnostics.Debug.WriteLine(e);
+                        error();
+                        return;
+                    }
 
                     using (var responseStream = response.GetResponseStream()) {
                         var data = new byte[response.ContentLength];
@@ -440,13 +448,22 @@ namespace Gchat.Utilities {
                             uri = uri.Insert(0, "http://");
                         }
 
-                        var link = new Hyperlink {
-                            NavigateUri = new Uri(uri),
-                            TargetName = "_blank"
-                        };
-                        link.Inlines.Add(m.Groups[0].Value);
+                        // TODO: Investigate why this crashes instead of just ignoring the error.
+                        try {
+                            var link = new Hyperlink {
+                                NavigateUri = new Uri(uri),
+                                TargetName = "_blank"
+                            };
+                            link.Inlines.Add(m.Groups[0].Value);
 
-                        paragraph.Inlines.Add(link);
+                            paragraph.Inlines.Add(link);
+                        } catch (Exception) {
+                            paragraph.Inlines.Add(
+                                new Run {
+                                    Text = uri
+                                }
+                            );
+                        }
                     }
                 }
 
@@ -668,12 +685,18 @@ namespace Gchat.Utilities {
                     };
 
                     if (contact.PhotoHash != null) {
-                        DownloadImage(contact, () => {
-                            tile.BackgroundImage =
-                                new Uri("isostore:/Shared/ShellContent/" + contact.PhotoHash + ".jpg");
+                        DownloadImage(
+                            contact,
+                            () => {
+                                tile.BackgroundImage =
+                                    new Uri("isostore:/Shared/ShellContent/" + contact.PhotoHash + ".jpg");
 
-                            ShellTile.Create(GetPinUri(email), tile);
-                        });
+                                ShellTile.Create(GetPinUri(email), tile);
+                            },
+                            () => {
+                                ShellTile.Create(GetPinUri(email), tile);
+                            }
+                        );
                     } else {
                         ShellTile.Create(GetPinUri(email), tile);
                     }
