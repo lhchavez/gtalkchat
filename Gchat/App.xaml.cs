@@ -166,7 +166,8 @@ namespace Gchat {
                 System.Diagnostics.Debugger.Break();
             } else {
                 try {
-                    Settings["lastError"] = e.ExceptionObject + "\n" + e.ExceptionObject.StackTrace;
+                    // TODO: Remove the "1.3"
+                    Settings["lastError"] = String.Format("{1} {2:u}\n{3}", "1.3", DateTime.UtcNow, e.ExceptionObject);
                     Settings.Save();
                 } catch (Exception) {
                     // just hope for the best.
