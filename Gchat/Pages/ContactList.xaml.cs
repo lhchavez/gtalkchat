@@ -26,6 +26,7 @@ namespace Gchat.Pages {
 
             AllContactsListBox.ItemsSource = App.Current.Roster;
             OnlineContactsListBox.ItemsSource = App.Current.Roster.GetOnlineContacts();
+            RecentContactsListBox.ItemsSource = App.Current.RecentContacts;
 
             StatusPicker.ItemsSource = status;
         }

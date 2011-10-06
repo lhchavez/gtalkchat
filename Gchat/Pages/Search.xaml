@@ -69,7 +69,7 @@
                      ItemTemplate="{StaticResource ContactTemplate}" 
                      SelectionChanged="SearchResults_SelectionChanged" 
                      toolkit:TiltEffect.IsTiltEnabled="True"
-                     Margin="12,0"/>
+                     Margin="12,0,-12,0"/>
         </Grid>
     </Grid>
 
