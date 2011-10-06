@@ -6,6 +6,7 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
     xmlns:local="clr-namespace:Gchat.Pages"
+    xmlns:localcontrols="clr-namespace:Gchat.Controls"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -79,7 +80,7 @@
                         
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <toolkit:HubTile Source="{Binding PhotoUri}"
+                                <localcontrols:HubTile Source="{Binding PhotoUri}"
                                                  Title="{Binding NameOrEmail}"
                                                  Notification="{Binding UnreadCount}"
                                                  DisplayNotification="True"

@@ -78,6 +78,9 @@
     <Compile Include="Controls\HighlightedTextBlock.xaml.cs">
       <DependentUpon>HighlightedTextBlock.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\HubTile.xaml.cs">
+      <DependentUpon>HubTile.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Search.xaml.cs">
       <DependentUpon>Search.xaml</DependentUpon>
     </Compile>
@@ -137,6 +140,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\LinkifiedTextBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\HubTile.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
