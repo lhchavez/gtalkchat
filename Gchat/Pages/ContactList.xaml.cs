@@ -169,9 +169,9 @@ namespace Gchat.Pages {
         }
 
         private void StatusPicker_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            if (e.AddedItems.Count > 0) {
+            if (e.AddedItems.Count > 0 && App.Current.GtalkClient.LoggedIn) {
                 // TODO: complete this
-                // note: this event is fired on first page load, take that into account
+                
                 var status = ((KeyValuePair<UserStatus, string>)e.AddedItems[0]).Key;
                 App.Current.GtalkClient.SetStatus(status, (t) => { }, (t) => { });
             }
