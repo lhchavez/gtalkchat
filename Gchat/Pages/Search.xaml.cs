@@ -52,7 +52,16 @@ namespace Gchat.Pages {
         }
 
         private void SearchBox_KeyUp(object sender, KeyEventArgs e) {
-            var results = App.Current.Roster.Where(c => c.Matches(SearchBox.Text));
+            var results = new List<Contact>();
+
+            var search = SearchBox.Text.ToLower();
+
+            foreach (var contact in App.Current.Roster) {
+                if (contact.Matches(search)) {
+                    results.Add(contact);
+                }
+            }
+            
             SearchResults.ItemsSource = results;
         }
     }

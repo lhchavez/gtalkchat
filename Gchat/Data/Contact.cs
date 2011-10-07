@@ -212,12 +212,35 @@ namespace Gchat.Data {
         }
 
         public bool Matches(string search) {
-            if (Name != null) {
-                return Name.ToLower().Contains(search.ToLower());
-            } else {
-                return Email.ToLower().Contains(search.ToLower());
+            if (Name != null && ContainsSubsequence(Name.ToLower(), search)) {
+                return true;
             }
+
+            return ContainsSubsequence(Email.ToLower(), search);
         }
+
+        private bool ContainsSubsequence(string a, string b) {
+            if (a.Length < b.Length) return false;
+
+            for (int i = 0, j = 0; i < b.Length; i++) {
+                if (!char.IsLetterOrDigit(b[i])) continue;
+
+                bool found = false;
+
+                for (; j < a.Length; j++) {
+                    if (b[i] == a[j]) {
+                        j++;
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (!found) return false;
+            }
+
+            return true;
+        }
+
         #endregion
 
         #region INotifyPropertyChanged Members
