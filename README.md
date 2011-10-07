@@ -17,6 +17,6 @@ Frontend Development & UI Design
 
 Gchat is available now in the Windows Phone Marketplace for your Mango phone! Click the button below to download it.
 
-[![Download Gchat](http://julianapena.com/wp-content/uploads/c76feed4bd9b_7F78/Download-EN-Med.png)](http://www.microsoft.com/windowsphone/s?appid=f9da43e4-9bbb-4a6d-842d-629bd6bdc84b)
+[![Download Gchat](http://julianapena.com/wp-content/uploads/2011/08/Download-EN-Med.png)](http://www.windowsphone.com/en-us/apps/f9da43e4-9bbb-4a6d-842d-629bd6bdc84b)
 
 Released under the terms of the [Microsoft Public License](http://www.opensource.org/licenses/MS-PL).
