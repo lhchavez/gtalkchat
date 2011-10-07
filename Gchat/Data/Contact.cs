@@ -9,6 +9,8 @@ using System.Windows.Media.Imaging;
 namespace Gchat.Data {
     [DataContract]
     public class Contact : INotifyPropertyChanged, IComparable<Contact> {
+        private static object mutex = new object();
+
         #region Public Properties
 
         private string email;
@@ -57,8 +59,16 @@ namespace Gchat.Data {
         public string PhotoHash {
             get { return photo; }
             set {
-                if (value != photo) {
-                    photo = value;
+                bool changed = false;
+
+                lock (mutex) {
+                    if (value != photo && value != null) {
+                        photo = value;
+                        changed = true;
+                    }
+                }
+
+                if (changed) {
                     Changed("PhotoHash");
 
                     if (!string.IsNullOrEmpty(photo)) {
