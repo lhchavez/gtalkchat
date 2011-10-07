@@ -32,8 +32,6 @@ namespace Gchat.Protocol {
             Lines
         };
 
-        
-
         public delegate void WriteDataCallback(StreamWriter sw);
 
         public delegate void SuccessCallback(string data);
@@ -186,8 +184,36 @@ namespace Gchat.Protocol {
         }
 
         public void SetStatus(UserStatus status, SuccessCallback scb, ErrorCallback ecb) {
-            // TODO: complete this
-            scb(string.Empty);
+            string statusString;
+
+            switch (status) {
+                case UserStatus.Away:
+                    statusString = "away";
+                    break;
+                case UserStatus.Dnd:
+                    statusString = "dnd";
+                    break;
+                case UserStatus.ExtendedAway:
+                    statusString = "xa";
+                    break;
+                case UserStatus.Offline:
+                    statusString = "xa";
+                    break;
+                case UserStatus.Available:
+                default:
+                    statusString = "available";
+                    break;
+            }
+
+            Send(
+                "/presence",
+                ReceiveMode.SingleString,
+                sw => sw.Write("token=" + HttpUtility.UrlEncode(token) + "&show=" + statusString),
+                scb,
+                null,
+                ecb,
+                null
+            );
         }
 
         public void GetRoster(RosterCallback rcb, ErrorCallback ecb) {
