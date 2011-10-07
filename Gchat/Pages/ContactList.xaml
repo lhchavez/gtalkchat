@@ -8,6 +8,7 @@
     xmlns:local="clr-namespace:Gchat.Pages"
     xmlns:localcontrols="clr-namespace:Gchat.Controls"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:c4f="clr-namespace:Coding4Fun.Phone.Controls;assembly=Coding4Fun.Phone.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696"
@@ -71,7 +72,7 @@
 
             <controls:PivotItem Header="recent">
                 <Grid Margin="12,-12,-12,0">
-                    <ListBox Name="RecentContactsListBox" SelectionChanged="ContactsListBox_SelectionChanged" toolkit:TiltEffect.IsTiltEnabled="True">
+                    <ListBox Name="RecentContactsListBox" toolkit:TiltEffect.IsTiltEnabled="True">
                         <ListBox.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <toolkit:WrapPanel />
@@ -80,13 +81,16 @@
                         
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <localcontrols:HubTile Source="{Binding PhotoUri}"
-                                                 Title="{Binding NameOrEmail}"
-                                                 Notification="{Binding UnreadCount}"
-                                                 DisplayNotification="True"
-                                                 GroupTag="{Binding Status}"
-                                                 Margin="0,0,12,12"
-                                                 />
+                                <c4f:Tile Title="{Binding NameOrEmail}"
+                                          Width="173" Height="173"
+                                          Margin="0,0,12,12"
+                                          Click="Tile_Click">
+                                    <Grid>
+                                        <Image Source="{Binding PhotoUri}" />
+                                        <c4f:TileNotification 
+                                        Content="{Binding UnreadCount}" Visibility="{Binding UnreadCount, Converter={StaticResource NumberToVisibilityConverter}}" />
+                                    </Grid>
+                                </c4f:Tile>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>

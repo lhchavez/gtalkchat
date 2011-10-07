@@ -9,6 +9,7 @@ using Microsoft.Phone.Controls;
 using System.Linq;
 using System.Collections.Generic;
 using Gchat.Protocol;
+using Coding4Fun.Phone.Controls;
 
 namespace Gchat.Pages {
     public partial class ContactList : PhoneApplicationPage {
@@ -175,6 +176,11 @@ namespace Gchat.Pages {
                 var status = ((KeyValuePair<UserStatus, string>)e.AddedItems[0]).Key;
                 App.Current.GtalkClient.SetStatus(status, (t) => { }, (t) => { });
             }
+        }
+
+        private void Tile_Click(object sender, RoutedEventArgs e) {
+            var to = ((e.OriginalSource as Tile).DataContext as Contact).Email;
+            NavigationService.Navigate(new Uri("/Pages/Chat.xaml?from=" + to, UriKind.Relative));
         }
     }
 
