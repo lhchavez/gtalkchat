@@ -23,6 +23,7 @@ namespace Gchat.Pages {
 
         private string to;
         private string email;
+        private Contact currentContact = null;
 
         private bool otr;
 
@@ -40,7 +41,9 @@ namespace Gchat.Pages {
             settings = App.Current.Settings;
 
             App.Current.GtalkHelper.SetCorrectOrientation(this);
-            
+
+            currentContact = null;
+
             if (NavigationContext.QueryString.ContainsKey("from")) {
                 to = NavigationContext.QueryString["from"];
                 email = to;
@@ -52,6 +55,10 @@ namespace Gchat.Pages {
                 App.Current.CurrentChat = email;
 
                 to = email;
+
+                if (App.Current.Roster.Contains(email)) {
+                    currentContact = App.Current.Roster[email];
+                }
             }
 
             gtalkHelper.MessageReceived += DisplayMessage;
@@ -166,6 +173,11 @@ namespace Gchat.Pages {
                     var bubble = new SentChatBubble();
                     bubble.Text = MessageText.Text;
                     bubble.TimeStamp = DateTime.Now;
+
+                    if (!App.Current.RecentContacts.Remove(currentContact) && App.Current.RecentContacts.Count == GoogleTalkHelper.RecentContactsCount) {
+                        App.Current.RecentContacts.RemoveAt(App.Current.RecentContacts.Count - 1);
+                    }
+                    App.Current.RecentContacts.Insert(0, currentContact);
 
                     MessageList.Children.Add(bubble);
 
