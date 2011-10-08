@@ -300,6 +300,9 @@ namespace Gchat.Pages {
                 lock (unread) {
                     unread[email] = 0;
                 }
+                if (App.Current.Roster.Contains(email)) {
+                    App.Current.Roster[email].UnreadCount = 0;
+                }
 
                 Uri url = gtalkHelper.GetPinUri(email);
                 ShellTile existing = ShellTile.ActiveTiles.FirstOrDefault(x => x.NavigationUri == url);

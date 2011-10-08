@@ -158,6 +158,7 @@ namespace Gchat.Utilities {
             settings["chatlog"] = new Dictionary<string, List<Message>>();
             settings["unread"] = new Dictionary<string, int>();
 
+            App.Current.RecentContacts.Clear();
             App.Current.Roster.Clear();
 
             hasToken = false;
