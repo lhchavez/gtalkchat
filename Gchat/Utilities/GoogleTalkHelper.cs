@@ -712,6 +712,24 @@ namespace Gchat.Utilities {
             }
         }
 
+        public void AddRecentContact(Contact contact) {
+            var found = false;
+
+            for (var i = 0; i < App.Current.RecentContacts.Count; i++) {
+                if (App.Current.RecentContacts[i].Email == contact.Email) {
+                    App.Current.RecentContacts.RemoveAt(i);
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found && App.Current.RecentContacts.Count == RecentContactsCount) {
+                App.Current.RecentContacts.RemoveAt(RecentContactsCount - 1);
+            }
+
+            App.Current.RecentContacts.Insert(0, contact);
+        }
+
         #endregion
 
         #region Private Methods
@@ -813,10 +831,7 @@ namespace Gchat.Utilities {
                 }
 
                 App.Current.RootFrame.Dispatcher.BeginInvoke(() => {
-                    if (!App.Current.RecentContacts.Remove(contact) && App.Current.RecentContacts.Count == RecentContactsCount) {
-                        App.Current.RecentContacts.RemoveAt(App.Current.RecentContacts.Count - 1);
-                    }
-                    App.Current.RecentContacts.Insert(0, contact);
+                    AddRecentContact(contact);
                 });
 
                 if (App.Current.CurrentChat == null || message.From.IndexOf(App.Current.CurrentChat) != 0) {

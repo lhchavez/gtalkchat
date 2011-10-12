@@ -174,10 +174,7 @@ namespace Gchat.Pages {
                     bubble.Text = MessageText.Text;
                     bubble.TimeStamp = DateTime.Now;
 
-                    if (!App.Current.RecentContacts.Remove(currentContact) && App.Current.RecentContacts.Count == GoogleTalkHelper.RecentContactsCount) {
-                        App.Current.RecentContacts.RemoveAt(App.Current.RecentContacts.Count - 1);
-                    }
-                    App.Current.RecentContacts.Insert(0, currentContact);
+                    App.Current.GtalkHelper.AddRecentContact(currentContact);
 
                     MessageList.Children.Add(bubble);
 
