@@ -74,48 +74,16 @@ namespace Gchat.Data {
                     if (!string.IsNullOrEmpty(photo)) {
                         var fileName = "Shared/ShellContent/" + photo + ".jpg";
 
-                        using (IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication()) {
-                            if (isf.FileExists(fileName)) {
-                                IsolatedStorageFileStream file;
+                        App.Current.RootFrame.Dispatcher.BeginInvoke(() => {
+                            using (IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication()) {
+                                if (isf.FileExists(fileName)) {
+                                    try {
+                                        var file = isf.OpenFile(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
 
-                                try {
-                                    file = isf.OpenFile(fileName, FileMode.Open);
-                                } catch (IsolatedStorageException e) {
-                                    System.Diagnostics.Debug.WriteLine(e);
-                                    return;
-                                }
-
-                                if (file.Length == 0) {
-                                    file.Close();
-                                    isf.DeleteFile(fileName);
-                                } else {
-                                    App.Current.RootFrame.Dispatcher.BeginInvoke(() => {
-                                        try {
-                                            PhotoUri = new BitmapImage();
-                                            PhotoUri.SetSource(file);
-                                            Changed("PhotoUri");
-                                        } catch (Exception e) {
-                                            System.Diagnostics.Debug.WriteLine(e);
-                                        } finally {
-                                            try {
-                                                file.Close();
-                                            } catch (Exception) { }
-                                        }
-                                    });
-
-                                    return;
-                                }
-                            }
-                        }
-
-                        App.Current.GtalkHelper.DownloadImage(
-                            this,
-                            () => {
-                                try {
-                                    using (var isf = IsolatedStorageFile.GetUserStoreForApplication()) {
-                                        var file = isf.OpenFile(fileName, FileMode.Open);
-
-                                        App.Current.RootFrame.Dispatcher.BeginInvoke(() => {
+                                        if (file.Length == 0) {
+                                            file.Close();
+                                            isf.DeleteFile(fileName);
+                                        } else {
                                             try {
                                                 PhotoUri = new BitmapImage();
                                                 PhotoUri.SetSource(file);
@@ -123,19 +91,36 @@ namespace Gchat.Data {
                                             } catch (Exception e) {
                                                 System.Diagnostics.Debug.WriteLine(e);
                                             } finally {
-                                                try {
-                                                    file.Close();
-                                                } catch (Exception) { }
+                                                file.Close();
                                             }
-                                        });
+
+                                            return;
+                                        }
+                                    } catch (Exception e) {
+                                        System.Diagnostics.Debug.WriteLine(e);
                                     }
-                                } catch (IsolatedStorageException e) {
-                                    System.Diagnostics.Debug.WriteLine(e);
                                 }
-                            },
-                            () => {
                             }
-                        );
+
+                            App.Current.GtalkHelper.DownloadImage(
+                                this,
+                                () => App.Current.RootFrame.Dispatcher.BeginInvoke(() => {
+                                    using (IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication()) {
+                                        try {
+                                            using (var file = isf.OpenFile(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)) {
+                                                PhotoUri = new BitmapImage();
+                                                PhotoUri.SetSource(file);
+                                                Changed("PhotoUri");
+                                            }
+                                        } catch (Exception e) {
+                                            System.Diagnostics.Debug.WriteLine(e);
+                                        }
+                                    }
+                                }),
+                                () => {
+                                }
+                            );
+                        });
                     } else {
                         PhotoUri = null;
                         Changed("PhotoUri");
