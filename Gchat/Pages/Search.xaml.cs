@@ -11,17 +11,32 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using Gchat.Data;
+using System.Threading;
+using System.Windows.Navigation;
 
 namespace Gchat.Pages {
     public partial class Search : PhoneApplicationPage {
+        private Thread searchThread;
+        private Searcher searcher;
+
         public Search() {
             InitializeComponent();
 
             SearchResults.ItemsSource = App.Current.Roster;
+            searcher = new Searcher(results => Dispatcher.BeginInvoke(() => SearchResults.ItemsSource = results));
         }
 
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e) {
             SearchBox.Focus();
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e) {
+            searchThread = new Thread(searcher.Run);
+            searchThread.Start();
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e) {
+            searcher.Stop();
         }
 
         private void PinContact_Click(object sender, RoutedEventArgs e) {
@@ -52,17 +67,56 @@ namespace Gchat.Pages {
         }
 
         private void SearchBox_KeyUp(object sender, KeyEventArgs e) {
-            var results = new List<Contact>();
+            searcher.Search(SearchBox.Text.ToLower());
+        }
+    }
 
-            var search = SearchBox.Text.ToLower();
+    class Searcher {
+        public delegate void SearcherDelegate(List<Contact> results);
+        private SearcherDelegate callback;
+        private ManualResetEvent mutex = new ManualResetEvent(false);
+        private string search;
 
-            foreach (var contact in App.Current.Roster) {
-                if (contact.Matches(search)) {
-                    results.Add(contact);
+        public bool IsRunning { get; set; }
+
+        public Searcher(SearcherDelegate callback) {
+            this.callback = callback;
+        }
+
+        public void Stop() {
+            IsRunning = false;
+            mutex.Set();
+        }
+
+        public void Run() {
+            IsRunning = true;
+
+            while (IsRunning) {
+                mutex.WaitOne();
+                mutex.Reset();
+
+                if (!IsRunning) break;
+
+                var currentSearch = search;
+
+                var results = new List<Contact>();
+
+                foreach (var contact in App.Current.Roster) {
+                    if (contact.Matches(currentSearch)) {
+                        results.Add(contact);
+                    }
                 }
+
+                callback(results);
+
+                // sleepyhead.
+                Thread.Sleep(1000);
             }
-            
-            SearchResults.ItemsSource = results;
+        }
+
+        public void Search(string search) {
+            this.search = search;
+            mutex.Set();
         }
     }
 }
