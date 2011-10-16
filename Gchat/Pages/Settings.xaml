@@ -38,7 +38,19 @@
                     <ScrollViewer>
                         <RichTextBox VerticalAlignment="Top" FontSize="{StaticResource PhoneFontSizeMedium}">
                             <Paragraph>
-                                <Run Text="Gchat 1.2" FontSize="{StaticResource PhoneFontSizeLarge}" />
+                                <Run Text="Gchat 1.3" FontSize="{StaticResource PhoneFontSizeLarge}" />
+                            </Paragraph>
+
+                            <Paragraph>
+                                <Run Text="" />
+                            </Paragraph>
+
+                            <Paragraph x:Name="FreeVersionNotice">
+                                <Run Text="This is the free version. It's not limited or anything because we love you. Anyways, please consider getting the paid version to support the development of this app (and paying the servers)." />
+                            </Paragraph>
+
+                            <Paragraph x:Name="PaidVersionNotice" FontSize="0.1">
+                                <Run Text="This is the paid version of Gchat. It has no extra funcionality, but you can have the warm, fuzzy feeling that you contributed to this app's development." />
                             </Paragraph>
 
                             <Paragraph>
@@ -74,6 +86,9 @@
                             <Paragraph>
                                 <Run Text="Open source! " />
                                 <Hyperlink TargetName="_blank" NavigateUri="https://github.com/lhchavez/gtalkchat">Get the code at GitHub</Hyperlink>
+                                <LineBreak/>
+                                <Run>Released under a </Run>
+                                <Hyperlink TargetName="_blank" NavigateUri="http://creativecommons.org/licenses/by-nc-sa/3.0/">CC BY-NC-SA license</Hyperlink>
                             </Paragraph>
 
                             <Paragraph>
@@ -99,8 +114,28 @@
                                 <Run Text="" />
                             </Paragraph>
 
-                            <Paragraph>
+                            <Paragraph FontWeight="Bold">
                                 <Run Text="Changelist" />
+                            </Paragraph>
+
+                            <Paragraph>
+                                <Run Text="1.3 Codename Lassi" />
+                            </Paragraph>
+
+                            <Paragraph>
+                                <Run Text="· List of recent contacts" />
+                            </Paragraph>
+
+                            <Paragraph>
+                                <Run Text="· Search your contacts" />
+                            </Paragraph>
+
+                            <Paragraph>
+                                <Run Text="· Set your status" />
+                            </Paragraph>
+
+                            <Paragraph>
+                                <Run Text="· Fixed a LOT of crashes" />
                             </Paragraph>
 
                             <Paragraph>

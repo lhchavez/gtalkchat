@@ -29,6 +29,7 @@ namespace Gchat.Pages {
 
         public Chat() {
             InitializeComponent();
+
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e) {

@@ -19,4 +19,4 @@ Gchat is available now in the Windows Phone Marketplace for your Mango phone! Cl
 
 [![Download Gchat](http://julianapena.com/wp-content/uploads/2011/08/Download-EN-Med.png)](http://www.windowsphone.com/en-us/apps/f9da43e4-9bbb-4a6d-842d-629bd6bdc84b)
 
-Released under the terms of the [Microsoft Public License](http://www.opensource.org/licenses/MS-PL).
+Gchat is released under the terms of the [CC BY-NC-SA license](http://creativecommons.org/licenses/by-nc-sa/3.0/).
