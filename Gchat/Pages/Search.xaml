@@ -36,12 +36,12 @@
                     <TextBlock Text="{Binding UnreadCount}" Foreground="White" Margin="6,0" FontSize="18" />
                 </Grid>
                 
-                <local:HighlightedTextBlock Grid.Column="2" Grid.Row="0" 
+                <TextBlock Grid.Column="2" Grid.Row="0" 
                                             Margin="12,0,0,0"
                                             FontSize="{StaticResource PhoneFontSizeLarge}"
-                                            Text="{Binding NameOrEmail}"
-                                            HighlightBrush="{StaticResource PhoneAccentBrush}" 
-                                            HighlightText="{Binding ElementName=SearchBox, Path=Text}" />
+                                            Text="{Binding NameOrEmail}" />
+                                            <!--HighlightBrush="{StaticResource PhoneAccentBrush}" 
+                                            HighlightText="{Binding ElementName=SearchBox, Path=Text}" />-->
 
                 <TextBlock Grid.Column="2" Grid.Row="1" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="{Binding Status, Converter={StaticResource StatusToColorConverter}}" Text="{Binding Status}" />
 
@@ -62,7 +62,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <TextBox Name="SearchBox" InputScope="Search" KeyUp="SearchBox_KeyUp" />
+            <TextBox Name="SearchBox" InputScope="Search" KeyUp="SearchBox_KeyUp" AcceptsReturn="True"  />
 
             <ListBox Grid.Row="1" 
                      Name="SearchResults" 
