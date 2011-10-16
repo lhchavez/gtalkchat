@@ -1,18 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
-using Microsoft.Phone.Controls;
-using Gchat.Data;
 using System.Windows.Threading;
-using System.ComponentModel;
+using Gchat.Data;
+using Microsoft.Phone.Controls;
 
 namespace Gchat.Pages {
     public partial class Search : PhoneApplicationPage {
@@ -59,11 +52,6 @@ namespace Gchat.Pages {
                 (sender as ListBox).SelectedIndex = -1;
                 NavigationService.Navigate(new Uri("/Pages/Chat.xaml?from=" + to, UriKind.Relative));
             }
-        }
-
-        private void SearchBox_KeyUp(object sender, KeyEventArgs e) {
-            //FilterListForSearch();
-            
         }
 
         private void FilterListForSearch() {
