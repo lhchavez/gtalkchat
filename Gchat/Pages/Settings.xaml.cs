@@ -24,6 +24,8 @@ namespace Gchat.Pages {
             SecondaryTileCheckbox.IsChecked = !App.Current.Settings.Contains("secondaryTileNotification") || (bool)App.Current.Settings["secondaryTileNotification"];
 
             fireEvents = true;
+
+            SetLicenseNotice();
         }
 
         private void RagesCheckbox_Checked(object sender, RoutedEventArgs e) {
@@ -59,6 +61,24 @@ namespace Gchat.Pages {
         private void Review_Click(object sender, RoutedEventArgs e) {
             var t = new Microsoft.Phone.Tasks.MarketplaceReviewTask();
             t.Show();
+        }
+
+        private void SetLicenseNotice() {
+            if (IsPaid()) {
+                PaidVersionNotice.FontSize = (double)App.Current.Resources["PhoneFontSizeMedium"];
+                FreeVersionNotice.FontSize = 0.1;
+            } else {
+                FreeVersionNotice.FontSize = (double)App.Current.Resources["PhoneFontSizeMedium"];
+                PaidVersionNotice.FontSize = 0.1;
+            }
+        }
+
+        private bool IsPaid() {
+#if PAID
+            return !(new Microsoft.Phone.Marketplace.LicenseInformation()).IsTrial();
+#else
+            return false;
+#endif
         }
     }
 }
