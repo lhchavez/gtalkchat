@@ -797,6 +797,11 @@ namespace Gchat.Utilities {
                         }
                     } else if (error.StartsWith("403")) {
                         GracefulReLogin();
+                    } else if (error.StartsWith("401")) {
+                        ConnectFailed(
+                            "API Key matching failed. Please get a new API Key and retry.",
+                            "API Key failure"
+                        );
                     } else {
                         if (ConnectFailed != null) {
                             ConnectFailed(error, "Register");

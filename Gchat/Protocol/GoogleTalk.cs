@@ -25,6 +25,7 @@ namespace Gchat.Protocol {
         public const string DefaultRootUrl = "https://gtalkjsonproxy.lhchavez.com";
         private string rootUrl = DefaultRootUrl;
         public string RootUrl { get { return rootUrl; } set { rootUrl = value; } }
+        private string ApiKey;
 
         private enum ReceiveMode {
             Blob,
@@ -50,6 +51,13 @@ namespace Gchat.Protocol {
 
         public GoogleTalk() {
             LoggedIn = false;
+
+            var uri = new Uri("ApiKey.txt", UriKind.RelativeOrAbsolute);
+            var resourceStream = App.GetResourceStream(uri);
+
+            using (var sr = new StreamReader(resourceStream.Stream)) {
+                ApiKey = sr.ReadLine().Trim();
+            }
         }
 
         public void SetToken(string token) {
@@ -128,7 +136,7 @@ namespace Gchat.Protocol {
                 "/register",
                 ReceiveMode.SingleString,
                 sw => {
-                    string data = "token=" + HttpUtility.UrlEncode(token) + "&url=" + HttpUtility.UrlEncode(url);
+                    string data = "token=" + HttpUtility.UrlEncode(token) + "&url=" + HttpUtility.UrlEncode(url) + "&version=1.3&as=" + ApiKey;
                     sw.Write(data);
                 },
                 scb,
@@ -155,7 +163,7 @@ namespace Gchat.Protocol {
                 "/register",
                 ReceiveMode.SingleString,
                 sw => {
-                    string data = "token=" + HttpUtility.UrlEncode(token) + "&url=" + HttpUtility.UrlEncode(url) + "&tiles=" + HttpUtility.UrlEncode(tileArray.ToString());
+                    string data = "token=" + HttpUtility.UrlEncode(token) + "&url=" + HttpUtility.UrlEncode(url) + "&tiles=" + HttpUtility.UrlEncode(tileArray.ToString()) + "&version=1.3&as=" + ApiKey;
                     sw.Write(data);
                 },
                 scb,

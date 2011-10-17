@@ -211,7 +211,7 @@ namespace Gchat.Data {
                 return true;
             }
 
-            return ContainsSubsequence(Email.ToLower(), search);
+            return Email.ToLower().Contains(search);
         }
 
         private bool ContainsSubsequence(string a, string b) {

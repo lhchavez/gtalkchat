@@ -87,7 +87,7 @@
                                 <Run Text="Open source! " />
                                 <Hyperlink TargetName="_blank" NavigateUri="https://github.com/lhchavez/gtalkchat">Get the code at GitHub</Hyperlink>
                                 <LineBreak/>
-                                <Run>Released under a </Run>
+                                <Run Text="Released under a " />
                                 <Hyperlink TargetName="_blank" NavigateUri="http://creativecommons.org/licenses/by-nc-sa/3.0/">CC BY-NC-SA license</Hyperlink>
                             </Paragraph>
 
