@@ -3,3 +3,7 @@ glob:Bin
 glob:obj
 glob:_ReSharper.*
 glob:*.user
+glob:*.sap
+glob:*.orig
+glob:PerformanceLogs
+glob:ApiKey.txt
