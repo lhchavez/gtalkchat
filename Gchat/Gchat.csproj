@@ -75,6 +75,9 @@
     <Reference Include="mscorlib.extensions" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\ContactCard.xaml.cs">
+      <DependentUpon>ContactCard.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\HighlightedTextBlock.xaml.cs">
       <DependentUpon>HighlightedTextBlock.xaml</DependentUpon>
     </Compile>
@@ -127,6 +130,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Page Include="Controls\ContactCard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\HighlightedTextBlock.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

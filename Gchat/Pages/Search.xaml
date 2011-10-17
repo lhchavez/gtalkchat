@@ -91,6 +91,4 @@
             </toolkit:NavigationOutTransition.Forward>
         </toolkit:NavigationOutTransition>
     </toolkit:TransitionService.NavigationOutTransition>
-
-
 </phone:PhoneApplicationPage>
