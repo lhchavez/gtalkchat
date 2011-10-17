@@ -142,25 +142,6 @@ namespace Gchat.Pages {
             gtalkHelper.Logout();
         }
 
-        private void ContextMenu_Opened(object sender, RoutedEventArgs e) {
-            ContextMenu menu = sender as ContextMenu;
-            Contact c = menu.DataContext as Contact;
-            MenuItem item = menu.Items[0] as MenuItem;
-
-            if (gtalkHelper.IsContactPinned(c.Email)) {
-                item.IsEnabled = false;
-            } else {
-                item.IsEnabled = true;
-            }
-        }
-
-        private void PinContact_Click(object sender, RoutedEventArgs e) {
-            MenuItem item = sender as MenuItem;
-            Contact c = item.DataContext as Contact;
-
-            gtalkHelper.PinContact(c.Email);
-        }
-
         private void SearchButton_Click(object sender, EventArgs e) {
             NavigationService.Navigate(new Uri("/Pages/Search.xaml", UriKind.Relative));
         }
