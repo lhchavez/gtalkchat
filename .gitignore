@@ -1,6 +1,7 @@
 gtalkchat/obj
 gtalkchat/Bin
 _ReSharper.*
+ApiKey.txt
 
 *.suo
 *.user
