@@ -38,7 +38,7 @@
                     <ScrollViewer>
                         <RichTextBox VerticalAlignment="Top" FontSize="{StaticResource PhoneFontSizeMedium}">
                             <Paragraph>
-                                <Run Text="Gchat 1.2" FontSize="{StaticResource PhoneFontSizeLarge}" />
+                                <Run Text="Gchat 1.3" FontSize="{StaticResource PhoneFontSizeLarge}" />
                             </Paragraph>
 
                             <Paragraph>
@@ -116,6 +116,34 @@
 
                             <Paragraph FontWeight="Bold">
                                 <Run Text="Changelist" />
+                            </Paragraph>
+
+                            <Paragraph>
+                                <Run Text="1.3 Codename Lassi" />
+                            </Paragraph>
+
+                            <Paragraph>
+                                <Run Text="· Search" />
+                            </Paragraph>
+
+                            <Paragraph>
+                                <Run Text="· Recent contacts" />
+                            </Paragraph>
+
+                            <Paragraph>
+                                <Run Text="· Status change" />
+                            </Paragraph>
+
+                            <Paragraph>
+                                <Run Text="· Better stability" />
+                            </Paragraph>
+
+                            <Paragraph>
+                                <Run Text="· Bugfixes" />
+                            </Paragraph>
+
+                            <Paragraph>
+                                <Run Text="" />
                             </Paragraph>
 
                             <Paragraph>
