@@ -16,42 +16,6 @@
     shell:SystemTray.IsVisible="True"
     Loaded="PhoneApplicationPage_Loaded">
 
-    <phone:PhoneApplicationPage.Resources>
-        <DataTemplate x:Key="ContactTemplate">
-            <Grid Margin="0,0,0,6">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="60" />
-                    <ColumnDefinition Width="6" />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="45" />
-                    <RowDefinition Height="25" />
-                </Grid.RowDefinitions>
-
-                <Rectangle Fill="{StaticResource PhoneChromeBrush}" Height="60" Grid.RowSpan="2"/>
-                <Image Source="{Binding PhotoUri}" Height="60" Grid.RowSpan="2" />
-                <Grid Width="Auto" Height="Auto" Margin="0,5,0,0" HorizontalAlignment="Right" VerticalAlignment="Top" Visibility="{Binding UnreadCount, Converter={StaticResource NumberToVisibilityConverter}}">
-                    <Rectangle Fill="{StaticResource PhoneAccentBrush}" Grid.RowSpan="2" />
-                    <TextBlock Text="{Binding UnreadCount}" Foreground="White" Margin="6,0" FontSize="18" />
-                </Grid>
-                
-                <TextBlock Grid.Column="2" Grid.Row="0" 
-                                            Margin="12,0,0,0"
-                                            FontSize="{StaticResource PhoneFontSizeLarge}"
-                                            Text="{Binding NameOrEmail}" />
-
-                <TextBlock Grid.Column="2" Grid.Row="1" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="{Binding Status, Converter={StaticResource StatusToColorConverter}}" Text="{Binding Status}" />
-
-                <toolkit:ContextMenuService.ContextMenu>
-                    <toolkit:ContextMenu Opened="ContextMenu_Opened">
-                        <toolkit:MenuItem Header="pin to start" Click="PinContact_Click" />
-                    </toolkit:ContextMenu>
-                </toolkit:ContextMenuService.ContextMenu>
-            </Grid>
-        </DataTemplate>
-    </phone:PhoneApplicationPage.Resources>
-
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <!--ContentPanel - place additional content here-->
@@ -64,10 +28,15 @@
 
             <ListBox Grid.Row="1" 
                      Name="SearchResults" 
-                     ItemTemplate="{StaticResource ContactTemplate}" 
                      SelectionChanged="SearchResults_SelectionChanged" 
                      toolkit:TiltEffect.IsTiltEnabled="True"
-                     Margin="12,0,-12,0"/>
+                     Margin="12,0,-12,0">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <local:ContactCard Contact="{Binding}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </Grid>
     </Grid>
 
