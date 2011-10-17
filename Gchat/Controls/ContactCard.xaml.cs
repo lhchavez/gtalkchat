@@ -14,22 +14,8 @@ using Gchat.Data;
 
 namespace Gchat.Controls {
     public partial class ContactCard : UserControl {
-        public static DependencyProperty ContactProperty =
-            DependencyProperty.Register("Contact", typeof(Contact), typeof(ContactCard), 
-            new PropertyMetadata(null, (s, e) => {
-                var a = e.NewValue;
-            }));
-
-        public Contact Contact {
-            get { return (Contact)GetValue(ContactProperty); }
-            set { 
-                SetValue(ContactProperty, value); }
-        }
-
         public ContactCard() {
             InitializeComponent();
-
-            //LayoutRoot.DataContext = Contact;
         }
 
         private void ContextMenu_Opened(object sender, RoutedEventArgs e) {

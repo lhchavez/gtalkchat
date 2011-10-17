@@ -11,7 +11,7 @@
     Foreground="{StaticResource PhoneForegroundBrush}"
     d:DesignHeight="480" d:DesignWidth="480">
     
-    <Grid x:Name="LayoutRoot" DataContext="{Binding Contact, ElementName=ContactCardRoot}">
+    <Grid x:Name="LayoutRoot">
         <Grid Margin="0,0,0,6">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="60" />

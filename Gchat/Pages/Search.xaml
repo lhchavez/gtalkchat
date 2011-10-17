@@ -33,7 +33,7 @@
                      Margin="12,0,-12,0">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <local:ContactCard Contact="{Binding}" />
+                        <local:ContactCard DataContext="{Binding}" />
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
