@@ -1,0 +1,17 @@
+body { font-family: "Segoe WPC","Segoe UI",Helvetica,Arial,"Arial Unicode MS",Sans-Serif; }
+h1, h2, h3, h4 { font-family: "Segoe WPC Light","Segoe UI Light",Helvetica,Arial,"Arial Unicode MS",Sans-Serif; }
+
+body { width: 600px; margin-left: auto; margin-right: auto; }
+
+h1 { font-size: 36px; line-height: 42px; }
+
+ul { list-style-image: url(bullet.png); }
+
+a { color: #1BA1E2; text-decoration: none; }
+img { border: 0; }
+
+a:hover { text-decoration: underline; }
+
+#icon { float: left; margin-right: 10px; }
+
+.clear { clear: both; }
