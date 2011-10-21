@@ -1,7 +1,7 @@
 body { font-family: "Segoe WPC","Segoe UI",Helvetica,Arial,"Arial Unicode MS",Sans-Serif; }
 h1, h2, h3, h4 { font-family: "Segoe WPC Light","Segoe UI Light",Helvetica,Arial,"Arial Unicode MS",Sans-Serif; }
 
-body { width: 600px; margin-left: auto; margin-right: auto; }
+body { width: 500px; margin-left: auto; margin-right: auto; padding-right: 300px; margin-top: -20px; }
 h1 { font-size: 42px; line-height: 42px; }
 h3 { margin-bottom: -10px; }
 ul { list-style-image: url(bullet.png); }
@@ -13,3 +13,8 @@ a:hover { text-decoration: underline; }
 #title { padding-top: 20px; }
 
 .clear { clear: both; }
+
+#phone { position: relative; left: 500px; top: 90px; }
+
+#phoneframe { position: absolute; width:300px; }
+#screenshot { width: 242px; position: absolute; left: 27px; top:80px; }
