@@ -2,10 +2,10 @@ $(function() {
    function rotateScreenshots() {
       $("#screenshot").animate(
          {backgroundPosition: "-=240px 0px"},
-         700,
+         500,
          'swing',
          function() { 
-            setTimeout(rotateScreenshots, 1500);
+            setTimeout(rotateScreenshots, 2000);
          }
       );
    }

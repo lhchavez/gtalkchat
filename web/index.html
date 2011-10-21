@@ -1,11 +1,16 @@
 <!doctype html>
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <meta name="viewport" content="width=480" />
+    <meta name="viewport" content="height=800" />
+    <meta name="viewport" content="user-scalable=no" />
+    
     <title>Gchat - Google Talk app for Windows Phone</title>
     
     <link rel="stylesheet" href="fonts.css" />
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" type="text/css" href="mobile.css" media="screen and (max-device-width: 480px)" /> 
     
     <script src="jquery.js"></script>
     <script src="jquery.backgroundpos.min.js"></script>
@@ -13,15 +18,10 @@
 </head>
 
 <body>
-    <div id="phone">
-        <img id="phoneframe" src="focusframe.png" alt="" />
-        <span id="screenshot" />
-    </div>
-
     <div id="icon">
-        <a href="http://www.windowsphone.com/en-us/apps/f9da43e4-9bbb-4a6d-842d-629bd6bdc84b"><img src="icon.png" alt="Gchat" /></a>
+        <a href="http://www.windowsphone.com/s?appid=f9da43e4-9bbb-4a6d-842d-629bd6bdc84b"><img src="icon.png" alt="Gchat" /></a>
         <br />
-        <a href="http://www.windowsphone.com/en-us/apps/f9da43e4-9bbb-4a6d-842d-629bd6bdc84b"><img src="download.png" alt="Download Gchat" /></a>
+        <a href="http://www.windowsphone.com/s?appid=f9da43e4-9bbb-4a6d-842d-629bd6bdc84b"><img src="download.png" alt="Download Gchat" /></a>
     </div>
     
     <h1 id="title">Gchat</h1>
@@ -29,12 +29,17 @@
     <p id="subtitle">A beautiful, fast, privacy-conscious client for the Google Talk instant messaging service</p>
     
     <!-- fb like button -->
-    <iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fgchat.lhchavez.com%2F&amp;send=false&amp;layout=standard&amp;width=350&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font=segoe+ui&amp;height=35&amp;appId=173278946708" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:320px; height:30px; margin-top:20px;" allowTransparency="true"></iframe>
+    <iframe id="fb" src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fgchat.lhchavez.com%2F&amp;send=false&amp;layout=standard&amp;width=310&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font=segoe+ui&amp;height=35&amp;appId=173278946708" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:310px; height:30px; margin-top:20px;" allowTransparency="true"></iframe>
     
     <br />
     
     <!-- tweet button -->
-    <a href="https://twitter.com/share" class="twitter-share-button" data-count="horizontal" data-via="gchatapp">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+    <a id="tw" href="https://twitter.com/share" class="twitter-share-button" data-count="horizontal" data-via="gchatapp">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+    
+    <div id="phone">
+        <img id="phoneframe" src="focusframe.png" alt="" />
+        <span id="screenshot" />
+    </div>
     
     <h3 class="clear">Metro</h3>
     <ul>

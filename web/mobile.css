@@ -1,0 +1,10 @@
+html { -ms-text-size-adjust:none }
+
+body { width: 310px; margin-left: 0; margin-right: 0; padding-right: 5px; margin-top: 0; font-size:100%; padding-left: 5px; }
+
+#icon { float: none; margin-top:10px; margin-right: 0; margin-bottom: 0; text-align:center;}
+#title { margin-top: -10px; text-align:center; }
+
+#phone { position: relative; left: 0; top: 0px; height: 550px; margin-left:5px; margin-top:10px;}
+
+#footer { position: relative; left:0; top:0; text-align:center;}
