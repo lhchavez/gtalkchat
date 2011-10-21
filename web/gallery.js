@@ -14,22 +14,33 @@ $(function() {
    }
    
    
-   $("#nav-features").click(function() {
-      $("#features").show();
-      $("#reviews").hide();
-      $("#support").hide();
+   $("#nav-features").click(function(e) {
+      
+      $("#reviews").fadeOut(function() {
+         $("#support").fadeOut(function() {
+            $("#features").fadeIn();
+         });
+      });
+      
+      e.preventDefault();
    });
    
-   $("#nav-reviews").click(function() {
-      $("#features").hide();
-      $("#reviews").show();
-      $("#support").hide();
+   $("#nav-reviews").click(function(e) {
+      $("#features").fadeOut(function() {
+         $("#support").fadeOut(function() {
+            $("#reviews").fadeIn();
+         });
+      });
+      e.preventDefault();
    });
    
-   $("#nav-support").click(function() {
-      $("#features").hide();
-      $("#reviews").hide();
-      $("#support").show();
+   $("#nav-support").click(function(e) {
+      $("#features").fadeOut(function() {
+         $("#reviews").fadeOut(function() {
+            $("#support").fadeIn();
+         });
+      });
+      e.preventDefault();
    });
 
 });

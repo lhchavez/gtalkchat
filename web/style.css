@@ -11,21 +11,23 @@ img { border: 0; }
 a:hover { text-decoration: underline; }
 
 #icon { float: left; margin-right: 10px; margin-bottom: 10px;}
-#title { padding-top: 10px; }
-#authors { font-size:80%; padding-top:7px; }
-#nav { padding-top: 5px; font-size: 120%; }
+#title { padding-top: 30px; }
+#authors { font-size:80%; padding-top:25px; }
+#nav { padding-top: 5px; font-size: 140%; text-align:center; }
 
-.clear { clear: both; height: 0;    }
+.clear { clear: both; height: 0; }
 
 #phone { position: absolute; left: 540px; top: 70px; }
 
 #phoneframe { position: absolute; width:298px; }
 #screenshot { width: 240px; height: 400px; position: absolute; left: 27px; top:78px; background-image: url(screenshots-r.png); background-position: 0 0; }
 
-#tw, #twfollow {display:inline-block; width:105px;}
-
 blockquote { background: url(quote.png) no-repeat; padding: 10px 0 10px 10px; margin-left: 10px; margin-bottom:0;}
-p.source { font-style: italic; text-align: right; margin-top: -8px;}
+p.source { font-style: italic; text-align: right; margin-top: -8px; padding-right:5px;}
 
-#features, #reviews, #support { margin-top:-20px; }
+#features, #reviews, #support { margin-top:-20px; padding-right:20px;  }
 #reviews, #support { display:none; }
+
+#social { margin-top: 2em; }
+#tw, #twfollow {display:inline-block; width:105px;}
+#fb {border:none; overflow:hidden; width:500px; height:30px; margin-top:19px;}
