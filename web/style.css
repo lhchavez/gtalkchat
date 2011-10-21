@@ -1,5 +1,5 @@
-body { font-family: "Segoe WPC","Segoe UI",Helvetica,Arial,"Arial Unicode MS",Sans-Serif; }
-h1, h2, h3, h4 { font-family: "Segoe WPC Light","Segoe UI Light",Helvetica,Arial,"Arial Unicode MS",Sans-Serif; }
+body { font-family: "Segoe WPC","Segoe WP","Segoe UI",Helvetica,Arial,"Arial Unicode MS",Sans-Serif; }
+h1, h2, h3, h4 { font-family: "Segoe WPC Light","Segoe WP Light","Segoe UI Light",Helvetica,Arial,"Arial Unicode MS",Sans-Serif; }
 
 body { width: 520px; margin-left: auto; margin-right: auto; padding-right: 300px; margin-top: -20px; font-size:100%; }
 h1 { font-size: 42px; line-height: 42px; }
