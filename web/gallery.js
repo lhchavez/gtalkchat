@@ -5,10 +5,11 @@ $(function() {
          500,
          'swing',
          function() { 
-            setTimeout(rotateScreenshots, 2000);
+            setTimeout(rotateScreenshots, 3000);
          }
       );
    }
-    
-   setTimeout(rotateScreenshots, 1500);
+   if (!$.browser.msie || parseInt($.browser.version, 10) >= 9) {
+      setTimeout(rotateScreenshots, 3000);
+   }
 });
