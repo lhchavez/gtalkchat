@@ -32,6 +32,7 @@
 </head>
 
 <body>
+    <div id="container">
     <div id="icon">
         <a href="http://www.windowsphone.com/s?appid=f9da43e4-9bbb-4a6d-842d-629bd6bdc84b"><img src="icon.png" alt="Gchat" /></a>
         <br />
@@ -40,49 +41,93 @@
     
     <h1 id="title">Gchat</h1>
     
-    <p id="subtitle">A beautiful, fast, privacy-conscious client for the Google Talk instant messaging service</p>
+    <p id="subtitle">A beautiful, fast, privacy-conscious client for the Google Talk™ instant messaging service</p>
     
-    <!-- fb like button -->
-    <iframe id="fb" src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fgchatapp.com%2F&amp;send=false&amp;layout=standard&amp;width=310&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font=segoe+ui&amp;height=35&amp;appId=173278946708" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:310px; height:30px; margin-top:19px;" allowTransparency="true"></iframe>
-    
-    <br />
-    
-    <!-- tweet button -->
-    <span id="tw"><a href="https://twitter.com/share" class="twitter-share-button" data-count="horizontal" data-via="gchatapp">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script></span>
-    <span id="twfollow"><a href="https://twitter.com/gchatapp" class="twitter-follow-button" data-show-count="false">Follow @gchatapp</a><script src="http://platform.twitter.com/widgets.js" type="text/javascript"></script></span>
+    <p id="authors">
+        Created by <a href="http://lhchavez.com">Luis Héctor Chávez</a> &amp; <a href="http://julianapena.com">Juliana Peña</a>
+    </p>
     
     <div id="phone">
         <img id="phoneframe" src="focusframe.png" alt="" />
         <span id="screenshot"></span>
     </div>
     
-    <h3 class="clear">Metro</h3>
-    <ul>
-        <li>Modern design that integrates with the rest of Windows Phone</li>
-        <li>Uses your personal accent color and native smilies and icons</li>
-    </ul>
+    <div id="nav">
+        <a href="#" id="nav-features">Features</a> | <a href="#" id="nav-reviews">Reviews</a> | <a href="#" id="nav-support">Support</a>
+    </div>
     
-    <h3>Tiles & Notifications</h3>
-    <ul>
-        <li>Recieve IMs even if the app isn't running</li>
-        <li>Pin your friends to start and recieve tile notifications for each one</li>
-    </ul>
+    <br class="clear" />
     
-    <h3>Privacy &amp; Security</h3>
-    <ul>
-        <li>Completely encrypted conversations using SSL and AES</li>
-        <li>Supports Google Talk's "off the record" conversations</li>
-        <li>Authentication done through Google: we never see your password</li>
-    </ul>
+    <div id="features">
+        <h3>Metro</h3>
+        <ul>
+            <li>Modern design that integrates with the rest of Windows Phone</li>
+            <li>Uses your personal accent color and native smilies and icons</li>
+        </ul>
+        
+        <h3>Tiles & Notifications</h3>
+        <ul>
+            <li>Recieve IMs even if the app isn't running</li>
+            <li>Pin your friends to start and recieve tile notifications for each one</li>
+        </ul>
+        
+        <h3>Privacy &amp; Security</h3>
+        <ul>
+            <li>Completely encrypted conversations using SSL and AES</li>
+            <li>Supports Google Talk's "off the record" conversations</li>
+            <li>Authentication done through Google: we never see your password</li>
+        </ul>
+        
+        <h3>Free &amp; Open Source</h3>
+        <ul>
+            <li>Gchat is and always will be open source</li>
+            <li>Get the code for <a href="https://github.com/lhchavez/gtalkchat">the client</a> and <a href="https://github.com/lhchavez/gtalkjsonproxy">the server</a></li>
+        </ul>
     
-    <h3>Free &amp; Open Source</h3>
-    <ul>
-        <li>Gchat is and always will be open source</li>
-        <li>Get the code for <a href="https://github.com/lhchavez/gtalkchat">the client</a> and <a href="https://github.com/lhchavez/gtalkjsonproxy">the server</a></li>
-    </ul>
+    </div>
     
-    <div id="footer">
-        Created by <a href="http://lhchavez.com">Luis Héctor Chávez</a> &amp; <a href="http://julianapena.com">Juliana Peña</a>
+    <div id="reviews">
+        <p>What some users have said...</p>
+        
+        <blockquote>
+        Works beautifully. Great integration with mango multi tasking. I've been waiting for this for a long time!! Great design, stays connected, fluid and fast. Open source too! You guys are awesome. Finally a good Gchat for Mango and WP7!! 
+        </blockquote>
+        <p class="source">- PiggyButterfly0</p>
+        
+        <blockquote>
+        Awesome! I've been waiting for a gchat app, and not only does this one work, it's pretty, has all notifications, pins contacts, and is quick.
+        </blockquote>
+        <p class="source">- TeenyTuxTux</p>
+        
+        <blockquote>
+        Love it, first app that uses Mango to full potential. Live tiles rock.
+        </blockquote>
+        <p class="source">- Petenchris84</p>
+        
+    </div>
+    
+    <div id="support">
+        <h3>Connection issues</h3>
+        <p>Are you getting connection errors? <a href="mailto:support@gchatapp.com">Send us an email</a> and we'll fix it as soon as we can.</p>
+        
+        <h3>Other bugs or feature suggestions</h3>
+        <p>Did you find a non-connection related bug or want to suggest an awesome new feature? <a href="https://github.com/lhchavez/gtalkchat/issues">File an issue in GitHub</a> and we'll track it.</p>
+        
+    </div>
+    
+    <div id="social">
+    
+        <!-- fb like button -->
+        <iframe id="fb" src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fgchatapp.com%2F&amp;send=false&amp;layout=standard&amp;width=310&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font=segoe+ui&amp;height=35&amp;appId=173278946708" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:310px; height:30px; margin-top:19px;" allowTransparency="true"></iframe>
+        
+        <br />
+        
+        <!-- tweet button -->
+        <span id="tw"><a href="https://twitter.com/share" class="twitter-share-button" data-count="horizontal" data-via="gchatapp">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script></span>
+        <span id="twfollow"><a href="https://twitter.com/gchatapp" class="twitter-follow-button" data-show-count="false">Follow @gchatapp</a><script src="http://platform.twitter.com/widgets.js" type="text/javascript"></script></span>
+    
+    </div>
+    
     </div>
     
 </body>

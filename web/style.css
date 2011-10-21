@@ -1,24 +1,31 @@
 body { font-family: "Segoe WPC","Segoe WP","Segoe UI",Helvetica,Arial,"Arial Unicode MS",Sans-Serif; }
 h1, h2, h3, h4 { font-family: "Segoe WPC Light","Segoe WP Light","Segoe UI Light",Helvetica,Arial,"Arial Unicode MS",Sans-Serif; }
 
-body { width: 520px; margin-left: auto; margin-right: auto; padding-right: 300px; margin-top: -20px; font-size:100%; position:relative; }
+body {overflow-y:scroll;}
+#container { width: 520px; margin-left: auto; margin-right: auto; padding-right: 300px; font-size:100%; position:relative; margin-top: -20px;}
 h1 { font-size: 42px; line-height: 42px; }
 h3 { margin-bottom: -10px; }
 ul { list-style-image: url(bullet.png); }
-a { color: #1BA1E2; text-decoration: none; }
+a { color: #1BA1E2; text-decoration: none; border:none; }
 img { border: 0; }
 a:hover { text-decoration: underline; }
 
 #icon { float: left; margin-right: 10px; margin-bottom: 10px;}
-#title { padding-top: 20px; }
+#title { padding-top: 10px; }
+#authors { font-size:80%; padding-top:7px; }
+#nav { padding-top: 5px; font-size: 120%; }
 
-.clear { clear: both; }
+.clear { clear: both; height: 0;    }
 
 #phone { position: absolute; left: 540px; top: 70px; }
 
 #phoneframe { position: absolute; width:298px; }
 #screenshot { width: 240px; height: 400px; position: absolute; left: 27px; top:78px; background-image: url(screenshots-r.png); background-position: 0 0; }
 
-#footer { font-size:80%; position:relative; left:250px; top:20px; }
-
 #tw, #twfollow {display:inline-block; width:105px;}
+
+blockquote { background: url(quote.png) no-repeat; padding: 10px 0 10px 10px; margin-left: 10px; margin-bottom:0;}
+p.source { font-style: italic; text-align: right; margin-top: -8px;}
+
+#features, #reviews, #support { margin-top:-20px; }
+#reviews, #support { display:none; }
