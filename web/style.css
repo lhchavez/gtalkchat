@@ -21,3 +21,4 @@ a:hover { text-decoration: underline; }
 
 #footer { font-size:80%; position:relative; left:250px; top:20px; }
 
+#tw, #twfollow {display:inline-block; width:105px;}
