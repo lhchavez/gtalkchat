@@ -1,18 +1,18 @@
 @font-face {
     font-family: "Segoe WPC";
-    src: url("http://cdn-resources.windowsphone.com/Resources/Fonts/SegoeWPCRegular/Latin1_1252/87c56796-f4c3-4861-9f31-035d303c63ce-1.ttf") format("truetype");
+    src: url("segoewp.ttf") format("truetype");
     font-style: normal;
     font-weight: normal;
 }
 @font-face {
     font-family: "Segoe WPC Light";
-    src: url("http://cdn-resources.windowsphone.com/Resources/Fonts/SegoeWPCLight/Latin1_1252/bd84c8dc-054a-427a-9fde-3ebb63965f38-1.ttf") format("truetype");
+    src: url("segoewplight.ttf") format("truetype");
     font-style: normal;
     font-weight: normal;
 }
 @font-face {
     font-family: "Segoe WPC Black";
-    src: url("http://cdn-resources.windowsphone.com/Resources/Fonts/SegoeWPCBlack/Latin1_1252/f513a30a-82ae-4466-acac-96337207a433-1.ttf") format("truetype");
+    src: url("segoewpblack.ttf") format("truetype");
     font-style: normal;
     font-weight: bold;
 }
