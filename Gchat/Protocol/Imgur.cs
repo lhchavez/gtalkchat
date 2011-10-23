@@ -25,9 +25,10 @@ namespace Gchat.Protocol {
         private static readonly string Key = "93eb20147bc8173d58e9a3aa72b927b0";
         private static readonly string UploadUrl = "http://api.imgur.com/2/upload.json";
 
-        public delegate void UploadCallback(ImgurFile);
+        public delegate void UploadCallback(ImgurFile i);
 
         public static void Upload(BitmapImage bm, UploadCallback callback) {
+            bm = Resize(bm, 480);
             Upload(ConvertImageToBytes(bm), callback);
         }
 
@@ -53,21 +54,44 @@ namespace Gchat.Protocol {
                     var comp = (HttpWebRequest)ar.AsyncState;
                     var response = (HttpWebResponse)comp.EndGetResponse(ar);
                     using (StreamReader sr = new StreamReader(response.GetResponseStream())) {
-                        Dictionary<string, object> root = (Dictionary<string, object>) Json.JsonDecode(sr.ReadToEnd());
-                        Dictionary<string, object> links = (Dictionary<string, object>) root["links"];
-                        ImgurFile result = new ImgurFile {
-                            Original = new Uri((string)links["original"], UriKind.Absolute),
-                            LargeThumbnail = new Uri((string)links["large_thumbnail"], UriKind.Absolute),
-                            SmallSquare = new Uri((string)links["small_square"], UriKind.Absolute)
-                        };
+                        string text = sr.ReadToEnd();
 
-                        callback(result);
+                        callback(ParseResponse(text));
                     }
 
                 }, request);
 
             }, req);
 
+        }
+
+        private static ImgurFile ParseResponse(string response) {
+            bool success = false;
+
+            var json = Json.JsonDecode(response, ref success);
+
+            if (success && json is Dictionary<string, object>) {
+                var data = json as Dictionary<string, object>;
+                var upload = data["upload"] as Dictionary<string, object>;
+                if (upload != null) {
+                    var links = upload["links"] as Dictionary<string, object>;
+                    if (links != null) {
+                        var original = links["original"] as string;
+                        var largethumb = links["large_thumbnail"] as string;
+                        var smallthumb = links["small_square"] as string;
+
+                        ImgurFile result = new ImgurFile {
+                            Original = new Uri(original, UriKind.Absolute),
+                            LargeThumbnail = new Uri(largethumb, UriKind.Absolute),
+                            SmallSquare = new Uri(smallthumb, UriKind.Absolute)
+                        };
+
+                        return result;
+                    }
+                }
+            }
+
+            return null;
         }
 
         #region Static image converter helper methods

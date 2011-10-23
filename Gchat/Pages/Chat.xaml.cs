@@ -13,6 +13,8 @@ using Gchat.Protocol;
 using Gchat.Utilities;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using Microsoft.Phone.Tasks;
+using System.Windows.Media.Imaging;
 
 namespace Gchat.Pages {
     public partial class Chat : PhoneApplicationPage {
@@ -379,6 +381,24 @@ namespace Gchat.Pages {
 
         private void MessageText_KeyUp(object sender, System.Windows.Input.KeyEventArgs e) {
             ScrollToBottom();
+        }
+
+        private void AttachButton_Click(object sender, EventArgs e) {
+            PhotoChooserTask t = new PhotoChooserTask();
+            t.ShowCamera = true;
+            t.Completed += (s, r) => {
+                BitmapImage bm = new BitmapImage();
+                bm.SetSource(r.ChosenPhoto);
+                Imgur.Upload(bm, i => {
+                    if (i != null) {
+                        Dispatcher.BeginInvoke(() => {
+                            MessageText.Text += i.Original.ToString();
+                            ScrollToBottom();
+                        });
+                    }
+                });
+            };
+            t.Show();
         }
     }
 }
