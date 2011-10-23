@@ -87,6 +87,7 @@
     <Compile Include="Pages\Search.xaml.cs">
       <DependentUpon>Search.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Protocol\Imgur.cs" />
     <Compile Include="Utilities\AESUtility.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
