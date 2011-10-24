@@ -168,10 +168,14 @@ namespace Gchat.Pages {
         private void SendButton_Click(object sender, EventArgs e) {
             if (MessageText.Text.Length == 0) return;
 
+            ShowProgressBar("Sending message...");
+
             (ApplicationBar.Buttons[0] as ApplicationBarIconButton).IsEnabled = false;
 
             try {
                 gtalk.SendMessage(to, MessageText.Text, data => Dispatcher.BeginInvoke(() => {
+                    HideProgressBar();
+
                     var bubble = new SentChatBubble();
                     bubble.Text = MessageText.Text;
                     bubble.TimeStamp = DateTime.Now;
@@ -200,6 +204,7 @@ namespace Gchat.Pages {
 
                     MessageText.Text = "";
                 }), error => {
+                    HideProgressBar();
                     if (error.StartsWith("403")) {
                         settings.Remove("token");
                         settings.Remove("rootUrl");
@@ -216,6 +221,7 @@ namespace Gchat.Pages {
             } catch (InvalidOperationException) {
                 Dispatcher.BeginInvoke(
                     () => {
+                        HideProgressBar();
                         MessageBox.Show(
                             "Your session has expired. Try logging in again.",
                             "Authentication error",
@@ -383,20 +389,43 @@ namespace Gchat.Pages {
             ScrollToBottom();
         }
 
+        private void ShowProgressBar(string text) {
+            SystemTray.SetProgressIndicator(this, new ProgressIndicator {
+                IsIndeterminate = true,
+                IsVisible = true,
+                Text = text
+            });
+        }
+
+        private void HideProgressBar() {
+            SystemTray.SetProgressIndicator(this, new ProgressIndicator {
+                IsVisible = false,
+            });
+        }
+
         private void AttachButton_Click(object sender, EventArgs e) {
             PhotoChooserTask t = new PhotoChooserTask();
             t.ShowCamera = true;
             t.Completed += (s, r) => {
-                BitmapImage bm = new BitmapImage();
-                bm.SetSource(r.ChosenPhoto);
-                Imgur.Upload(bm, i => {
-                    if (i != null) {
-                        Dispatcher.BeginInvoke(() => {
-                            MessageText.Text += i.Original.ToString();
-                            ScrollToBottom();
-                        });
-                    }
-                });
+                if (r.TaskResult == TaskResult.OK) {
+                    BitmapImage bm = new BitmapImage();
+                    bm.SetSource(r.ChosenPhoto);
+                    ShowProgressBar("Uploading photo...");
+                    Imgur.Upload(bm, i => {
+                        if (i != null) {
+                            Dispatcher.BeginInvoke(() => {
+                                MessageText.Text += i.Original.ToString();
+                                ScrollToBottom();
+                                HideProgressBar();
+                            });
+                        } else {
+                            Dispatcher.BeginInvoke(() => {
+                                MessageBox.Show("Error uploading photo");
+                                HideProgressBar();
+                            });
+                        }
+                    });
+                }
             };
             t.Show();
         }
