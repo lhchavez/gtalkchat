@@ -46,7 +46,9 @@
                             </Paragraph>
 
                             <Paragraph x:Name="FreeVersionNotice">
-                                <Run Text="This is the free version. It's not limited or anything because we love you. Anyways, please consider getting the paid version to support the development of this app (and paying the servers)." />
+                                <Run Text="This is the free version. It's not limited or anything because we love you. Anyways, please consider getting the" />
+                                <Hyperlink Click="Buy_Click">paid version</Hyperlink>
+                                <Run Text="to support the development of this app (and paying the servers)." />
                             </Paragraph>
 
                             <Paragraph x:Name="PaidVersionNotice" FontSize="0.1">

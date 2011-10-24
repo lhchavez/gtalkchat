@@ -63,6 +63,12 @@ namespace Gchat.Pages {
             t.Show();
         }
 
+        private void Buy_Click(object sender, RoutedEventArgs e) {
+            var t = new Microsoft.Phone.Tasks.MarketplaceDetailTask();
+            t.ContentIdentifier = "1f377d53-5fbf-4549-928f-2d246891a735";
+            t.Show();
+        }
+
         private void SetLicenseNotice() {
             if (IsPaid()) {
                 PaidVersionNotice.FontSize = (double)App.Current.Resources["PhoneFontSizeMedium"];
