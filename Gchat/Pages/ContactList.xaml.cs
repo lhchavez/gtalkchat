@@ -10,6 +10,7 @@ using System.Linq;
 using System.Collections.Generic;
 using Gchat.Protocol;
 using Coding4Fun.Phone.Controls;
+using Microsoft.Phone.Shell;
 
 namespace Gchat.Pages {
     public partial class ContactList : PhoneApplicationPage {
@@ -30,6 +31,20 @@ namespace Gchat.Pages {
             RecentContactsListBox.ItemsSource = App.Current.RecentContacts;
 
             StatusPicker.ItemsSource = status;
+        }
+
+        private void ShowProgressBar(string text) {
+            SystemTray.SetProgressIndicator(this, new ProgressIndicator {
+                IsIndeterminate = true,
+                IsVisible = true,
+                Text = text
+            });
+        }
+
+        private void HideProgressBar() {
+            SystemTray.SetProgressIndicator(this, new ProgressIndicator {
+                IsVisible = false,
+            });
         }
 
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e) {
@@ -54,11 +69,9 @@ namespace Gchat.Pages {
             Dispatcher.BeginInvoke(
                 () => {
                     if (gtalkHelper.RosterLoaded) {
-                        ProgressBar.Visibility = Visibility.Collapsed;
-                        ProgressBar.IsIndeterminate = false;
+                        HideProgressBar();
                     } else {
-                        ProgressBar.IsIndeterminate = true;
-                        ProgressBar.Visibility = Visibility.Visible;
+                        ShowProgressBar("Loading contacts...");
                     }
                 });
 
@@ -87,8 +100,7 @@ namespace Gchat.Pages {
                         });
                         timer.Change(1000, Timeout.Infinite);
                     } else {
-                        ProgressBar.Visibility = Visibility.Collapsed;
-                        ProgressBar.IsIndeterminate = false;
+                        HideProgressBar();
                         OnlineContactsListBox.ItemsSource = onlineContacts;
                     }
                 }
@@ -98,8 +110,7 @@ namespace Gchat.Pages {
         private void ConnectFailed(string message, string title) {
             Dispatcher.BeginInvoke(
                 () => {
-                    ProgressBar.Visibility = Visibility.Collapsed;
-                    ProgressBar.IsIndeterminate = false;
+                    HideProgressBar();
                     gtalkHelper.ShowToast(message, title);
                 });
         }
@@ -126,8 +137,7 @@ namespace Gchat.Pages {
         private void RefreshButton_Click(object sender, EventArgs e) {
             Dispatcher.BeginInvoke(
                 () => {
-                    ProgressBar.IsIndeterminate = true;
-                    ProgressBar.Visibility = Visibility.Visible;
+                    ShowProgressBar("Loading contacts...");
                 });
 
             if (gtalkHelper.Connected) {

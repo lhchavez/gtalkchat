@@ -28,6 +28,20 @@ namespace Gchat.Pages {
             }
         }
 
+        private void ShowProgressBar(string text) {
+            SystemTray.SetProgressIndicator(this, new ProgressIndicator {
+                IsIndeterminate = true,
+                IsVisible = true,
+                Text = text
+            });
+        }
+
+        private void HideProgressBar() {
+            SystemTray.SetProgressIndicator(this, new ProgressIndicator {
+                IsVisible = false,
+            });
+        }
+
         private void Login_Click(object sender, EventArgs e) {
             if (settings.Contains("username") && ((string) settings["username"]) == Username.Text &&
                 (settings.Contains("auth") || (settings.Contains("token") && settings.Contains("rootUrl")))) {
@@ -35,8 +49,7 @@ namespace Gchat.Pages {
                 return;
             }
 
-            ProgressBar.Visibility = Visibility.Visible;
-            ProgressBar.IsIndeterminate = true;
+            ShowProgressBar("Logging in...");
             Username.IsEnabled = false;
             Password.IsEnabled = false;
             (ApplicationBar.Buttons[0] as ApplicationBarIconButton).IsEnabled = false;
@@ -62,8 +75,7 @@ namespace Gchat.Pages {
                 Dispatcher.BeginInvoke(() => {
                     MessageBox.Show("Authentication error: " + error);
 
-                    ProgressBar.Visibility = Visibility.Collapsed;
-                    ProgressBar.IsIndeterminate = false;
+                    HideProgressBar();
                     Username.IsEnabled = true;
                     Password.IsEnabled = true;
                     (ApplicationBar.Buttons[0] as ApplicationBarIconButton).IsEnabled = true;

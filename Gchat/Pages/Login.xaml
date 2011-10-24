@@ -21,8 +21,6 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <toolkit:PerformanceProgressBar Name="ProgressBar" IsIndeterminate="False" Visibility="Collapsed" VerticalAlignment="Top" />
-
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
             <TextBlock x:Name="ApplicationTitle" Text="GCHAT" Style="{StaticResource PhoneTextNormalStyle}"/>
