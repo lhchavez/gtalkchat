@@ -18,9 +18,9 @@ namespace Gchat.Pages {
         private bool reloadedRoster;
 
         private Dictionary<UserStatus, string> status = new Dictionary<UserStatus,string> { 
-            {UserStatus.Available, "available"}, 
-            {UserStatus.Dnd, "busy"}, 
-            {UserStatus.Away, "away"}
+            {UserStatus.Available, AppResources.ChatStatus_Available}, 
+            {UserStatus.Dnd, AppResources.ChatStatus_Busy}, 
+            {UserStatus.Away, AppResources.ChatStatus_Away}
         };
 
         public ContactList() {
@@ -71,7 +71,7 @@ namespace Gchat.Pages {
                     if (gtalkHelper.RosterLoaded) {
                         HideProgressBar();
                     } else {
-                        ShowProgressBar("Loading contacts...");
+                        ShowProgressBar(AppResources.ContactList_ProgressLoading);
                     }
                 });
 
@@ -137,7 +137,7 @@ namespace Gchat.Pages {
         private void RefreshButton_Click(object sender, EventArgs e) {
             Dispatcher.BeginInvoke(
                 () => {
-                    ShowProgressBar("Loading contacts...");
+                    ShowProgressBar(AppResources.ContactList_ProgressLoading);
                 });
 
             if (gtalkHelper.Connected) {
@@ -197,7 +197,7 @@ namespace Gchat.Pages {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture) {
             string status = (string)value;
 
-            if (status == "available") {
+            if (status == AppResources.ChatStatus_Available) {
                 return App.Current.Resources["PhoneAccentBrush"];
             } else {
                 return App.Current.Resources["PhoneSubtleBrush"];

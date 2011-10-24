@@ -20,9 +20,9 @@
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <!--Pivot Control-->
-        <controls:Pivot Title="CONTACTS">
+        <controls:Pivot Title="{Binding Path=Loc.ContactList_Title, Source={StaticResource LocalizedStrings}}">
             <!--Pivot item one-->
-            <controls:PivotItem Header="online">
+            <controls:PivotItem Header="{Binding Path=Loc.ContactList_OnlineHeader, Source={StaticResource LocalizedStrings}}">
                 <Grid Margin="12,-12,-12,0">
                     <ListBox Name="OnlineContactsListBox" SelectionChanged="ContactsListBox_SelectionChanged" toolkit:TiltEffect.IsTiltEnabled="True">
                         <ListBox.ItemTemplate>
@@ -35,7 +35,7 @@
             </controls:PivotItem>
 
             <!--Pivot item two-->
-            <controls:PivotItem Header="all">
+            <controls:PivotItem Header="{Binding Path=Loc.ContactList_AllHeader, Source={StaticResource LocalizedStrings}}">
                 <Grid Margin="12,-12,-12,0">
                     <ListBox Name="AllContactsListBox" SelectionChanged="ContactsListBox_SelectionChanged" toolkit:TiltEffect.IsTiltEnabled="True">
                         <ListBox.ItemTemplate>
@@ -47,7 +47,7 @@
                 </Grid>
             </controls:PivotItem>
 
-            <controls:PivotItem Header="recent">
+            <controls:PivotItem Header="{Binding Path=Loc.ContactList_RecentHeader, Source={StaticResource LocalizedStrings}}">
                 <Grid Margin="12,-12,-12,0">
                     <ListBox Name="RecentContactsListBox" toolkit:TiltEffect.IsTiltEnabled="True">
                         <ListBox.ItemsPanel>
@@ -78,7 +78,7 @@
         <toolkit:ListPicker Name="StatusPicker" 
                             ExpansionMode="FullScreenOnly" 
                             Visibility="Collapsed" 
-                            FullModeHeader="SET CHAT STATUS"
+                            FullModeHeader="{Binding Path=Loc.ContactList_StatusPickerHeader, Source={StaticResource LocalizedStrings}}"
                             SelectionChanged="StatusPicker_SelectionChanged">
             <toolkit:ListPicker.FullModeItemTemplate>
                 <DataTemplate>
@@ -87,7 +87,6 @@
             </toolkit:ListPicker.FullModeItemTemplate>
         </toolkit:ListPicker>
     </Grid>
-
     
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
