@@ -15,6 +15,7 @@ namespace Gchat.Pages {
         // Constructor
         public Login() {
             InitializeComponent();
+            CreateAppbar();
 
             settings = IsolatedStorageSettings.ApplicationSettings;
 
@@ -26,6 +27,16 @@ namespace Gchat.Pages {
                 var passBytes = ProtectedData.Unprotect(settings["password"] as byte[], null);
                 Password.Password = Encoding.UTF8.GetString(passBytes, 0, passBytes.Length);
             }
+        }
+
+        private void CreateAppbar() {
+            ApplicationBar = new ApplicationBar();
+
+            var login = new ApplicationBarIconButton();
+            login.Text = AppResources.Login_AppbarLogin;
+            login.IconUri = new Uri("/icons/appbar.next.rest.png", UriKind.Relative);
+            login.Click += Login_Click;
+            ApplicationBar.Buttons.Add(login);
         }
 
         private void ShowProgressBar(string text) {

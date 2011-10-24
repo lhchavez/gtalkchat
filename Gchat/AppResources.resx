@@ -213,6 +213,9 @@
   <data name="ContactList_AllHeader" xml:space="preserve">
     <value>all</value>
   </data>
+  <data name="ContactList_AppbarLogOut" xml:space="preserve">
+    <value>log out</value>
+  </data>
   <data name="ContactList_AppbarRefresh" xml:space="preserve">
     <value>refresh</value>
   </data>
@@ -224,9 +227,6 @@
   </data>
   <data name="ContactList_AppbarStatus" xml:space="preserve">
     <value>status</value>
-  </data>
-  <data name="ContactList_LogOut" xml:space="preserve">
-    <value>log out</value>
   </data>
   <data name="ContactList_OnlineHeader" xml:space="preserve">
     <value>online</value>
@@ -242,5 +242,26 @@
   </data>
   <data name="ContactList_Title" xml:space="preserve">
     <value>CONTACTS</value>
+  </data>
+  <data name="Login_AppbarLogin" xml:space="preserve">
+    <value>log in</value>
+  </data>
+  <data name="Login_CreateAccountLink" xml:space="preserve">
+    <value>Create a Google account</value>
+  </data>
+  <data name="Login_Header" xml:space="preserve">
+    <value>log in</value>
+  </data>
+  <data name="Login_PasswordLabel" xml:space="preserve">
+    <value>Google password</value>
+  </data>
+  <data name="Login_Title" xml:space="preserve">
+    <value>GCHAT</value>
+  </data>
+  <data name="Login_UsernameLabel" xml:space="preserve">
+    <value>Google username or email</value>
+  </data>
+  <data name="Login_WarningNotifications" xml:space="preserve">
+    <value>By logging in, you are also opting in to raw, toast and tile push notifications for incoming chat messages. You can disable toast and tile notifications individually in the settings page at any time. Raw notifications are required for the app to function properly and can be disabled at any time by logging out.</value>
   </data>
 </root>

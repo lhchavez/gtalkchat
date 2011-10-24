@@ -7,7 +7,7 @@
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696"
+    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -23,40 +23,33 @@
 
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock x:Name="ApplicationTitle" Text="GCHAT" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock x:Name="PageTitle" Text="log in" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <TextBlock x:Name="ApplicationTitle" Text="{Binding Path=Loc.Login_Title, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextNormalStyle}"/>
+            <TextBlock x:Name="PageTitle" Text="{Binding Path=Loc.Login_Header, Source={StaticResource LocalizedStrings}}" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <ScrollViewer Margin="-12,0,-12,0">
                 <StackPanel Margin="12,0,12,0">
-                    <TextBlock Text="Google username or email" Style="{StaticResource PhoneTextSubtleStyle}" />
+                    <TextBlock Text="{Binding Path=Loc.Login_UsernameLabel, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextSubtleStyle}" />
                     <TextBox Name="Username" InputScope="EmailUserName" Margin="0,0,0,12" />
-                    <TextBlock Text="Google password" Style="{StaticResource PhoneTextSubtleStyle}" />
+                    <TextBlock Text="{Binding Path=Loc.Login_PasswordLabel, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextSubtleStyle}" />
                     <PasswordBox Name="Password" KeyUp="Password_KeyUp" />
 
                     <HyperlinkButton 
                     TargetName="_blank" 
                     NavigateUri="https://www.google.com/accounts/NewAccount"
-                    Margin="0,24,0,0">
-                        Create a Google account
-                    </HyperlinkButton>
-                    
-                    <TextBlock TextWrapping="Wrap" Style="{StaticResource PhoneTextNormalStyle}" Margin="12,48,12,6">
-                        By logging in, you are also opting in to raw, toast and tile push notifications for incoming chat messages. You can disable toast and tile notifications individually in the settings page at any time. Raw notifications are required for the app to function properly and can be disabled at any time by logging out.
-                    </TextBlock>
+                    Margin="0,24,0,0" Content="{Binding Path=Loc.Login_CreateAccountLink, Source={StaticResource LocalizedStrings}}" />
+
+                    <TextBlock TextWrapping="Wrap" 
+                               Style="{StaticResource PhoneTextNormalStyle}" 
+                               Margin="12,48,12,6" 
+                               Text="{Binding Path=Loc.Login_WarningNotifications, Source={StaticResource LocalizedStrings}}" />
                     
                 </StackPanel>
             </ScrollViewer>
         </Grid>
     </Grid>
-
-    <phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar>
-            <shell:ApplicationBarIconButton IconUri="/icons/appbar.next.rest.png" Text="log in" Click="Login_Click"/>
-        </shell:ApplicationBar>
-    </phone:PhoneApplicationPage.ApplicationBar>
 
     <toolkit:TransitionService.NavigationInTransition>
         <toolkit:NavigationInTransition>

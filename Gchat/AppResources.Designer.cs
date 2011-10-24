@@ -349,6 +349,15 @@ namespace Gchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to log out.
+        /// </summary>
+        public static string ContactList_AppbarLogOut {
+            get {
+                return ResourceManager.GetString("ContactList_AppbarLogOut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to refresh.
         /// </summary>
         public static string ContactList_AppbarRefresh {
@@ -381,15 +390,6 @@ namespace Gchat {
         public static string ContactList_AppbarStatus {
             get {
                 return ResourceManager.GetString("ContactList_AppbarStatus", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to log out.
-        /// </summary>
-        public static string ContactList_LogOut {
-            get {
-                return ResourceManager.GetString("ContactList_LogOut", resourceCulture);
             }
         }
         
@@ -435,6 +435,69 @@ namespace Gchat {
         public static string ContactList_Title {
             get {
                 return ResourceManager.GetString("ContactList_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to log in.
+        /// </summary>
+        public static string Login_AppbarLogin {
+            get {
+                return ResourceManager.GetString("Login_AppbarLogin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a Google account.
+        /// </summary>
+        public static string Login_CreateAccountLink {
+            get {
+                return ResourceManager.GetString("Login_CreateAccountLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to log in.
+        /// </summary>
+        public static string Login_Header {
+            get {
+                return ResourceManager.GetString("Login_Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Google password.
+        /// </summary>
+        public static string Login_PasswordLabel {
+            get {
+                return ResourceManager.GetString("Login_PasswordLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GCHAT.
+        /// </summary>
+        public static string Login_Title {
+            get {
+                return ResourceManager.GetString("Login_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Google username or email.
+        /// </summary>
+        public static string Login_UsernameLabel {
+            get {
+                return ResourceManager.GetString("Login_UsernameLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to By logging in, you are also opting in to raw, toast and tile push notifications for incoming chat messages. You can disable toast and tile notifications individually in the settings page at any time. Raw notifications are required for the app to function properly and can be disabled at any time by logging out..
+        /// </summary>
+        public static string Login_WarningNotifications {
+            get {
+                return ResourceManager.GetString("Login_WarningNotifications", resourceCulture);
             }
         }
     }

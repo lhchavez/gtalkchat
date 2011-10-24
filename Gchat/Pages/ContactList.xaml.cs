@@ -25,12 +25,46 @@ namespace Gchat.Pages {
 
         public ContactList() {
             InitializeComponent();
+            CreateAppbar();
 
             AllContactsListBox.ItemsSource = App.Current.Roster;
             OnlineContactsListBox.ItemsSource = App.Current.Roster.GetOnlineContacts();
             RecentContactsListBox.ItemsSource = App.Current.RecentContacts;
 
             StatusPicker.ItemsSource = status;
+        }
+
+        private void CreateAppbar() {
+            ApplicationBar = new ApplicationBar();
+
+            var refresh = new ApplicationBarIconButton();
+            refresh.Text = AppResources.ContactList_AppbarRefresh;
+            refresh.IconUri = new Uri("/icons/appbar.refresh.rest.png", UriKind.Relative);
+            refresh.Click += RefreshButton_Click;
+            ApplicationBar.Buttons.Add(refresh);
+
+            var status = new ApplicationBarIconButton();
+            status.Text = AppResources.ContactList_AppbarStatus;
+            status.IconUri = new Uri("/icons/appbar.status.rest.png", UriKind.Relative);
+            status.Click += StatusButton_Click;
+            ApplicationBar.Buttons.Add(status);
+
+            var search = new ApplicationBarIconButton();
+            search.Text = AppResources.ContactList_AppbarSearch;
+            search.IconUri = new Uri("/icons/appbar.feature.search.rest.png", UriKind.Relative);
+            search.Click += SearchButton_Click;
+            ApplicationBar.Buttons.Add(search);
+
+            var settings = new ApplicationBarIconButton();
+            settings.Text = AppResources.ContactList_AppbarSettings;
+            settings.IconUri = new Uri("/icons/appbar.feature.settings.rest.png", UriKind.Relative);
+            settings.Click += SettingsButton_Click;
+            ApplicationBar.Buttons.Add(settings);
+
+            var logout = new ApplicationBarMenuItem();
+            logout.Text = AppResources.ContactList_AppbarLogOut;
+            logout.Click += Logout_Click;
+            ApplicationBar.MenuItems.Add(logout);
         }
 
         private void ShowProgressBar(string text) {
