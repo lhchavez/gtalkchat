@@ -404,30 +404,43 @@ namespace Gchat.Pages {
         }
 
         private void AttachButton_Click(object sender, EventArgs e) {
-            PhotoChooserTask t = new PhotoChooserTask();
-            t.ShowCamera = true;
-            t.Completed += (s, r) => {
-                if (r.TaskResult == TaskResult.OK) {
-                    BitmapImage bm = new BitmapImage();
-                    bm.SetSource(r.ChosenPhoto);
-                    ShowProgressBar("Uploading photo...");
-                    Imgur.Upload(bm, i => {
-                        if (i != null) {
-                            Dispatcher.BeginInvoke(() => {
-                                MessageText.Text += i.Original.ToString();
-                                ScrollToBottom();
-                                HideProgressBar();
-                            });
-                        } else {
-                            Dispatcher.BeginInvoke(() => {
-                                MessageBox.Show("Error uploading photo");
-                                HideProgressBar();
-                            });
-                        }
-                    });
+            bool warned = false;
+            IsolatedStorageSettings.ApplicationSettings.TryGetValue("imgurwarned", out warned);
+
+            if (!warned) {
+                MessageBoxResult r = MessageBox.Show("Attached images are hosted publicly on Imgur. Don't use this feature if you want to keep the images private.\nThis warning will now show again after you press OK.", "Use image attachments feature?", MessageBoxButton.OKCancel);
+                if (r == MessageBoxResult.OK) {
+                    IsolatedStorageSettings.ApplicationSettings["imgurwarned"] = true;
+                    warned = true;
                 }
-            };
-            t.Show();
+            }
+
+            if (warned) {
+                PhotoChooserTask t = new PhotoChooserTask();
+                t.ShowCamera = true;
+                t.Completed += (s, r) => {
+                    if (r.TaskResult == TaskResult.OK) {
+                        BitmapImage bm = new BitmapImage();
+                        bm.SetSource(r.ChosenPhoto);
+                        ShowProgressBar("Uploading photo...");
+                        Imgur.Upload(bm, i => {
+                            if (i != null) {
+                                Dispatcher.BeginInvoke(() => {
+                                    MessageText.Text += " " + i.Original.ToString() + " ";
+                                    ScrollToBottom();
+                                    HideProgressBar();
+                                });
+                            } else {
+                                Dispatcher.BeginInvoke(() => {
+                                    MessageBox.Show("Error uploading photo");
+                                    HideProgressBar();
+                                });
+                            }
+                        });
+                    }
+                };
+                t.Show();
+            }
         }
     }
 }
