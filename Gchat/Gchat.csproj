@@ -75,6 +75,11 @@
     <Reference Include="mscorlib.extensions" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AppResources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ContactCard.xaml.cs">
       <DependentUpon>ContactCard.xaml</DependentUpon>
     </Compile>
@@ -84,6 +89,7 @@
     <Compile Include="Controls\HubTile.xaml.cs">
       <DependentUpon>HubTile.xaml</DependentUpon>
     </Compile>
+    <Compile Include="LocalizedStrings.cs" />
     <Compile Include="Pages\Search.xaml.cs">
       <DependentUpon>Search.xaml</DependentUpon>
     </Compile>
@@ -595,6 +601,10 @@
     <Content Include="ToastIcon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="AppResources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>AppResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />

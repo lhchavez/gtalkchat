@@ -4,13 +4,16 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
-    xmlns:local="clr-namespace:Gchat.Pages"
+    xmlns:local="clr-namespace:Gchat"
+    xmlns:localpages="clr-namespace:Gchat.Pages"
     xmlns:localcontrols="clr-namespace:Gchat.Controls"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit">
 
     <!--Application Resources-->
     <Application.Resources>
-        
+
+        <local:LocalizedStrings x:Key="LocalizedStrings" />
+
         <Style TargetType="RichTextBox">
             <Setter Property="FontSize" Value="{StaticResource PhoneFontSizeNormal}" />
             <Setter Property="Foreground" Value="{StaticResource PhoneForegroundBrush}" />
@@ -39,8 +42,8 @@
             </Setter>
         </Style>
 
-        <local:NumberToVisibilityConverter x:Key="NumberToVisibilityConverter" />
-        <local:StatusToColorConverter x:Key="StatusToColorConverter" />
+        <localpages:NumberToVisibilityConverter x:Key="NumberToVisibilityConverter" />
+        <localpages:StatusToColorConverter x:Key="StatusToColorConverter" />
 
         
     </Application.Resources>

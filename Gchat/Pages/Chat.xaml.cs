@@ -28,9 +28,49 @@ namespace Gchat.Pages {
         private Contact currentContact = null;
 
         private bool otr;
+        ApplicationBarIconButton sendButton, otrButton, attachButton, pinButton;
 
         public Chat() {
             InitializeComponent();
+            BuildAppbar();
+        }
+
+        public void BuildAppbar() {
+            ApplicationBar = new ApplicationBar();
+
+            sendButton = new ApplicationBarIconButton();
+            sendButton.IconUri = new Uri("/icons/appbar.send.text.rest.png", UriKind.Relative);
+            sendButton.Text = AppResources.Chat_AppbarSend;
+            sendButton.Click += SendButton_Click;
+            ApplicationBar.Buttons.Add(sendButton);
+
+            attachButton = new ApplicationBarIconButton();
+            attachButton.IconUri = new Uri("/icons/appbar.attach.rest.png", UriKind.Relative);
+            attachButton.Text = AppResources.Chat_AppbarAttach;
+            attachButton.Click += AttachButton_Click;
+            ApplicationBar.Buttons.Add(attachButton);
+
+            otrButton = new ApplicationBarIconButton();
+            otrButton.IconUri = new Uri("/icons/appbar.lock.rest.png", UriKind.Relative);
+            otrButton.Text = AppResources.Chat_AppbarGoOtr;
+            otrButton.Click += OTRButton_Click;
+            ApplicationBar.Buttons.Add(otrButton);
+
+            pinButton = new ApplicationBarIconButton();
+            pinButton.IconUri = new Uri("/icons/appbar.pin.rest.png", UriKind.Relative);
+            pinButton.Text = AppResources.Chat_AppbarPin;
+            pinButton.Click += PinButton_Click;
+            ApplicationBar.Buttons.Add(pinButton);
+
+            var delete = new ApplicationBarMenuItem();
+            delete.Text = AppResources.Chat_AppbarDeleteThread;
+            delete.Click += DeleteThread_Click;
+            ApplicationBar.MenuItems.Add(delete);
+
+            var list = new ApplicationBarMenuItem();
+            list.Text = AppResources.Chat_AppbarViewContacts;
+            list.Click += ViewContactList_Click;
+            ApplicationBar.MenuItems.Add(list);
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e) {
@@ -152,25 +192,23 @@ namespace Gchat.Pages {
         }
 
         private void ShowStartOtr() {
-            ApplicationBarIconButton otrButton = (ApplicationBarIconButton)ApplicationBar.Buttons[1];
             otrButton.IconUri = new Uri("/icons/appbar.unlock.rest.png", UriKind.Relative);
-            otrButton.Text = "end otr";
-            LogChatEvent("This conversation is now off the record.");
+            otrButton.Text = AppResources.Chat_AppbarEndOtr;
+            LogChatEvent(AppResources.Chat_NoticeStartOtr);
         }
 
         private void ShowEndOtr() {
-            ApplicationBarIconButton otrButton = (ApplicationBarIconButton)ApplicationBar.Buttons[1];
             otrButton.IconUri = new Uri("/icons/appbar.lock.rest.png", UriKind.Relative);
-            otrButton.Text = "go otr";
-            LogChatEvent("This conversation is no longer off the record.");
+            otrButton.Text = AppResources.Chat_AppbarGoOtr;
+            LogChatEvent(AppResources.Chat_NoticeEndOtr);
         }
 
         private void SendButton_Click(object sender, EventArgs e) {
             if (MessageText.Text.Length == 0) return;
 
-            ShowProgressBar("Sending message...");
+            ShowProgressBar(AppResources.Chat_ProgressSendingMessage);
 
-            (ApplicationBar.Buttons[0] as ApplicationBarIconButton).IsEnabled = false;
+            sendButton.IsEnabled = false;
 
             try {
                 gtalk.SendMessage(to, MessageText.Text, data => Dispatcher.BeginInvoke(() => {
@@ -184,7 +222,7 @@ namespace Gchat.Pages {
 
                     MessageList.Children.Add(bubble);
 
-                    (ApplicationBar.Buttons[0] as ApplicationBarIconButton).IsEnabled = true;
+                    sendButton.IsEnabled = true;
 
                     MessageList.UpdateLayout();
                     Scroller.UpdateLayout();
@@ -212,8 +250,8 @@ namespace Gchat.Pages {
                     } else {
                         Dispatcher.BeginInvoke(
                             () => {
-                                (ApplicationBar.Buttons[0] as ApplicationBarIconButton).IsEnabled = true;
-                                gtalkHelper.ShowToast("Message not sent. Please try again later");
+                                sendButton.IsEnabled = true;
+                                gtalkHelper.ShowToast(AppResources.Chat_ErrorMessageNotSent);
                             }
                         );
                     }
@@ -223,8 +261,8 @@ namespace Gchat.Pages {
                     () => {
                         HideProgressBar();
                         MessageBox.Show(
-                            "Your session has expired. Try logging in again.",
-                            "Authentication error",
+                            AppResources.Chat_ErrorAuthExpiredBody,
+                            AppResources.Chat_ErrorAuthExpiredTitle,
                             MessageBoxButton.OK
                         );
                         App.Current.RootFrame.Navigate(new Uri("/Pages/Login.xaml", UriKind.Relative));
@@ -250,10 +288,10 @@ namespace Gchat.Pages {
                     PageTitle.Text += ", " + char.ToUpper(status[0]) + status.Substring(1);
                 }
 
-                TypingStatus.Text = displayName + " is typing...";
+                TypingStatus.Text = String.Format(AppResources.Chat_NoticeTyping, displayName);
 
                 if (gtalkHelper.IsContactPinned(email)) {
-                    (ApplicationBar.Buttons[2] as ApplicationBarIconButton).IsEnabled = false;
+                    pinButton.IsEnabled = false;
                 }
 
                 chatLog = gtalkHelper.ChatLog(to);
@@ -365,8 +403,8 @@ namespace Gchat.Pages {
         private void DeleteThread_Click(object sender, EventArgs e)
         {
             MessageBoxResult delete = MessageBox.Show(
-                "All messages in this thread will be deleted from the app. They may still persist in your Gmail chat history.",
-                "Delete thread?",
+                AppResources.Chat_WarningDeleteThreadBody,
+                AppResources.Chat_WarningDeleteThreadTitle,
                 MessageBoxButton.OKCancel
             );
 
@@ -408,7 +446,7 @@ namespace Gchat.Pages {
             IsolatedStorageSettings.ApplicationSettings.TryGetValue("imgurwarned", out warned);
 
             if (!warned) {
-                MessageBoxResult r = MessageBox.Show("Attached images are hosted publicly on Imgur. Don't use this feature if you want to keep the images private.\nThis warning will now show again after you press OK.", "Use image attachments feature?", MessageBoxButton.OKCancel);
+                MessageBoxResult r = MessageBox.Show(AppResources.Chat_WarningImagesBody, AppResources.Chat_WarningImagesTitle, MessageBoxButton.OKCancel);
                 if (r == MessageBoxResult.OK) {
                     IsolatedStorageSettings.ApplicationSettings["imgurwarned"] = true;
                     warned = true;
@@ -420,20 +458,23 @@ namespace Gchat.Pages {
                 t.ShowCamera = true;
                 t.Completed += (s, r) => {
                     if (r.TaskResult == TaskResult.OK) {
+                        attachButton.IsEnabled = false;
                         BitmapImage bm = new BitmapImage();
                         bm.SetSource(r.ChosenPhoto);
-                        ShowProgressBar("Uploading photo...");
+                        ShowProgressBar(AppResources.Chat_ProgressUploadingPhoto);
                         Imgur.Upload(bm, i => {
                             if (i != null) {
                                 Dispatcher.BeginInvoke(() => {
                                     MessageText.Text += " " + i.Original.ToString() + " ";
                                     ScrollToBottom();
                                     HideProgressBar();
+                                    attachButton.IsEnabled = true;
                                 });
                             } else {
                                 Dispatcher.BeginInvoke(() => {
-                                    MessageBox.Show("Error uploading photo");
+                                    gtalkHelper.ShowToast(AppResources.Chat_ErrorUploadingPhoto);
                                     HideProgressBar();
+                                    attachButton.IsEnabled = true;
                                 });
                             }
                         });
