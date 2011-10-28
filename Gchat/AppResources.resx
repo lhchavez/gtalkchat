@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="About_Header" xml:space="preserve">
+    <value>about</value>
+  </data>
+  <data name="About_Version" xml:space="preserve">
+    <value>Gchat 1.3</value>
+  </data>
   <data name="AppName" xml:space="preserve">
     <value>Gchat</value>
   </data>
@@ -263,5 +269,26 @@
   </data>
   <data name="Login_WarningNotifications" xml:space="preserve">
     <value>By logging in, you are also opting in to raw, toast and tile push notifications for incoming chat messages. You can disable toast and tile notifications individually in the settings page at any time. Raw notifications are required for the app to function properly and can be disabled at any time by logging out.</value>
+  </data>
+  <data name="Settings_Header" xml:space="preserve">
+    <value>settings</value>
+  </data>
+  <data name="Settings_Title" xml:space="preserve">
+    <value>GCHAT</value>
+  </data>
+  <data name="Settings_ToggleReddit" xml:space="preserve">
+    <value>Reddit-style icons</value>
+  </data>
+  <data name="Settings_ToggleRotation" xml:space="preserve">
+    <value>Lock screen rotation</value>
+  </data>
+  <data name="Settings_ToggleSecondaryTiles" xml:space="preserve">
+    <value>Enable secondary tile notifications</value>
+  </data>
+  <data name="Settings_ToggleTiles" xml:space="preserve">
+    <value>Enable tile notifications</value>
+  </data>
+  <data name="Settings_ToggleToasts" xml:space="preserve">
+    <value>Enable toast notifications</value>
   </data>
 </root>

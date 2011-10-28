@@ -61,6 +61,24 @@ namespace Gchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to about.
+        /// </summary>
+        public static string About_Header {
+            get {
+                return ResourceManager.GetString("About_Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gchat 1.3.
+        /// </summary>
+        public static string About_Version {
+            get {
+                return ResourceManager.GetString("About_Version", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Gchat.
         /// </summary>
         public static string AppName {
@@ -498,6 +516,69 @@ namespace Gchat {
         public static string Login_WarningNotifications {
             get {
                 return ResourceManager.GetString("Login_WarningNotifications", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to settings.
+        /// </summary>
+        public static string Settings_Header {
+            get {
+                return ResourceManager.GetString("Settings_Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GCHAT.
+        /// </summary>
+        public static string Settings_Title {
+            get {
+                return ResourceManager.GetString("Settings_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reddit-style icons.
+        /// </summary>
+        public static string Settings_ToggleReddit {
+            get {
+                return ResourceManager.GetString("Settings_ToggleReddit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lock screen rotation.
+        /// </summary>
+        public static string Settings_ToggleRotation {
+            get {
+                return ResourceManager.GetString("Settings_ToggleRotation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable secondary tile notifications.
+        /// </summary>
+        public static string Settings_ToggleSecondaryTiles {
+            get {
+                return ResourceManager.GetString("Settings_ToggleSecondaryTiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable tile notifications.
+        /// </summary>
+        public static string Settings_ToggleTiles {
+            get {
+                return ResourceManager.GetString("Settings_ToggleTiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable toast notifications.
+        /// </summary>
+        public static string Settings_ToggleToasts {
+            get {
+                return ResourceManager.GetString("Settings_ToggleToasts", resourceCulture);
             }
         }
     }
