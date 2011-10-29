@@ -364,6 +364,8 @@ namespace Gchat.Utilities {
 
             int last = 0;
 
+            List<Uri> imgurUris = new List<Uri>();
+
             foreach (Match m in linkRegex.Matches(message)) {
                 if (m.Index > last) {
                     paragraph.Inlines.Add(
@@ -459,6 +461,10 @@ namespace Gchat.Utilities {
                             link.Inlines.Add(m.Groups[0].Value);
 
                             paragraph.Inlines.Add(link);
+
+                            if (uri.StartsWith("http://i.imgur.com/") && uri.EndsWith(".jpg")) {
+                                imgurUris.Add(link.NavigateUri);
+                            }
                         } catch (Exception) {
                             paragraph.Inlines.Add(
                                 new Run {
@@ -478,6 +484,27 @@ namespace Gchat.Utilities {
                         Text = message.Substring(last)
                     }
                 );
+            }
+
+            if (imgurUris.Count > 0 && (!App.Current.Settings.Contains("imgur") || (bool)App.Current.Settings["imgur"] != false)) {
+                foreach (var uri in imgurUris) {
+                    var uriString = uri.AbsoluteUri;
+
+                    if (uriString.Length == 28) {
+                        uriString = uriString.Substring(0, 24) + "s.jpg";
+                    }
+
+                    paragraph.Inlines.Add(new InlineUIContainer {
+                        Child = new Image {
+                            Source = new BitmapImage {
+                                UriSource = new Uri(
+                                    uriString,
+                                    UriKind.Absolute
+                                )
+                            }
+                        }
+                    });
+                }
             }
 
             return paragraph;

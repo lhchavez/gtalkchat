@@ -250,7 +250,8 @@ namespace Gchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Attached images are hosted publicly on Imgur. Don&apos;t use this feature if you want to keep the images private.\nThis warning will now show again after you press OK..
+        ///   Looks up a localized string similar to Attached images are hosted publicly on Imgur. Don&apos;t use this feature if you want to keep the images private.
+        ///This warning will now show again after you press OK..
         /// </summary>
         public static string Chat_WarningImagesBody {
             get {

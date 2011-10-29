@@ -211,7 +211,8 @@
     <value>Delete thread?</value>
   </data>
   <data name="Chat_WarningImagesBody" xml:space="preserve">
-    <value>Attached images are hosted publicly on Imgur. Don't use this feature if you want to keep the images private.\nThis warning will now show again after you press OK.</value>
+    <value>Attached images are hosted publicly on Imgur. Don't use this feature if you want to keep the images private.
+This warning will now show again after you press OK.</value>
   </data>
   <data name="Chat_WarningImagesTitle" xml:space="preserve">
     <value>Use image attachments feature?</value>
