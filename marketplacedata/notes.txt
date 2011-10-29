@@ -34,4 +34,4 @@ Released under the terms of the CC BY-NC-SA license.
 Google Talk™ IM client
 
 = Keywords (en) =
-gtalk, google talk, gchat, im
+gtalk, google talk, gchat, chat, im

@@ -67,7 +67,7 @@ namespace Gchat.Utilities {
         private bool hasUri;
         private string registeredUri;
         private bool offlineMessagesDownloaded;
-        private static readonly Regex linkRegex = new Regex("(?:(\\B(?:;-?\\)|:-?\\)|:-?D|:-?P|:-?S|:-?/|:-?\\||:'\\(|:-?\\(|<3))|(https?://)?(([0-9]{1-3}\\.[0-9]{1-3}\\.[0-9]{1-3}\\.[0-9]{1-3})|([a-z0-9.-]+\\.[a-z]{2,4}))(/[-a-z0-9+&@#\\/%?=~_|!:,.;]*[-a-z0-9+&@#\\/%=~_|])?)", RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
+        private static readonly Regex linkRegex = new Regex("(?:(\\B(?:;-?\\)|:-?\\)|:-?D|:-?P|:-?S|:-?/|:-?\\||:'\\(|:-?\\(|<3))|(https?://)?(([0-9]{1-3}\\.[0-9]{1-3}\\.[0-9]{1-3}\\.[0-9]{1-3})|([a-z0-9.-]+\\.[a-z]{2,4}))(/[-a-z0-9+&@#\\/%?=~_|!:,.;]*(?:\\([-a-z0-9+&@#\\/%?=~_|!:,.;()]*[-a-z0-9+@#\\/%=~_|)]|[-a-z0-9+@#\\/%=~_|]))?)", RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
         private Queue<ToastPrompt> messageQueue = new Queue<ToastPrompt>();
         private bool messageShowing;
         private Dictionary<string, ManualResetEvent> photoLocks = new Dictionary<string, ManualResetEvent>();
