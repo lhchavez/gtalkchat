@@ -263,10 +263,9 @@ namespace Gchat.Data {
         public static int CompareByStatus(Contact a, Contact b) {
             Dictionary<string, int> priority = new Dictionary<string,int> {
                 {"available", 1},
-                {"do not disturb", 2},
+                {"busy", 2},
                 {"away", 3},
-                {"extended away", 4},
-                {"offline", 5}
+                {"offline", 4}
             };
             
             if (a.Status == b.Status) {
