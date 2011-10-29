@@ -22,6 +22,9 @@ namespace Gchat.Pages {
         private GoogleTalkHelper gtalkHelper;
         private IsolatedStorageSettings settings;
         private List<Message> chatLog = new List<Message>();
+        private PhotoChooserTask photoChooserTask = new PhotoChooserTask {
+            ShowCamera = true
+        };
 
         private string to;
         private string email;
@@ -33,6 +36,31 @@ namespace Gchat.Pages {
         public Chat() {
             InitializeComponent();
             BuildAppbar();
+
+            photoChooserTask.Completed += (s, r) => {
+                if (r.TaskResult == TaskResult.OK) {
+                    attachButton.IsEnabled = false;
+                    BitmapImage bm = new BitmapImage();
+                    bm.SetSource(r.ChosenPhoto);
+                    ShowProgressBar(AppResources.Chat_ProgressUploadingPhoto);
+                    Imgur.Upload(bm, i => {
+                        if (i != null) {
+                            Dispatcher.BeginInvoke(() => {
+                                MessageText.Text += " " + i.Original.ToString() + " ";
+                                ScrollToBottom();
+                                HideProgressBar();
+                                attachButton.IsEnabled = true;
+                            });
+                        } else {
+                            Dispatcher.BeginInvoke(() => {
+                                gtalkHelper.ShowToast(AppResources.Chat_ErrorUploadingPhoto);
+                                HideProgressBar();
+                                attachButton.IsEnabled = true;
+                            });
+                        }
+                    });
+                }
+            };
         }
 
         public void BuildAppbar() {
@@ -454,33 +482,7 @@ namespace Gchat.Pages {
             }
 
             if (warned) {
-                PhotoChooserTask t = new PhotoChooserTask();
-                t.ShowCamera = true;
-                t.Completed += (s, r) => {
-                    if (r.TaskResult == TaskResult.OK) {
-                        attachButton.IsEnabled = false;
-                        BitmapImage bm = new BitmapImage();
-                        bm.SetSource(r.ChosenPhoto);
-                        ShowProgressBar(AppResources.Chat_ProgressUploadingPhoto);
-                        Imgur.Upload(bm, i => {
-                            if (i != null) {
-                                Dispatcher.BeginInvoke(() => {
-                                    MessageText.Text += " " + i.Original.ToString() + " ";
-                                    ScrollToBottom();
-                                    HideProgressBar();
-                                    attachButton.IsEnabled = true;
-                                });
-                            } else {
-                                Dispatcher.BeginInvoke(() => {
-                                    gtalkHelper.ShowToast(AppResources.Chat_ErrorUploadingPhoto);
-                                    HideProgressBar();
-                                    attachButton.IsEnabled = true;
-                                });
-                            }
-                        });
-                    }
-                };
-                t.Show();
+                photoChooserTask.Show();
             }
         }
     }

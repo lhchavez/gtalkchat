@@ -18,6 +18,7 @@ using Gchat.Protocol;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using System.Threading;
+using Microsoft.Phone.Tasks;
 
 namespace Gchat.Utilities {
     public class GoogleTalkHelper {
@@ -494,15 +495,29 @@ namespace Gchat.Utilities {
                         uriString = uriString.Substring(0, 24) + "s.jpg";
                     }
 
-                    paragraph.Inlines.Add(new InlineUIContainer {
-                        Child = new Image {
-                            Source = new BitmapImage {
-                                UriSource = new Uri(
-                                    uriString,
-                                    UriKind.Absolute
-                                )
-                            }
+                    var img = new Image {
+                        Source = new BitmapImage {
+                            UriSource = new Uri(
+                                uriString,
+                                UriKind.Absolute
+                            )
+                        },
+                        Margin = new Thickness(0, 5, 0, 0)
+                    };
+
+                    img.Tap += (s, r) => {
+                        try {
+                            var t = new WebBrowserTask {
+                                Uri = uri
+                            };
+                            t.Show();
+                        } catch (InvalidOperationException) {
+                            // why, Windows Phone? why do you make me add pointless try/catches?
                         }
+                    };
+
+                    paragraph.Inlines.Add(new InlineUIContainer {
+                        Child = img
                     });
                 }
             }
