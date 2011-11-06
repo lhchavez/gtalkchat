@@ -161,8 +161,13 @@ namespace Gchat.Pages {
 
         private void ContactsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             if (e.AddedItems.Count > 0) {
-                var to = (e.AddedItems[0] as Contact).Email;
-                (sender as ListBox).SelectedIndex = -1;
+                string to = "";
+                if (e.AddedItems[0] is Contact) {
+                    to = (e.AddedItems[0] as Contact).Email;
+                    (sender as ListBox).SelectedIndex = -1;
+                } else if (sender is LongListSelector) {
+                    to = ((sender as LongListSelector).SelectedItem as Contact).Email;
+                }
                 NavigationService.Navigate(new Uri("/Pages/Chat.xaml?from=" + to, UriKind.Relative));
             }
         }

@@ -45,15 +45,15 @@
                         </toolkit:LongListSelector.ItemTemplate>
                         <toolkit:LongListSelector.GroupHeaderTemplate>
                             <DataTemplate>
-                                <Border BorderBrush="{StaticResource PhoneAccentBrush}" BorderThickness="2" Width="48" Height="48" HorizontalAlignment="Left">
-                                    <TextBlock FontSize="40" Text="{Binding Title}" Foreground="{StaticResource PhoneAccentBrush}" />
+                                <Border Background="{StaticResource PhoneAccentBrush}" BorderThickness="2" Width="60" Height="60" HorizontalAlignment="Left">
+                                    <TextBlock FontSize="40" Text="{Binding Title}" Foreground="White" FontFamily="Segoe WP Light" Margin="6,3,0,0" />
                                 </Border>
                             </DataTemplate>
                         </toolkit:LongListSelector.GroupHeaderTemplate>
                         <toolkit:LongListSelector.GroupItemTemplate>
                             <DataTemplate>
-                                <Border BorderBrush="{StaticResource PhoneAccentBrush}" BorderThickness="2" Width="48" Height="48" Margin="6">
-                                    <TextBlock FontSize="40" Text="{Binding Title}" Foreground="{StaticResource PhoneAccentBrush}" />
+                                <Border Background="{StaticResource PhoneAccentBrush}" BorderThickness="2" Width="99" Height="99" Margin="6">
+                                    <TextBlock FontSize="48" Text="{Binding Title}" Foreground="White" VerticalAlignment="Bottom" Margin="12,0,0,0" />
                                 </Border>
                             </DataTemplate>
                         </toolkit:LongListSelector.GroupItemTemplate>
