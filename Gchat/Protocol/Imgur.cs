@@ -25,15 +25,16 @@ namespace Gchat.Protocol {
         private static readonly string Key = "93eb20147bc8173d58e9a3aa72b927b0";
         private static readonly string UploadUrl = "http://api.imgur.com/2/upload.json";
 
-        public delegate void UploadCallback(ImgurFile i);
+        public delegate void UploadCallback(ImgurFile i, string error);
 
         public static void Upload(BitmapImage bm, UploadCallback callback) {
-            bm = Resize(bm, 480);
+            if (bm.PixelWidth > 640 || bm.PixelHeight > 480) {
+                bm = Resize(bm, 480);
+            }
             Upload(ConvertImageToBytes(bm), callback);
         }
 
         public static void Upload(byte[] image, UploadCallback callback) {
-
             string requestString =
                 HttpUtility.UrlEncode("image") + "=" +
                 HttpUtility.UrlEncode(Convert.ToBase64String(image)) + "&" +
@@ -45,24 +46,38 @@ namespace Gchat.Protocol {
             req.ContentType = "application/x-www-form-urlencoded";
 
             req.BeginGetRequestStream(a => {
-                var request = (HttpWebRequest)a.AsyncState;
-                using (var stream = new StreamWriter(request.EndGetRequestStream(a))) {
-                    stream.Write(requestString);
-                }
-
-                req.BeginGetResponse(ar => {
-                    var comp = (HttpWebRequest)ar.AsyncState;
-                    var response = (HttpWebResponse)comp.EndGetResponse(ar);
-                    using (StreamReader sr = new StreamReader(response.GetResponseStream())) {
-                        string text = sr.ReadToEnd();
-
-                        callback(ParseResponse(text));
+                try {
+                    using (var stream = new StreamWriter(req.EndGetRequestStream(a))) {
+                        stream.Write(requestString);
                     }
 
-                }, request);
+                    req.BeginGetResponse(ar => {
+                        try {
+                            var response = (HttpWebResponse)req.EndGetResponse(ar);
+                            using (StreamReader sr = new StreamReader(response.GetResponseStream())) {
+                                string text = sr.ReadToEnd();
 
+                                callback(ParseResponse(text), null);
+                            }
+                        } catch (WebException e) {
+                            if (e.Status == WebExceptionStatus.RequestCanceled || e.Status == WebExceptionStatus.SendFailure) {
+                                callback(null, AppResources.Chat_ErrorUploadingPhotoTimeout);
+                                return;
+                            }
+
+                            var response = (HttpWebResponse)e.Response;
+
+                            if (response.StatusCode == HttpStatusCode.Forbidden) {
+                                callback(null, AppResources.Chat_ErrorUploadingPhotoApiLimitExceeded);
+                            } else {
+                                callback(null, AppResources.Chat_ErrorUploadingPhoto);
+                            }
+                        }
+                    }, req);
+                } catch (WebException) {
+                    callback(null, AppResources.Chat_ErrorUploadingPhoto);
+                }
             }, req);
-
         }
 
         private static ImgurFile ParseResponse(string response) {

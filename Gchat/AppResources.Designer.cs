@@ -187,6 +187,24 @@ namespace Gchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You have exceeded your hourly quota of 50 image uploads per hour. Please wait some time and try again..
+        /// </summary>
+        public static string Chat_ErrorUploadingPhotoApiLimitExceeded {
+            get {
+                return ResourceManager.GetString("Chat_ErrorUploadingPhotoApiLimitExceeded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Uploading the image timed out. Please try again..
+        /// </summary>
+        public static string Chat_ErrorUploadingPhotoTimeout {
+            get {
+                return ResourceManager.GetString("Chat_ErrorUploadingPhotoTimeout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This conversation is no longer off the record..
         /// </summary>
         public static string Chat_NoticeEndOtr {
