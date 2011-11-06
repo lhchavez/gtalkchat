@@ -33,6 +33,10 @@ namespace Gchat.Data {
             set;
         }
 
+        public bool HasItems {
+            get { return Items.Count > 0; }
+        }
+
         public Brush BackgroundBrush {
             get {
                 if (Items.Count > 0) {

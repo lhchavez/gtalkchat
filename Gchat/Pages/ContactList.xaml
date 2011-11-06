@@ -45,15 +45,30 @@
                         </toolkit:LongListSelector.ItemTemplate>
                         <toolkit:LongListSelector.GroupHeaderTemplate>
                             <DataTemplate>
-                                <Border Background="{StaticResource PhoneAccentBrush}" Width="60" Height="60" HorizontalAlignment="Left" Margin="0,0,0,6">
-                                    <TextBlock FontSize="40" Text="{Binding Title}" Foreground="White" FontFamily="Segoe WP Light" Margin="6,3,0,0" />
+                                <Border Background="Transparent" Margin="0,0,0,6">
+                                    <Border Background="{StaticResource PhoneAccentBrush}" 	
+                                        Padding="8,0,0,0" Width="60" Height="60" 				 
+                                        HorizontalAlignment="Left">
+                                        <TextBlock Text="{Binding Title}" 
+                                               Foreground="#FFFFFF" 
+                                               FontSize="48"
+                                               FontFamily="{StaticResource PhoneFontFamilySemiLight}"
+                                               HorizontalAlignment="Left"
+                                               VerticalAlignment="Bottom"/>
+                                    </Border>
                                 </Border>
                             </DataTemplate>
                         </toolkit:LongListSelector.GroupHeaderTemplate>
                         <toolkit:LongListSelector.GroupItemTemplate>
                             <DataTemplate>
-                                <Border Background="{Binding BackgroundBrush}" Width="99" Height="99" Margin="6">
-                                    <TextBlock FontSize="48" Text="{Binding Title}" Foreground="{Binding ForegroundBrush}" VerticalAlignment="Bottom" Margin="12,0,0,0" />
+                                <Border Background="{Binding BackgroundBrush}" 
+                                    Width="99" Height="99" Margin="6" IsHitTestVisible="{Binding HasItems}">
+                                    <TextBlock Text="{Binding Title}" 
+                                           FontFamily="{StaticResource PhoneFontFamilySemiBold}"
+                                           FontSize="48"
+                                           Margin="8,0,0,0"
+                                           Foreground="{Binding ForegroundBrush}"                                        
+                                           VerticalAlignment="Bottom"/>
                                 </Border>
                             </DataTemplate>
                         </toolkit:LongListSelector.GroupItemTemplate>
