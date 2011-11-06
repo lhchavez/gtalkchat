@@ -218,7 +218,15 @@ namespace Gchat.Pages {
 
         public static List<Group<Contact>> GroupRoster() {
             List<Group<Contact>> groupedContacts = new List<Group<Contact>>();
-            string Alpha = "#abcdefghijklmnopqrstuvwxyz";
+
+            var nonalpha = (from con in App.Current.Roster
+                            where !char.IsLetter(con.NameOrEmail.ToLower()[0])
+                            select con);
+
+            Group<Contact> nonalphagroup = new Group<Contact>("#", nonalpha);
+            groupedContacts.Add(nonalphagroup);
+            
+            string Alpha = "abcdefghijklmnopqrstuvwxyz";
             foreach (char c in Alpha) {
                 //Create a temp list with the appropriate Contacts that have this NameKey
                 var subsetOfCons = (from con in App.Current.Roster
@@ -231,11 +239,6 @@ namespace Gchat.Pages {
                 // and the LongListSelector can be bound to.
                 groupedContacts.Add(group);
             }
-            var nonalpha = (from con in App.Current.Roster
-                            where !char.IsLetter(con.NameOrEmail.ToLower()[0])
-                            select con);
-
-            Group<Contact> nonalphagroup = new Group<Contact>("#", nonalpha);
 
             return groupedContacts;
         }

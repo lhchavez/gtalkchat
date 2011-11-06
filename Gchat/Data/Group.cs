@@ -33,6 +33,26 @@ namespace Gchat.Data {
             set;
         }
 
+        public Brush BackgroundBrush {
+            get {
+                if (Items.Count > 0) {
+                    return (Brush)App.Current.Resources["PhoneAccentBrush"];
+                } else {
+                    return (Brush)App.Current.Resources["PhoneChromeBrush"];
+                }
+            }
+        }
+
+        public Brush ForegroundBrush {
+            get {
+                if (Items.Count > 0) {
+                    return new SolidColorBrush(Colors.White);
+                } else {
+                    return (Brush)App.Current.Resources["PhoneDisabledBrush"];
+                }
+            }
+        }
+
         #region IEnumerable<T> Members
 
         public IEnumerator<T> GetEnumerator() {
