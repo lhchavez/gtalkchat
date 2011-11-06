@@ -37,7 +37,11 @@
             <!--Pivot item two-->
             <controls:PivotItem Header="{Binding Path=Loc.ContactList_AllHeader, Source={StaticResource LocalizedStrings}}">
                 <Grid Margin="12,-12,-12,0">
-                    <toolkit:LongListSelector Name="AllContactsListBox" SelectionChanged="ContactsListBox_SelectionChanged" toolkit:TiltEffect.IsTiltEnabled="True">
+                    <toolkit:LongListSelector Name="AllContactsListBox" 
+                                              SelectionChanged="ContactsListBox_SelectionChanged" 
+                                              GroupViewOpened="AllContactsListBox_GroupViewOpened"
+                                              GroupViewClosing="AllContactsListBox_GroupViewClosing"
+                                              toolkit:TiltEffect.IsTiltEnabled="True">
                         <toolkit:LongListSelector.ItemTemplate>
                             <DataTemplate>
                                 <local:ContactCard DataContext="{Binding}" />
@@ -69,6 +73,9 @@
                                            Margin="8,0,0,0"
                                            Foreground="{Binding ForegroundBrush}"                                        
                                            VerticalAlignment="Bottom"/>
+                                    <Border.Projection>
+                                        <PlaneProjection RotationX="-60"/>
+                                    </Border.Projection>
                                 </Border>
                             </DataTemplate>
                         </toolkit:LongListSelector.GroupItemTemplate>
