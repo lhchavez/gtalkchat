@@ -89,6 +89,7 @@
     <Compile Include="Controls\HubTile.xaml.cs">
       <DependentUpon>HubTile.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Data\Group.cs" />
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="Pages\Search.xaml.cs">
       <DependentUpon>Search.xaml</DependentUpon>

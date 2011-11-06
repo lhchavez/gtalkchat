@@ -27,7 +27,8 @@ namespace Gchat.Pages {
             InitializeComponent();
             CreateAppbar();
 
-            AllContactsListBox.ItemsSource = App.Current.Roster;
+            AllContactsListBox.ItemsSource = GroupRoster();
+
             OnlineContactsListBox.ItemsSource = App.Current.Roster.GetOnlineContacts();
             RecentContactsListBox.ItemsSource = App.Current.RecentContacts;
 
@@ -137,6 +138,8 @@ namespace Gchat.Pages {
                         HideProgressBar();
                         OnlineContactsListBox.ItemsSource = onlineContacts;
                     }
+
+                    AllContactsListBox.ItemsSource = GroupRoster();
                 }
             );
         }
@@ -206,6 +209,30 @@ namespace Gchat.Pages {
         private void Tile_Click(object sender, RoutedEventArgs e) {
             var to = ((e.OriginalSource as Tile).DataContext as Contact).Email;
             NavigationService.Navigate(new Uri("/Pages/Chat.xaml?from=" + to, UriKind.Relative));
+        }
+
+        public static List<Group<Contact>> GroupRoster() {
+            List<Group<Contact>> groupedContacts = new List<Group<Contact>>();
+            string Alpha = "#abcdefghijklmnopqrstuvwxyz";
+            foreach (char c in Alpha) {
+                //Create a temp list with the appropriate Contacts that have this NameKey
+                var subsetOfCons = (from con in App.Current.Roster
+                                    where con.NameOrEmail.ToLower()[0] == c
+                                    select con);
+                
+                Group<Contact> group = new Group<Contact>(c.ToString(), subsetOfCons);
+
+                //Add this GroupedOC to the observable collection that is being returned
+                // and the LongListSelector can be bound to.
+                groupedContacts.Add(group);
+            }
+            var nonalpha = (from con in App.Current.Roster
+                            where !char.IsLetter(con.NameOrEmail.ToLower()[0])
+                            select con);
+
+            Group<Contact> nonalphagroup = new Group<Contact>("#", nonalpha);
+
+            return groupedContacts;
         }
     }
 

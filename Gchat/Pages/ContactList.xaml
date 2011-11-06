@@ -37,13 +37,40 @@
             <!--Pivot item two-->
             <controls:PivotItem Header="{Binding Path=Loc.ContactList_AllHeader, Source={StaticResource LocalizedStrings}}">
                 <Grid Margin="12,-12,-12,0">
-                    <ListBox Name="AllContactsListBox" SelectionChanged="ContactsListBox_SelectionChanged" toolkit:TiltEffect.IsTiltEnabled="True">
+                    <toolkit:LongListSelector Name="AllContactsListBox" SelectionChanged="ContactsListBox_SelectionChanged" toolkit:TiltEffect.IsTiltEnabled="True">
+                        <toolkit:LongListSelector.ItemTemplate>
+                            <DataTemplate>
+                                <local:ContactCard DataContext="{Binding}" />
+                            </DataTemplate>
+                        </toolkit:LongListSelector.ItemTemplate>
+                        <toolkit:LongListSelector.GroupHeaderTemplate>
+                            <DataTemplate>
+                                <Border BorderBrush="{StaticResource PhoneAccentBrush}" BorderThickness="2" Width="48" Height="48" HorizontalAlignment="Left">
+                                    <TextBlock FontSize="40" Text="{Binding Title}" Foreground="{StaticResource PhoneAccentBrush}" />
+                                </Border>
+                            </DataTemplate>
+                        </toolkit:LongListSelector.GroupHeaderTemplate>
+                        <toolkit:LongListSelector.GroupItemTemplate>
+                            <DataTemplate>
+                                <Border BorderBrush="{StaticResource PhoneAccentBrush}" BorderThickness="2" Width="48" Height="48" Margin="6">
+                                    <TextBlock FontSize="40" Text="{Binding Title}" Foreground="{StaticResource PhoneAccentBrush}" />
+                                </Border>
+                            </DataTemplate>
+                        </toolkit:LongListSelector.GroupItemTemplate>
+                        <toolkit:LongListSelector.GroupItemsPanel>
+                            <ItemsPanelTemplate>
+                                <toolkit:WrapPanel />
+                            </ItemsPanelTemplate>
+                        </toolkit:LongListSelector.GroupItemsPanel>
+                    </toolkit:LongListSelector>
+                    
+                    <!--<ListBox Name="AllContactsListBox" SelectionChanged="ContactsListBox_SelectionChanged" toolkit:TiltEffect.IsTiltEnabled="True">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <local:ContactCard DataContext="{Binding}" />
                             </DataTemplate>
                         </ListBox.ItemTemplate>
-                    </ListBox>
+                    </ListBox>-->
                 </Grid>
             </controls:PivotItem>
 
