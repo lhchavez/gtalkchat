@@ -271,6 +271,12 @@ This warning will now show again after you press OK.</value>
   <data name="Login_WarningNotifications" xml:space="preserve">
     <value>By logging in, you are also opting in to raw, toast and tile push notifications for incoming chat messages. You can disable toast and tile notifications individually in the settings page at any time. Raw notifications are required for the app to function properly and can be disabled at any time by logging out.</value>
   </data>
+  <data name="Logout_Message" xml:space="preserve">
+    <value>By logging out, all your settings will be erased. Do you wish to continue?</value>
+  </data>
+  <data name="Logout_Title" xml:space="preserve">
+    <value>log out</value>
+  </data>
   <data name="Settings_Header" xml:space="preserve">
     <value>settings</value>
   </data>

@@ -521,6 +521,24 @@ namespace Gchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to By logging out, all your settings will be erased. Do you wish to continue?.
+        /// </summary>
+        public static string Logout_Message {
+            get {
+                return ResourceManager.GetString("Logout_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to log out.
+        /// </summary>
+        public static string Logout_Title {
+            get {
+                return ResourceManager.GetString("Logout_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to settings.
         /// </summary>
         public static string Settings_Header {

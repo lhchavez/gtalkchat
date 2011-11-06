@@ -190,8 +190,12 @@ namespace Gchat.Pages {
         }
 
         private void Logout_Click(object sender, EventArgs e) {
-            var gtalkHelper = App.Current.GtalkHelper;
-            gtalkHelper.Logout();
+            Dispatcher.BeginInvoke(() => {
+                if (MessageBox.Show(AppResources.Logout_Message, AppResources.Logout_Title, MessageBoxButton.OKCancel) == MessageBoxResult.OK) {
+                    var gtalkHelper = App.Current.GtalkHelper;
+                    gtalkHelper.Logout();
+                }
+            });
         }
 
         private void SearchButton_Click(object sender, EventArgs e) {
