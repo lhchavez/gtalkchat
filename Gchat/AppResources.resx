@@ -189,6 +189,12 @@
   <data name="Chat_ErrorUploadingPhoto" xml:space="preserve">
     <value>Error uploading photo</value>
   </data>
+  <data name="Chat_ErrorUploadingPhotoApiLimitExceeded" xml:space="preserve">
+    <value>You have exceeded your hourly quota of 50 image uploads per hour. Please wait some time and try again.</value>
+  </data>
+  <data name="Chat_ErrorUploadingPhotoTimeout" xml:space="preserve">
+    <value>Uploading the image timed out. Please try again.</value>
+  </data>
   <data name="Chat_NoticeEndOtr" xml:space="preserve">
     <value>This conversation is no longer off the record.</value>
   </data>

@@ -43,7 +43,7 @@ namespace Gchat.Pages {
                     BitmapImage bm = new BitmapImage();
                     bm.SetSource(r.ChosenPhoto);
                     ShowProgressBar(AppResources.Chat_ProgressUploadingPhoto);
-                    Imgur.Upload(bm, i => {
+                    Imgur.Upload(bm, (i, error) => {
                         if (i != null) {
                             Dispatcher.BeginInvoke(() => {
                                 MessageText.Text += " " + i.Original.ToString() + " ";
@@ -53,7 +53,7 @@ namespace Gchat.Pages {
                             });
                         } else {
                             Dispatcher.BeginInvoke(() => {
-                                gtalkHelper.ShowToast(AppResources.Chat_ErrorUploadingPhoto);
+                                gtalkHelper.ShowToast(error);
                                 HideProgressBar();
                                 attachButton.IsEnabled = true;
                             });
