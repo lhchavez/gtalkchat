@@ -39,8 +39,6 @@
                 <Grid Margin="12,-12,-12,0">
                     <toolkit:LongListSelector Name="AllContactsListBox" 
                                               SelectionChanged="ContactsListBox_SelectionChanged" 
-                                              GroupViewOpened="AllContactsListBox_GroupViewOpened"
-                                              GroupViewClosing="AllContactsListBox_GroupViewClosing"
                                               toolkit:TiltEffect.IsTiltEnabled="True">
                         <toolkit:LongListSelector.ItemTemplate>
                             <DataTemplate>
@@ -73,9 +71,6 @@
                                            Margin="8,0,0,0"
                                            Foreground="{Binding ForegroundBrush}"                                        
                                            VerticalAlignment="Bottom"/>
-                                    <Border.Projection>
-                                        <PlaneProjection RotationX="-60"/>
-                                    </Border.Projection>
                                 </Border>
                             </DataTemplate>
                         </toolkit:LongListSelector.GroupItemTemplate>
