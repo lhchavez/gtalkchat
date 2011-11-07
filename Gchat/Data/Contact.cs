@@ -147,14 +147,14 @@ namespace Gchat.Data {
             get {
                 if (string.IsNullOrEmpty(show)) {
                     if (Online) {
-                        return "available";
+                        return AppResources.ChatStatus_Available;
                     } else {
-                        return "offline";
+                        return AppResources.ChatStatus_Offline;
                     }
                 } else if (show == "dnd") {
-                    return "busy";
-                } else if (show == "xa") {
-                    return "away";
+                    return AppResources.ChatStatus_Busy;
+                } else if (show == "xa" || show == "away") {
+                    return AppResources.ChatStatus_Away;
                 } else {
                     return show;
                 }
@@ -262,10 +262,10 @@ namespace Gchat.Data {
 
         public static int CompareByStatus(Contact a, Contact b) {
             Dictionary<string, int> priority = new Dictionary<string,int> {
-                {"available", 1},
-                {"busy", 2},
-                {"away", 3},
-                {"offline", 4}
+                {AppResources.ChatStatus_Available, 1},
+                {AppResources.ChatStatus_Busy, 2},
+                {AppResources.ChatStatus_Away, 3},
+                {AppResources.ChatStatus_Offline, 4}
             };
             
             if (a.Status == b.Status) {
