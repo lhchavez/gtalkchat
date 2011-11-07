@@ -118,7 +118,15 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="About_ChangelistBody" xml:space="preserve">
-    <value>1.3 Codename Lassi
+    <value>1.4 Codename Flan
+· Image attachments and thumbnails
+· Message formatting: *bold* and _italic_
+· Alphabetical jumplist for all contacts list
+· Hide contacts from online list
+· Nicer progress bars
+· Bugfixes
+
+1.3 Codename Lassi
 · Search
 · Recent contacts
 · Status change
@@ -181,7 +189,7 @@
     <value>This is the paid version of Gchat. It has no extra funcionality, but you can have the warm, fuzzy feeling that you contributed to this app's development.</value>
   </data>
   <data name="About_Version" xml:space="preserve">
-    <value>Gchat 1.3</value>
+    <value>Gchat 1.4</value>
   </data>
   <data name="AppName" xml:space="preserve">
     <value>Gchat</value>
@@ -203,6 +211,9 @@
   </data>
   <data name="ChatStatus_BusyUpper" xml:space="preserve">
     <value>BUSY</value>
+  </data>
+  <data name="ChatStatus_Hidden" xml:space="preserve">
+    <value>hidden</value>
   </data>
   <data name="ChatStatus_Invisible" xml:space="preserve">
     <value>invisible</value>
@@ -383,7 +394,7 @@ This warning will now show again after you press OK.</value>
     <value>By logging out, all your settings will be erased. Do you wish to continue?</value>
   </data>
   <data name="Logout_Title" xml:space="preserve">
-    <value>log out</value>
+    <value>Log out</value>
   </data>
   <data name="Notification_OfflineMessages" xml:space="preserve">
     <value>{0} unread messages</value>

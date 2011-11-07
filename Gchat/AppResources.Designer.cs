@@ -61,7 +61,15 @@ namespace Gchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 1.3 Codename Lassi
+        ///   Looks up a localized string similar to 1.4 Codename Flan
+        ///· Image attachments and thumbnails
+        ///· Message formatting: *bold* and _italic_
+        ///· Alphabetical jumplist for all contacts list
+        ///· Hide contacts from online list
+        ///· Nicer progress bars
+        ///· Bugfixes
+        ///
+        ///1.3 Codename Lassi
         ///· Search
         ///· Recent contacts
         ///· Status change
@@ -226,7 +234,7 @@ namespace Gchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Gchat 1.3.
+        ///   Looks up a localized string similar to Gchat 1.4.
         /// </summary>
         public static string About_Version {
             get {
@@ -493,6 +501,15 @@ namespace Gchat {
         public static string ChatStatus_BusyUpper {
             get {
                 return ResourceManager.GetString("ChatStatus_BusyUpper", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to hidden.
+        /// </summary>
+        public static string ChatStatus_Hidden {
+            get {
+                return ResourceManager.GetString("ChatStatus_Hidden", resourceCulture);
             }
         }
         
@@ -830,7 +847,7 @@ namespace Gchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to log out.
+        ///   Looks up a localized string similar to Log out.
         /// </summary>
         public static string Logout_Title {
             get {

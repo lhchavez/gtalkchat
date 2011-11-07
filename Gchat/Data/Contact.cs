@@ -160,7 +160,7 @@ namespace Gchat.Data {
         public string Status {
             get {
                 if (Hidden) {
-                    return "hidden";
+                    return AppResources.ChatStatus_Hidden;
                 }
 
                 if (string.IsNullOrEmpty(show)) {
