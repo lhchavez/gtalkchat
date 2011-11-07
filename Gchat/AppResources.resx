@@ -117,8 +117,71 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="About_BackendDeveloperHeader" xml:space="preserve">
+    <value>Backend &amp; Server Development</value>
+  </data>
+  <data name="About_ChangelistBody" xml:space="preserve">
+    <value>1.3 Codename Lassi
+· Search
+· Recent contacts
+· Status change
+· Bugfixes
+
+1.2 Codename Mousse
+· Fixed a bug with the display pictures
+· Extended timeout period to 30 seconds
+· Fixed a couple of crashes
+
+1.1 Codename Jelly
+· Initial release!</value>
+  </data>
+  <data name="About_ChangelistHeader" xml:space="preserve">
+    <value>Changelist</value>
+  </data>
+  <data name="About_Disclaimer" xml:space="preserve">
+    <value>This is a third party app and is not endorsed or supported by Google.</value>
+  </data>
+  <data name="About_Feedback1" xml:space="preserve">
+    <value>Do you like this application?</value>
+  </data>
+  <data name="About_Feedback2" xml:space="preserve">
+    <value>Let us know!</value>
+  </data>
+  <data name="About_Feedback3" xml:space="preserve">
+    <value>Did you find a bug?</value>
+  </data>
+  <data name="About_Feedback4" xml:space="preserve">
+    <value>Report it!</value>
+  </data>
+  <data name="About_FreeVersionNotice1" xml:space="preserve">
+    <value>This is the free version. It's not limited or anything because we love you. Please consider getting the</value>
+  </data>
+  <data name="About_FreeVersionNotice2" xml:space="preserve">
+    <value>paid version</value>
+  </data>
+  <data name="About_FreeVersionNotice3" xml:space="preserve">
+    <value>to support the development of this app (and paying the servers).</value>
+  </data>
+  <data name="About_FrontendDeveloperHeader" xml:space="preserve">
+    <value>Frontend Development &amp; UI Design</value>
+  </data>
   <data name="About_Header" xml:space="preserve">
     <value>about</value>
+  </data>
+  <data name="About_License1" xml:space="preserve">
+    <value>Open source!</value>
+  </data>
+  <data name="About_License2" xml:space="preserve">
+    <value>Get the code at GitHub</value>
+  </data>
+  <data name="About_License3" xml:space="preserve">
+    <value>Released under a</value>
+  </data>
+  <data name="About_License4" xml:space="preserve">
+    <value>CC BY-NC-SA license</value>
+  </data>
+  <data name="About_PaidVersionNotice" xml:space="preserve">
+    <value>This is the paid version of Gchat. It has no extra funcionality, but you can have the warm, fuzzy feeling that you contributed to this app's development.</value>
   </data>
   <data name="About_Version" xml:space="preserve">
     <value>Gchat 1.3</value>
