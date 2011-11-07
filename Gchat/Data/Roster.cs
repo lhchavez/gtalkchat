@@ -73,6 +73,12 @@ namespace Gchat.Data {
             }
         }
 
+        public void Update(Contact item) {
+            if (CollectionChanged != null) {
+                CollectionChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Replace, item, IndexOf(item)));
+            }
+        }
+
         public bool Contains(string jid) {
             return contacts.ContainsKey(GetEmail(jid));
         }
@@ -82,7 +88,7 @@ namespace Gchat.Data {
                 if (Contains(jid)) {
                     return contacts[GetEmail(jid)];
                 } else {
-                    return null;
+                    return null; 
                 }
             }
             set { contacts[GetEmail(jid)] = value; }

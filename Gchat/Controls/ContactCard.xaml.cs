@@ -28,6 +28,9 @@ namespace Gchat.Controls {
             } else {
                 item.IsEnabled = true;
             }
+
+            MenuItem hidden = menu.Items[1] as MenuItem;
+            hidden.Header = c.Hidden ? AppResources.Contact_ContextMenuUnhide : AppResources.Contact_ContextMenuHide;
         }
 
         private void PinContact_Click(object sender, RoutedEventArgs e) {
@@ -35,6 +38,16 @@ namespace Gchat.Controls {
             Contact c = item.DataContext as Contact;
 
             App.Current.GtalkHelper.PinContact(c.Email);
+        }
+
+        private void HideContact_Click(object sender, RoutedEventArgs e) {
+            MenuItem item = sender as MenuItem;
+            Contact c = item.DataContext as Contact;
+
+            c.Hidden = !c.Hidden;
+
+            App.Current.Roster.Update(c);
+            App.Current.ContactList.UpdateRoster();
         }
     }
 }

@@ -35,6 +35,12 @@ namespace Gchat.Pages {
             RecentContactsListBox.ItemsSource = App.Current.RecentContacts;
 
             StatusPicker.ItemsSource = status;
+
+            App.Current.ContactList = this;
+        }
+
+        public void UpdateRoster() {
+            Dispatcher.BeginInvoke(() => OnlineContactsListBox.ItemsSource = App.Current.Roster.GetOnlineContacts());
         }
 
         private void CreateAppbar() {
@@ -117,7 +123,7 @@ namespace Gchat.Pages {
                     gtalkHelper.GetOfflineMessages();
                 }
             } else {
-                Dispatcher.BeginInvoke(() => OnlineContactsListBox.ItemsSource = App.Current.Roster.GetOnlineContacts());
+                UpdateRoster();
             }
 
             gtalkHelper.LoginIfNeeded();

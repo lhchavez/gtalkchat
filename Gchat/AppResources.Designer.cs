@@ -542,11 +542,29 @@ namespace Gchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to hide contact.
+        /// </summary>
+        public static string Contact_ContextMenuHide {
+            get {
+                return ResourceManager.GetString("Contact_ContextMenuHide", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to pin to start.
         /// </summary>
         public static string Contact_ContextMenuPin {
             get {
                 return ResourceManager.GetString("Contact_ContextMenuPin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to show contact.
+        /// </summary>
+        public static string Contact_ContextMenuUnhide {
+            get {
+                return ResourceManager.GetString("Contact_ContextMenuUnhide", resourceCulture);
             }
         }
         
