@@ -61,15 +61,6 @@ namespace Gchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Backend &amp; Server Development.
-        /// </summary>
-        public static string About_BackendDeveloperHeader {
-            get {
-                return ResourceManager.GetString("About_BackendDeveloperHeader", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to 1.3 Codename Lassi
         ///· Search
         ///· Recent contacts
@@ -100,6 +91,15 @@ namespace Gchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to by.
+        /// </summary>
+        public static string About_CreatedBy {
+            get {
+                return ResourceManager.GetString("About_CreatedBy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This is a third party app and is not endorsed or supported by Google..
         /// </summary>
         public static string About_Disclaimer {
@@ -109,7 +109,7 @@ namespace Gchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Do you like this application?.
+        ///   Looks up a localized string similar to Do you like this app?.
         /// </summary>
         public static string About_Feedback1 {
             get {
@@ -118,7 +118,7 @@ namespace Gchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Let us know!.
+        ///   Looks up a localized string similar to Write a review!.
         /// </summary>
         public static string About_Feedback2 {
             get {
@@ -168,15 +168,6 @@ namespace Gchat {
         public static string About_FreeVersionNotice3 {
             get {
                 return ResourceManager.GetString("About_FreeVersionNotice3", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Frontend Development &amp; UI Design.
-        /// </summary>
-        public static string About_FrontendDeveloperHeader {
-            get {
-                return ResourceManager.GetString("About_FrontendDeveloperHeader", resourceCulture);
             }
         }
         

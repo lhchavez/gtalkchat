@@ -117,9 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="About_BackendDeveloperHeader" xml:space="preserve">
-    <value>Backend &amp; Server Development</value>
-  </data>
   <data name="About_ChangelistBody" xml:space="preserve">
     <value>1.3 Codename Lassi
 · Search
@@ -138,14 +135,17 @@
   <data name="About_ChangelistHeader" xml:space="preserve">
     <value>Changelist</value>
   </data>
+  <data name="About_CreatedBy" xml:space="preserve">
+    <value>by</value>
+  </data>
   <data name="About_Disclaimer" xml:space="preserve">
     <value>This is a third party app and is not endorsed or supported by Google.</value>
   </data>
   <data name="About_Feedback1" xml:space="preserve">
-    <value>Do you like this application?</value>
+    <value>Do you like this app?</value>
   </data>
   <data name="About_Feedback2" xml:space="preserve">
-    <value>Let us know!</value>
+    <value>Write a review!</value>
   </data>
   <data name="About_Feedback3" xml:space="preserve">
     <value>Did you find a bug?</value>
@@ -161,9 +161,6 @@
   </data>
   <data name="About_FreeVersionNotice3" xml:space="preserve">
     <value>to support the development of this app (and paying the servers).</value>
-  </data>
-  <data name="About_FrontendDeveloperHeader" xml:space="preserve">
-    <value>Frontend Development &amp; UI Design</value>
   </data>
   <data name="About_Header" xml:space="preserve">
     <value>about</value>

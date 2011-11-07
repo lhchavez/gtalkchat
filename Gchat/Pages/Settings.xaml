@@ -38,7 +38,16 @@
                     <ScrollViewer Margin="0,0,-12,0">
                         <RichTextBox VerticalAlignment="Top" FontSize="{StaticResource PhoneFontSizeMedium}" Margin="0,0,24,0">
                             <Paragraph>
-                                <Run Text="{Binding Path=Loc.About_Version, Source={StaticResource LocalizedStrings}}" FontSize="{StaticResource PhoneFontSizeLarge}" />
+                                <Hyperlink TargetName="_blank" NavigateUri="http://gchatapp.com">
+                                    <Run Text="{Binding Path=Loc.About_Version, Source={StaticResource LocalizedStrings}}" FontSize="{StaticResource PhoneFontSizeExtraLarge}" Foreground="{StaticResource PhoneAccentBrush}" />
+                                </Hyperlink>
+                            </Paragraph>
+
+                            <Paragraph>
+                                <Run Text="{Binding Path=Loc.About_CreatedBy, Source={StaticResource LocalizedStrings}}" />
+                                <Hyperlink TargetName="_blank" NavigateUri="http://lhchavez.com" Foreground="{StaticResource PhoneAccentBrush}">Luis Héctor Chávez</Hyperlink>
+                                <Run Text="&amp;" />
+                                <Hyperlink TargetName="_blank" NavigateUri="http://julianapena.com" Foreground="{StaticResource PhoneAccentBrush}">Juliana Peña</Hyperlink>
                             </Paragraph>
 
                             <Paragraph>
@@ -47,7 +56,7 @@
 
                             <Paragraph x:Name="FreeVersionNotice">
                                 <Run Text="{Binding Path=Loc.About_FreeVersionNotice1, Source={StaticResource LocalizedStrings}}" />
-                                <Hyperlink Click="Buy_Click" >
+                                <Hyperlink Click="Buy_Click" Foreground="{StaticResource PhoneAccentBrush}" >
                                     <Run Text="{Binding Path=Loc.About_FreeVersionNotice2, Source={StaticResource LocalizedStrings}}"/></Hyperlink>
                                 <Run Text="{Binding Path=Loc.About_FreeVersionNotice3, Source={StaticResource LocalizedStrings}}" />
                             </Paragraph>
@@ -61,55 +70,30 @@
                             </Paragraph>
 
                             <Paragraph>
-                                <Run Text="{Binding Path=Loc.About_BackendDeveloperHeader, Source={StaticResource LocalizedStrings}}" />
+                                <Run Text="{Binding Path=Loc.About_Feedback1, Source={StaticResource LocalizedStrings}}" />
+                                <Hyperlink Click="Review_Click" Foreground="{StaticResource PhoneAccentBrush}">
+                                    <Run Text="{Binding Path=Loc.About_Feedback2, Source={StaticResource LocalizedStrings}}" />
+                                </Hyperlink>
+                                <LineBreak />
+                                <Run Text="{Binding Path=Loc.About_Feedback3, Source={StaticResource LocalizedStrings}}" />
+                                <Hyperlink TargetName="_blank" NavigateUri="https://github.com/lhchavez/gtalkchat/issues" Foreground="{StaticResource PhoneAccentBrush}">
+                                    <Run Text="{Binding Path=Loc.About_Feedback4, Source={StaticResource LocalizedStrings}}" />
+                                </Hyperlink>
                             </Paragraph>
-                            <Paragraph>
-                                <Hyperlink TargetName="_blank" NavigateUri="http://lhchavez.com">Luis Héctor Chávez</Hyperlink>
-                                <Run Text=" – " />
-                                <Hyperlink TargetName="_blank" NavigateUri="http://twitter.com/lhchavez">@lhchavez</Hyperlink>
-                            </Paragraph>
-
-                            <Paragraph>
-                                <Run Text="" />
-                            </Paragraph>
-
-                            <Paragraph>
-                                <Run Text="{Binding Path=Loc.About_FrontendDeveloperHeader, Source={StaticResource LocalizedStrings}}" />
-                            </Paragraph>
-                            <Paragraph>
-                                <Hyperlink TargetName="_blank" NavigateUri="http://julianapena.com">Juliana Peña</Hyperlink>
-                                <Run Text=" – " />
-                                <Hyperlink TargetName="_blank" NavigateUri="http://twitter.com/limitedmage">@limitedmage</Hyperlink>
-                            </Paragraph>
-
+                            
                             <Paragraph>
                                 <Run Text="" />
                             </Paragraph>
 
                             <Paragraph>
                                 <Run Text="{Binding Path=Loc.About_License1, Source={StaticResource LocalizedStrings}}" />
-                                <Hyperlink TargetName="_blank" NavigateUri="https://github.com/lhchavez/gtalkchat">
+                                <Hyperlink TargetName="_blank" NavigateUri="https://github.com/lhchavez/gtalkchat" Foreground="{StaticResource PhoneAccentBrush}">
                                     <Run Text="{Binding Path=Loc.About_License2, Source={StaticResource LocalizedStrings}}"/>
                                 </Hyperlink>
                                 <LineBreak/>
                                 <Run Text="{Binding Path=Loc.About_License3, Source={StaticResource LocalizedStrings}}" />
-                                <Hyperlink TargetName="_blank" NavigateUri="http://creativecommons.org/licenses/by-nc-sa/3.0/">
+                                <Hyperlink TargetName="_blank" NavigateUri="http://creativecommons.org/licenses/by-nc-sa/3.0/" Foreground="{StaticResource PhoneAccentBrush}">
                                     <Run Text="{Binding Path=Loc.About_License4, Source={StaticResource LocalizedStrings}}" />
-                                </Hyperlink>
-                            </Paragraph>
-
-                            <Paragraph>
-                                <Run Text="" />
-                            </Paragraph>
-
-                            <Paragraph>
-                                <Run Text="{Binding Path=Loc.About_Feedback1, Source={StaticResource LocalizedStrings}}" />
-                                <Hyperlink Click="Review_Click">
-                                    <Run Text="{Binding Path=Loc.About_Feedback2, Source={StaticResource LocalizedStrings}}" />
-                                </Hyperlink>
-                                <Run Text="{Binding Path=Loc.About_Feedback3, Source={StaticResource LocalizedStrings}}" />
-                                <Hyperlink TargetName="_blank" NavigateUri="https://github.com/lhchavez/gtalkchat/issues">
-                                    <Run Text="{Binding Path=Loc.About_Feedback4, Source={StaticResource LocalizedStrings}}" />
                                 </Hyperlink>
                             </Paragraph>
 
@@ -125,11 +109,9 @@
                                 <Run Text="" />
                             </Paragraph>
 
-                            <Paragraph FontWeight="Bold">
-                                <Run Text="{Binding Path=Loc.About_ChangelistHeader, Source={StaticResource LocalizedStrings}}" />
-                            </Paragraph>
-
                             <Paragraph>
+                                <Run Text="{Binding Path=Loc.About_ChangelistHeader, Source={StaticResource LocalizedStrings}}" FontWeight="Bold" />
+                                <LineBreak />
                                 <Run Text="{Binding Path=Loc.About_ChangelistBody, Source={StaticResource LocalizedStrings}}" />
                             </Paragraph>
                         </RichTextBox>
