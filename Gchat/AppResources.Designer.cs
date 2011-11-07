@@ -659,7 +659,7 @@ namespace Gchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to API Key failure.
         /// </summary>
         public static string Error_ApiTitle {
             get {
@@ -704,7 +704,7 @@ namespace Gchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unable to get your contact list. Please retry later..
+        ///   Looks up a localized string similar to Unable to get your contact list. Please retry later.&quot;.
         /// </summary>
         public static string Error_ContactListMessage {
             get {

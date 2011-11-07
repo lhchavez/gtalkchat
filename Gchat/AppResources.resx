@@ -322,6 +322,12 @@ This warning will now show again after you press OK.</value>
   <data name="Contact_ContextMenuPin" xml:space="preserve">
     <value>pin to start</value>
   </data>
+  <data name="Error_ApiMessage" xml:space="preserve">
+    <value>API Key matching failed. Please get a new API Key and retry.</value>
+  </data>
+  <data name="Error_ApiTitle" xml:space="preserve">
+    <value>API Key failure</value>
+  </data>
   <data name="Error_AuthErrorMessage" xml:space="preserve">
     <value>Your authentication token has expired. Try logging in again.</value>
   </data>
@@ -334,8 +340,20 @@ This warning will now show again after you press OK.</value>
   <data name="Error_ConnectionErrorTitle" xml:space="preserve">
     <value>Connection error</value>
   </data>
-  <data name="Error_OfflineMessages" xml:space="preserve">
+  <data name="Error_ContactListMessage" xml:space="preserve">
+    <value>Unable to get your contact list. Please retry later."</value>
+  </data>
+  <data name="Error_ContactListTitle" xml:space="preserve">
+    <value>Contact list</value>
+  </data>
+  <data name="Error_OfflineMessagesMessage" xml:space="preserve">
     <value>Unable to get offline messages. Please retry later.</value>
+  </data>
+  <data name="Error_OfflineMessagesTitle" xml:space="preserve">
+    <value>Getting offline messages</value>
+  </data>
+  <data name="Error_RegisterTitle" xml:space="preserve">
+    <value>Register</value>
   </data>
   <data name="Login_AppbarLogin" xml:space="preserve">
     <value>log in</value>
@@ -363,6 +381,9 @@ This warning will now show again after you press OK.</value>
   </data>
   <data name="Logout_Title" xml:space="preserve">
     <value>log out</value>
+  </data>
+  <data name="Notification_OfflineMessages" xml:space="preserve">
+    <value>{0} unread messages</value>
   </data>
   <data name="Settings_Header" xml:space="preserve">
     <value>settings</value>
