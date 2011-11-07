@@ -123,8 +123,8 @@ namespace Gchat.Utilities {
                         if (error.Equals("")) {
                             if (ConnectFailed != null) {
                                 ConnectFailed(
-                                    "Unable to contact server. Please retry later.",
-                                    "Connection error"
+                                    AppResources.Error_ConnectionErrorMessage,
+                                    AppResources.Error_ConnectionErrorTitle
                                 );
                             }
                         } else if (error.StartsWith("401")) {
@@ -134,8 +134,8 @@ namespace Gchat.Utilities {
                             App.Current.RootFrame.Dispatcher.BeginInvoke(
                                 () => {
                                     MessageBox.Show(
-                                        "Your authentication token has expired. Try logging in again.",
-                                        "Authentication error",
+                                        AppResources.Error_AuthErrorMessage,
+                                        AppResources.Error_AuthErrorTitle,
                                         MessageBoxButton.OK
                                     );
                                     App.Current.RootFrame.Navigate(new Uri("/Pages/Login.xaml", UriKind.Relative));
@@ -651,11 +651,11 @@ namespace Gchat.Utilities {
                     NotifyMessageReceived(message);
 
                     var email = message.From;
-                    if(email.Contains("/")) {
+                    if (email.Contains("/")) {
                         email = email.Substring(0, email.IndexOf('/'));
                     }
 
-                    if(!messageCount.ContainsKey(email)) {
+                    if (!messageCount.ContainsKey(email)) {
                         messageCount[email] = 1;
                         firstMessage[email] = message.Body;
                     } else {
@@ -663,17 +663,17 @@ namespace Gchat.Utilities {
                     }
                 },
                 error => {
-                    if(error.Equals("")) {
-                        ShowToast("Unable to get offline messages. Please retry later.");
+                    if (error.Equals("")) {
+                        ShowToast(AppResources.Error_OfflineMessagesMessage);
                     } else if (error.StartsWith("403")) {
                         GracefulReLogin();
                     } else {
-                        ShowToast(error, "Getting offline messages");
+                        ShowToast(error, AppResources.Error_OfflineMessagesTitle);
                     }
                 },
                 () => {
                     foreach(var mc in messageCount) {
-                        if(mc.Value == 1) {
+                        if (mc.Value == 1) {
                             ShowToast(new Message {
                                 From = mc.Key,
                                 Body = firstMessage[mc.Key]
@@ -681,7 +681,7 @@ namespace Gchat.Utilities {
                         } else {
                             ShowToast(new Message {
                                 From = mc.Key,
-                                Body = string.Format("{0} unread messages", mc.Value)
+                                Body = string.Format(AppResources.Notification_OfflineMessages, mc.Value)
                             });
                         }
                     }
@@ -740,13 +740,13 @@ namespace Gchat.Utilities {
                 error => {
                     if (error.Equals("")) {
                         if (ConnectFailed != null) {
-                            ConnectFailed("Unable to get your contact list. Please retry later.", "Contact list");
+                            ConnectFailed(AppResources.Error_ContactListMessage, AppResources.Error_ContactListTitle);
                         }
                     } else if (error.StartsWith("403")) {
                         GracefulReLogin();
                     } else {
                         if (ConnectFailed != null) {
-                            ConnectFailed(error, "Contact list");
+                            ConnectFailed(error, AppResources.Error_ContactListTitle);
                         }
                     }
                 }
@@ -842,15 +842,15 @@ namespace Gchat.Utilities {
                         if (error.Equals("")) {
                             if (ConnectFailed != null) {
                                 ConnectFailed(
-                                    "Unable to contact server. Please retry later.",
-                                    "Connection error"
+                                    AppResources.Error_ConnectionErrorMessage,
+                                    AppResources.Error_ConnectionErrorTitle
                                 );
                             }
                         } else if (error.StartsWith("403")) {
                             GracefulReLogin();
                         } else {
                             if (ConnectFailed != null) {
-                                ConnectFailed(error, "Register");
+                                ConnectFailed(error, AppResources.Error_RegisterTitle);
                             }
                         }
                     }
@@ -887,20 +887,20 @@ namespace Gchat.Utilities {
                     if (error.Equals("")) {
                         if (ConnectFailed != null) {
                             ConnectFailed(
-                                "Unable to contact server. Please retry later.",
-                                "Connection error"
+                                AppResources.Error_ConnectionErrorMessage,
+                                AppResources.Error_ConnectionErrorTitle
                             );
                         }
                     } else if (error.StartsWith("403")) {
                         GracefulReLogin();
                     } else if (error.StartsWith("401")) {
                         ConnectFailed(
-                            "API Key matching failed. Please get a new API Key and retry.",
-                            "API Key failure"
+                            AppResources.Error_ApiMessage,
+                            AppResources.Error_ApiTitle
                         );
                     } else {
                         if (ConnectFailed != null) {
-                            ConnectFailed(error, "Register");
+                            ConnectFailed(error, AppResources.Error_RegisterTitle);
                         }
                     }
                 }
@@ -926,7 +926,7 @@ namespace Gchat.Utilities {
 
                 var contact = App.Current.Roster[email];
 
-                if(contact == null) {
+                if (contact == null) {
                     // TODO: only for sanity-of-mind-purposes. MUST remove eventually
                     return;
                 }

@@ -322,6 +322,21 @@ This warning will now show again after you press OK.</value>
   <data name="Contact_ContextMenuPin" xml:space="preserve">
     <value>pin to start</value>
   </data>
+  <data name="Error_AuthErrorMessage" xml:space="preserve">
+    <value>Your authentication token has expired. Try logging in again.</value>
+  </data>
+  <data name="Error_AuthErrorTitle" xml:space="preserve">
+    <value>Authentication error</value>
+  </data>
+  <data name="Error_ConnectionErrorMessage" xml:space="preserve">
+    <value>Unable to contact server. Please retry later.</value>
+  </data>
+  <data name="Error_ConnectionErrorTitle" xml:space="preserve">
+    <value>Connection error</value>
+  </data>
+  <data name="Error_OfflineMessages" xml:space="preserve">
+    <value>Unable to get offline messages. Please retry later.</value>
+  </data>
   <data name="Login_AppbarLogin" xml:space="preserve">
     <value>log in</value>
   </data>

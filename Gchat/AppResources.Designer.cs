@@ -650,6 +650,105 @@ namespace Gchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to API Key matching failed. Please get a new API Key and retry..
+        /// </summary>
+        public static string Error_ApiMessage {
+            get {
+                return ResourceManager.GetString("Error_ApiMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Error_ApiTitle {
+            get {
+                return ResourceManager.GetString("Error_ApiTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your authentication token has expired. Try logging in again..
+        /// </summary>
+        public static string Error_AuthErrorMessage {
+            get {
+                return ResourceManager.GetString("Error_AuthErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Authentication error.
+        /// </summary>
+        public static string Error_AuthErrorTitle {
+            get {
+                return ResourceManager.GetString("Error_AuthErrorTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to contact server. Please retry later..
+        /// </summary>
+        public static string Error_ConnectionErrorMessage {
+            get {
+                return ResourceManager.GetString("Error_ConnectionErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connection error.
+        /// </summary>
+        public static string Error_ConnectionErrorTitle {
+            get {
+                return ResourceManager.GetString("Error_ConnectionErrorTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to get your contact list. Please retry later..
+        /// </summary>
+        public static string Error_ContactListMessage {
+            get {
+                return ResourceManager.GetString("Error_ContactListMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Contact list.
+        /// </summary>
+        public static string Error_ContactListTitle {
+            get {
+                return ResourceManager.GetString("Error_ContactListTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to get offline messages. Please retry later..
+        /// </summary>
+        public static string Error_OfflineMessagesMessage {
+            get {
+                return ResourceManager.GetString("Error_OfflineMessagesMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Getting offline messages.
+        /// </summary>
+        public static string Error_OfflineMessagesTitle {
+            get {
+                return ResourceManager.GetString("Error_OfflineMessagesTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Register.
+        /// </summary>
+        public static string Error_RegisterTitle {
+            get {
+                return ResourceManager.GetString("Error_RegisterTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to log in.
         /// </summary>
         public static string Login_AppbarLogin {
@@ -727,6 +826,15 @@ namespace Gchat {
         public static string Logout_Title {
             get {
                 return ResourceManager.GetString("Logout_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} unread messages.
+        /// </summary>
+        public static string Notification_OfflineMessages {
+            get {
+                return ResourceManager.GetString("Notification_OfflineMessages", resourceCulture);
             }
         }
         
