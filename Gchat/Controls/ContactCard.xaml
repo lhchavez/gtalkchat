@@ -35,7 +35,7 @@
 
             <toolkit:ContextMenuService.ContextMenu>
                 <toolkit:ContextMenu Opened="ContextMenu_Opened">
-                    <toolkit:MenuItem Header="pin to start" Click="PinContact_Click" />
+                    <toolkit:MenuItem Header="{Binding Path=Loc.Contact_ContextMenuPin, Source={StaticResource LocalizedStrings}}" Click="PinContact_Click" />
                 </toolkit:ContextMenu>
             </toolkit:ContextMenuService.ContextMenu>
         </Grid>

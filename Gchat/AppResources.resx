@@ -256,6 +256,9 @@ This warning will now show again after you press OK.</value>
   <data name="ContactList_Title" xml:space="preserve">
     <value>CONTACTS</value>
   </data>
+  <data name="Contact_ContextMenuPin" xml:space="preserve">
+    <value>pin to start</value>
+  </data>
   <data name="Login_AppbarLogin" xml:space="preserve">
     <value>log in</value>
   </data>

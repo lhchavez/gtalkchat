@@ -377,6 +377,15 @@ namespace Gchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to pin to start.
+        /// </summary>
+        public static string Contact_ContextMenuPin {
+            get {
+                return ResourceManager.GetString("Contact_ContextMenuPin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to all.
         /// </summary>
         public static string ContactList_AllHeader {
