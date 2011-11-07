@@ -59,18 +59,24 @@
     <Reference Include="Coding4Fun.Phone.Site.Controls">
       <HintPath>..\lib\Coding4Fun.Phone.Site.Controls.dll</HintPath>
     </Reference>
+    <Reference Include="Google.WebAnalytics, Version=1.4.11.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Phone.Controls.Toolkit">
       <HintPath>..\lib\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Phone" />
     <Reference Include="Microsoft.Phone.Controls, Version=7.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Phone.Interop" />
+    <Reference Include="Microsoft.WebAnalytics, Version=1.4.8.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.WebAnalytics.Behaviors, Version=1.4.8.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="System.ComponentModel.Composition, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="System.ComponentModel.Composition.Initialization, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Servicemodel.Web" />
     <Reference Include="System.Windows" />
     <Reference Include="system" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net" />
+    <Reference Include="System.Windows.Interactivity, Version=3.8.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
     <Reference Include="mscorlib.extensions" />
   </ItemGroup>
@@ -108,6 +114,7 @@
       <DependentUpon>ContactList.xaml</DependentUpon>
     </Compile>
     <Compile Include="Data\ContactSession.cs" />
+    <Compile Include="Utilities\AnalyticsService.cs" />
     <Compile Include="Utilities\Extensions.cs" />
     <Compile Include="Protocol\GoogleTalk.cs" />
     <Compile Include="Utilities\GoogleTalkHelper.cs" />

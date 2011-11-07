@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using Microsoft.Phone.Controls;
+using Gchat.Utilities;
 
 namespace Gchat.Pages {
     public partial class Settings : PhoneApplicationPage {
@@ -70,21 +71,13 @@ namespace Gchat.Pages {
         }
 
         private void SetLicenseNotice() {
-            if (IsPaid()) {
+            if (GoogleTalkHelper.IsPaid()) {
                 PaidVersionNotice.FontSize = (double)App.Current.Resources["PhoneFontSizeMedium"];
                 FreeVersionNotice.FontSize = 0.1;
             } else {
                 FreeVersionNotice.FontSize = (double)App.Current.Resources["PhoneFontSizeMedium"];
                 PaidVersionNotice.FontSize = 0.1;
             }
-        }
-
-        private bool IsPaid() {
-#if PAID
-            return !(new Microsoft.Phone.Marketplace.LicenseInformation()).IsTrial();
-#else
-            return false;
-#endif
         }
     }
 }

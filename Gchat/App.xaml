@@ -7,6 +7,7 @@
     xmlns:local="clr-namespace:Gchat"
     xmlns:localpages="clr-namespace:Gchat.Pages"
     xmlns:localcontrols="clr-namespace:Gchat.Controls"
+    xmlns:localutilities="clr-namespace:Gchat.Utilities"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit">
 
     <!--Application Resources-->
@@ -53,6 +54,8 @@
         <shell:PhoneApplicationService 
             Launching="Application_Launching" Closing="Application_Closing" 
             Activated="Application_Activated" Deactivated="Application_Deactivated"/>
+
+        <localutilities:AnalyticsService WebPropertyId="UA-25266039-1" />
     </Application.ApplicationLifetimeObjects>
 
 </Application>
