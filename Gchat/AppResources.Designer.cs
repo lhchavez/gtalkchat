@@ -61,11 +61,176 @@ namespace Gchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Backend &amp; Server Development.
+        /// </summary>
+        public static string About_BackendDeveloperHeader {
+            get {
+                return ResourceManager.GetString("About_BackendDeveloperHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 1.3 Codename Lassi
+        ///· Search
+        ///· Recent contacts
+        ///· Status change
+        ///· Bugfixes
+        ///
+        ///1.2 Codename Mousse
+        ///· Fixed a bug with the display pictures
+        ///· Extended timeout period to 30 seconds
+        ///· Fixed a couple of crashes
+        ///
+        ///1.1 Codename Jelly
+        ///· Initial release!.
+        /// </summary>
+        public static string About_ChangelistBody {
+            get {
+                return ResourceManager.GetString("About_ChangelistBody", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Changelist.
+        /// </summary>
+        public static string About_ChangelistHeader {
+            get {
+                return ResourceManager.GetString("About_ChangelistHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This is a third party app and is not endorsed or supported by Google..
+        /// </summary>
+        public static string About_Disclaimer {
+            get {
+                return ResourceManager.GetString("About_Disclaimer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you like this application?.
+        /// </summary>
+        public static string About_Feedback1 {
+            get {
+                return ResourceManager.GetString("About_Feedback1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Let us know!.
+        /// </summary>
+        public static string About_Feedback2 {
+            get {
+                return ResourceManager.GetString("About_Feedback2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Did you find a bug?.
+        /// </summary>
+        public static string About_Feedback3 {
+            get {
+                return ResourceManager.GetString("About_Feedback3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Report it!.
+        /// </summary>
+        public static string About_Feedback4 {
+            get {
+                return ResourceManager.GetString("About_Feedback4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This is the free version. It&apos;s not limited or anything because we love you. Please consider getting the.
+        /// </summary>
+        public static string About_FreeVersionNotice1 {
+            get {
+                return ResourceManager.GetString("About_FreeVersionNotice1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to paid version.
+        /// </summary>
+        public static string About_FreeVersionNotice2 {
+            get {
+                return ResourceManager.GetString("About_FreeVersionNotice2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to to support the development of this app (and paying the servers)..
+        /// </summary>
+        public static string About_FreeVersionNotice3 {
+            get {
+                return ResourceManager.GetString("About_FreeVersionNotice3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Frontend Development &amp; UI Design.
+        /// </summary>
+        public static string About_FrontendDeveloperHeader {
+            get {
+                return ResourceManager.GetString("About_FrontendDeveloperHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to about.
         /// </summary>
         public static string About_Header {
             get {
                 return ResourceManager.GetString("About_Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open source!.
+        /// </summary>
+        public static string About_License1 {
+            get {
+                return ResourceManager.GetString("About_License1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get the code at GitHub.
+        /// </summary>
+        public static string About_License2 {
+            get {
+                return ResourceManager.GetString("About_License2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Released under a.
+        /// </summary>
+        public static string About_License3 {
+            get {
+                return ResourceManager.GetString("About_License3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CC BY-NC-SA license.
+        /// </summary>
+        public static string About_License4 {
+            get {
+                return ResourceManager.GetString("About_License4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This is the paid version of Gchat. It has no extra funcionality, but you can have the warm, fuzzy feeling that you contributed to this app&apos;s development..
+        /// </summary>
+        public static string About_PaidVersionNotice {
+            get {
+                return ResourceManager.GetString("About_PaidVersionNotice", resourceCulture);
             }
         }
         

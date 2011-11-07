@@ -35,10 +35,10 @@
             <!--Pivot item two-->
             <controls:PivotItem Header="{Binding Path=Loc.About_Header, Source={StaticResource LocalizedStrings}}">
                 <Grid>
-                    <ScrollViewer>
-                        <RichTextBox VerticalAlignment="Top" FontSize="{StaticResource PhoneFontSizeMedium}">
+                    <ScrollViewer Margin="0,0,-12,0">
+                        <RichTextBox VerticalAlignment="Top" FontSize="{StaticResource PhoneFontSizeMedium}" Margin="0,0,24,0">
                             <Paragraph>
-                                <Run Text="Gchat 1.3" FontSize="{StaticResource PhoneFontSizeLarge}" />
+                                <Run Text="{Binding Path=Loc.About_Version, Source={StaticResource LocalizedStrings}}" FontSize="{StaticResource PhoneFontSizeLarge}" />
                             </Paragraph>
 
                             <Paragraph>
@@ -46,13 +46,14 @@
                             </Paragraph>
 
                             <Paragraph x:Name="FreeVersionNotice">
-                                <Run Text="This is the free version. It's not limited or anything because we love you. Anyways, please consider getting the" />
-                                <Hyperlink Click="Buy_Click">paid version</Hyperlink>
-                                <Run Text="to support the development of this app (and paying the servers)." />
+                                <Run Text="{Binding Path=Loc.About_FreeVersionNotice1, Source={StaticResource LocalizedStrings}}" />
+                                <Hyperlink Click="Buy_Click" >
+                                    <Run Text="{Binding Path=Loc.About_FreeVersionNotice2, Source={StaticResource LocalizedStrings}}"/></Hyperlink>
+                                <Run Text="{Binding Path=Loc.About_FreeVersionNotice3, Source={StaticResource LocalizedStrings}}" />
                             </Paragraph>
 
                             <Paragraph x:Name="PaidVersionNotice" FontSize="0.1">
-                                <Run Text="This is the paid version of Gchat. It has no extra funcionality, but you can have the warm, fuzzy feeling that you contributed to this app's development." />
+                                <Run Text="{Binding Path=Loc.About_PaidVersionNotice, Source={StaticResource LocalizedStrings}}" />
                             </Paragraph>
 
                             <Paragraph>
@@ -60,7 +61,7 @@
                             </Paragraph>
 
                             <Paragraph>
-                                <Run Text="Backend &amp; Server Development" />
+                                <Run Text="{Binding Path=Loc.About_BackendDeveloperHeader, Source={StaticResource LocalizedStrings}}" />
                             </Paragraph>
                             <Paragraph>
                                 <Hyperlink TargetName="_blank" NavigateUri="http://lhchavez.com">Luis Héctor Chávez</Hyperlink>
@@ -73,7 +74,7 @@
                             </Paragraph>
 
                             <Paragraph>
-                                <Run Text="Frontend Development &amp; UI Design" />
+                                <Run Text="{Binding Path=Loc.About_FrontendDeveloperHeader, Source={StaticResource LocalizedStrings}}" />
                             </Paragraph>
                             <Paragraph>
                                 <Hyperlink TargetName="_blank" NavigateUri="http://julianapena.com">Juliana Peña</Hyperlink>
@@ -86,11 +87,15 @@
                             </Paragraph>
 
                             <Paragraph>
-                                <Run Text="Open source! " />
-                                <Hyperlink TargetName="_blank" NavigateUri="https://github.com/lhchavez/gtalkchat">Get the code at GitHub</Hyperlink>
+                                <Run Text="{Binding Path=Loc.About_License1, Source={StaticResource LocalizedStrings}}" />
+                                <Hyperlink TargetName="_blank" NavigateUri="https://github.com/lhchavez/gtalkchat">
+                                    <Run Text="{Binding Path=Loc.About_License2, Source={StaticResource LocalizedStrings}}"/>
+                                </Hyperlink>
                                 <LineBreak/>
-                                <Run Text="Released under a " />
-                                <Hyperlink TargetName="_blank" NavigateUri="http://creativecommons.org/licenses/by-nc-sa/3.0/">CC BY-NC-SA license</Hyperlink>
+                                <Run Text="{Binding Path=Loc.About_License3, Source={StaticResource LocalizedStrings}}" />
+                                <Hyperlink TargetName="_blank" NavigateUri="http://creativecommons.org/licenses/by-nc-sa/3.0/">
+                                    <Run Text="{Binding Path=Loc.About_License4, Source={StaticResource LocalizedStrings}}" />
+                                </Hyperlink>
                             </Paragraph>
 
                             <Paragraph>
@@ -98,10 +103,14 @@
                             </Paragraph>
 
                             <Paragraph>
-                                <Run Text="Do you like this application? "/> 
-                                <Hyperlink Click="Review_Click">Let us know!</Hyperlink>
-                                <Run Text="Did you find a bug? " />
-                                <Hyperlink TargetName="_blank" NavigateUri="https://github.com/lhchavez/gtalkchat/issues">Report it!</Hyperlink>
+                                <Run Text="{Binding Path=Loc.About_Feedback1, Source={StaticResource LocalizedStrings}}" />
+                                <Hyperlink Click="Review_Click">
+                                    <Run Text="{Binding Path=Loc.About_Feedback2, Source={StaticResource LocalizedStrings}}" />
+                                </Hyperlink>
+                                <Run Text="{Binding Path=Loc.About_Feedback3, Source={StaticResource LocalizedStrings}}" />
+                                <Hyperlink TargetName="_blank" NavigateUri="https://github.com/lhchavez/gtalkchat/issues">
+                                    <Run Text="{Binding Path=Loc.About_Feedback4, Source={StaticResource LocalizedStrings}}" />
+                                </Hyperlink>
                             </Paragraph>
 
                             <Paragraph>
@@ -109,7 +118,7 @@
                             </Paragraph>
 
                             <Paragraph>
-                                <Run Text="This is a third party app and is not endorsed or supported by Google." />
+                                <Run Text="{Binding Path=Loc.About_Disclaimer, Source={StaticResource LocalizedStrings}}" />
                             </Paragraph>
 
                             <Paragraph>
@@ -117,63 +126,11 @@
                             </Paragraph>
 
                             <Paragraph FontWeight="Bold">
-                                <Run Text="Changelist" />
+                                <Run Text="{Binding Path=Loc.About_ChangelistHeader, Source={StaticResource LocalizedStrings}}" />
                             </Paragraph>
 
                             <Paragraph>
-                                <Run Text="1.3 Codename Lassi" />
-                            </Paragraph>
-
-                            <Paragraph>
-                                <Run Text="· Search" />
-                            </Paragraph>
-
-                            <Paragraph>
-                                <Run Text="· Recent contacts" />
-                            </Paragraph>
-
-                            <Paragraph>
-                                <Run Text="· Status change" />
-                            </Paragraph>
-
-                            <Paragraph>
-                                <Run Text="· Better stability" />
-                            </Paragraph>
-
-                            <Paragraph>
-                                <Run Text="· Bugfixes" />
-                            </Paragraph>
-
-                            <Paragraph>
-                                <Run Text="" />
-                            </Paragraph>
-
-                            <Paragraph>
-                                <Run Text="1.2 Codename Mousse" />
-                            </Paragraph>
-
-                            <Paragraph>
-                                <Run Text="· Fixed a bug with the display pictures" />
-                            </Paragraph>
-
-                            <Paragraph>
-                                <Run Text="· Extended timeout period to 30 seconds" />
-                            </Paragraph>
-
-                            <Paragraph>
-                                <Run Text="· Fixed a couple of crashes" />
-                            </Paragraph>
-
-                            <Paragraph>
-                                <Run Text="" />
-                            </Paragraph>
-
-                            <Paragraph>
-                                <Run Text="1.1 Codename Jelly" />
-                            </Paragraph>
-
-                            <Paragraph>
-                                <Run Text="· Initial release!" />
+                                <Run Text="{Binding Path=Loc.About_ChangelistBody, Source={StaticResource LocalizedStrings}}" />
                             </Paragraph>
                         </RichTextBox>
                     </ScrollViewer>
