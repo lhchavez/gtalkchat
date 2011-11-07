@@ -369,11 +369,7 @@ namespace Gchat.Utilities {
 
             foreach (Match m in linkRegex.Matches(message)) {
                 if (m.Index > last) {
-                    paragraph.Inlines.Add(
-                        new Run {
-                            Text = message.Substring(last, m.Index-last)
-                        }
-                    );
+                    AddWithFormat(message.Substring(last, m.Index-last), paragraph);
                 }
 
                 if (m.Groups[1].Value != string.Empty) {
@@ -480,11 +476,7 @@ namespace Gchat.Utilities {
             }
 
             if (last != message.Length) {
-                paragraph.Inlines.Add(
-                    new Run {
-                        Text = message.Substring(last)
-                    }
-                );
+                AddWithFormat(message.Substring(last), paragraph);
             }
 
             if (imgurUris.Count > 0 && (!App.Current.Settings.Contains("imgur") || (bool)App.Current.Settings["imgur"] != false)) {
@@ -523,6 +515,68 @@ namespace Gchat.Utilities {
             }
 
             return paragraph;
+        }
+
+        private static void AddWithFormat(string text, Paragraph paragraph) {
+            int italics = -1;
+            int bold = -1;
+            int pos = 0;
+
+            for (var i = 0; i < text.Length; i++) {
+                if (text[i] == '_') {
+                    FormatHelper(text, paragraph, i, italics, bold, ref pos, '_', ref italics);
+                } else if (text[i] == '*') {
+                    FormatHelper(text, paragraph, i, italics, bold, ref pos, '*', ref bold);
+                }
+            }
+
+            if (pos <= text.Length - 1) {
+                paragraph.Inlines.Add(
+                    new Run {
+                        Text = text.Substring(pos)
+                    }
+                );
+            }
+        }
+
+        private static void FormatHelper(string text, Paragraph paragraph, int i, int italics, int bold, ref int pos, char character, ref int checking) {
+            string open = " *_-";
+            string close = " .,!*_-";
+
+            if (checking == -1 && (i == 0 || open.IndexOf(text[i - 1]) != -1)) {
+                // good candidate for format-start!
+
+                for (var j = i + 2; j < text.Length; j++) {
+                    if (text[j] == character && (j == text.Length - 1 || close.IndexOf(text[j + 1]) != -1)) {
+                        // i -> j is format.
+
+                        paragraph.Inlines.Add(
+                            new Run {
+                                Text = text.Substring(pos, i - pos),
+                                FontStyle = italics == -1 ? FontStyles.Normal : FontStyles.Italic,
+                                FontWeight = bold == -1 ? FontWeights.Normal : FontWeights.Bold
+                            }
+                        );
+
+                        pos = i + 1;
+                        checking = j;
+                        break;
+                    }
+                }
+            } else if (i == checking) {
+                // end of format. flush the buffer.
+
+                paragraph.Inlines.Add(
+                    new Run {
+                        Text = text.Substring(pos, i - pos),
+                        FontStyle = italics == -1 ? FontStyles.Normal : FontStyles.Italic,
+                        FontWeight = bold == -1 ? FontWeights.Normal : FontWeights.Bold
+                    }
+                );
+
+                checking = -1;
+                pos = i + 1;
+            }
         }
 
         public static void GoogleLogin(string username, string password, LoginCallback callback, ErrorCallback error) {
