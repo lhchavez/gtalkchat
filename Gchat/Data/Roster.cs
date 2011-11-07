@@ -88,7 +88,7 @@ namespace Gchat.Data {
                 if (Contains(jid)) {
                     return contacts[GetEmail(jid)];
                 } else {
-                    return null;
+                    return null; 
                 }
             }
             set { contacts[GetEmail(jid)] = value; }
