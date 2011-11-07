@@ -73,6 +73,12 @@ namespace Gchat.Data {
             }
         }
 
+        public void Update(Contact item) {
+            if (CollectionChanged != null) {
+                CollectionChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Replace, item, IndexOf(item)));
+            }
+        }
+
         public bool Contains(string jid) {
             return contacts.ContainsKey(GetEmail(jid));
         }

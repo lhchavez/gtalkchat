@@ -34,6 +34,8 @@ namespace Gchat {
 
         public string LastPage { get; set; }
 
+        public Gchat.Pages.ContactList ContactList { get; set; }
+
         public new static App Current {
             get { return (App) Application.Current; }
         }
