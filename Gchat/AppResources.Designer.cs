@@ -90,7 +90,7 @@ namespace Gchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Changelist.
+        ///   Looks up a localized string similar to what&apos;s new.
         /// </summary>
         public static string About_ChangelistHeader {
             get {
