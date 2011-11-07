@@ -18,22 +18,22 @@
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <!--Pivot Control-->
-        <controls:Pivot Title="GCHAT">
+        <controls:Pivot Title="{Binding Path=Loc.Settings_Title, Source={StaticResource LocalizedStrings}}">
             <!--Pivot item one-->
-            <controls:PivotItem Header="settings">
+            <controls:PivotItem Header="{Binding Path=Loc.Settings_Header, Source={StaticResource LocalizedStrings}}">
                 <ScrollViewer>
                     <StackPanel>
-                        <toolkit:ToggleSwitch Header="Lock screen rotation" Name="LandscapeCheckbox" Unchecked="LandscapeCheckbox_Checked" Checked="LandscapeCheckbox_Checked" />
-                        <toolkit:ToggleSwitch Header="Reddit-style icons" Name="RagesCheckbox" Unchecked="RagesCheckbox_Checked" Checked="RagesCheckbox_Checked" />
-                        <toolkit:ToggleSwitch Header="Enable toast notifications" Name="ToastCheckbox" Unchecked="Notification_Checked" Checked="Notification_Checked" />
-                        <toolkit:ToggleSwitch Header="Enable tile notifications" Name="TileCheckbox" Unchecked="Notification_Checked" Checked="Notification_Checked" />
-                        <toolkit:ToggleSwitch Header="Enable secondary tile notifications" Name="SecondaryTileCheckbox" Unchecked="Notification_Checked" Checked="Notification_Checked" />
+                        <toolkit:ToggleSwitch Header="{Binding Path=Loc.Settings_ToggleRotation, Source={StaticResource LocalizedStrings}}" Name="LandscapeCheckbox" Unchecked="LandscapeCheckbox_Checked" Checked="LandscapeCheckbox_Checked" />
+                        <toolkit:ToggleSwitch Header="{Binding Path=Loc.Settings_ToggleReddit, Source={StaticResource LocalizedStrings}}" Name="RagesCheckbox" Unchecked="RagesCheckbox_Checked" Checked="RagesCheckbox_Checked" />
+                        <toolkit:ToggleSwitch Header="{Binding Path=Loc.Settings_ToggleToasts, Source={StaticResource LocalizedStrings}}" Name="ToastCheckbox" Unchecked="Notification_Checked" Checked="Notification_Checked" />
+                        <toolkit:ToggleSwitch Header="{Binding Path=Loc.Settings_ToggleTiles, Source={StaticResource LocalizedStrings}}" Name="TileCheckbox" Unchecked="Notification_Checked" Checked="Notification_Checked" />
+                        <toolkit:ToggleSwitch Header="{Binding Path=Loc.Settings_ToggleSecondaryTiles, Source={StaticResource LocalizedStrings}}" Name="SecondaryTileCheckbox" Unchecked="Notification_Checked" Checked="Notification_Checked" />
                     </StackPanel>
                 </ScrollViewer>
             </controls:PivotItem>
 
             <!--Pivot item two-->
-            <controls:PivotItem Header="about">
+            <controls:PivotItem Header="{Binding Path=Loc.About_Header, Source={StaticResource LocalizedStrings}}">
                 <Grid>
                     <ScrollViewer>
                         <RichTextBox VerticalAlignment="Top" FontSize="{StaticResource PhoneFontSizeMedium}">
