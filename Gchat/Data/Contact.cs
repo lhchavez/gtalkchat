@@ -13,6 +13,20 @@ namespace Gchat.Data {
 
         #region Public Properties
 
+        private bool hidden;
+        [DataMember]
+        public bool Hidden {
+            get { return hidden; }
+            set {
+                if (value != hidden) {
+                    hidden = value;
+                    Changed("Hidden");
+                    Changed("Show");
+                    Changed("Online");
+                }
+            }
+        }
+
         private string email;
         [DataMember]
         public string Email {
@@ -27,7 +41,7 @@ namespace Gchat.Data {
         }
 
         public bool Online {
-            get { return sessions.Count > 0; }
+            get { return sessions.Count > 0 && !Hidden; }
         }
 
         private string name;
@@ -145,6 +159,10 @@ namespace Gchat.Data {
 
         public string Status {
             get {
+                if (Hidden) {
+                    return "hidden";
+                }
+
                 if (string.IsNullOrEmpty(show)) {
                     if (Online) {
                         return "available";
