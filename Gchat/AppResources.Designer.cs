@@ -811,6 +811,15 @@ namespace Gchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Logging in....
+        /// </summary>
+        public static string Login_Progress {
+            get {
+                return ResourceManager.GetString("Login_Progress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to GCHAT.
         /// </summary>
         public static string Login_Title {

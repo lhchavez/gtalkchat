@@ -65,7 +65,7 @@ namespace Gchat.Pages {
             // track login attempt
             FlurryWP7SDK.Api.LogEvent("Login started", true);
 
-            ShowProgressBar("Logging in...");
+            ShowProgressBar(AppResources.Login_Progress);
             Username.IsEnabled = false;
             Password.IsEnabled = false;
             (ApplicationBar.Buttons[0] as ApplicationBarIconButton).IsEnabled = false;

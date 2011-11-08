@@ -92,6 +92,8 @@ namespace Gchat.Pages {
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e) {
             base.OnNavigatedTo(e);
 
+            FlurryWP7SDK.Api.LogEvent("ContactList - ContactList started", true);
+
             if (App.Current.LastPage != null && App.Current.LastPage.StartsWith("/Pages/Chat.xaml?from=") && App.Current.RootFrame.BackStack.Count() > 0) {
                 App.Current.RootFrame.RemoveBackEntry();
             }
@@ -132,6 +134,8 @@ namespace Gchat.Pages {
         private void RosterLoaded() {
             Dispatcher.BeginInvoke(
                 () => {
+                    FlurryWP7SDK.Api.LogEvent("ContactList - Roster loaded");
+
                     var onlineContacts = App.Current.Roster.GetOnlineContacts();
 
                     if (!reloadedRoster && onlineContacts.Count == 0) {
@@ -161,6 +165,7 @@ namespace Gchat.Pages {
 
         protected override void OnNavigatedFrom(System.Windows.Navigation.NavigationEventArgs e) {
             base.OnNavigatedFrom(e);
+            FlurryWP7SDK.Api.EndTimedEvent("ContactList - ContactList started");
 
             gtalkHelper.MessageReceived -= gtalkHelper.ShowToast;
             gtalkHelper.ConnectFailed -= ConnectFailed;
@@ -188,10 +193,18 @@ namespace Gchat.Pages {
         }
 
         private void SettingsButton_Click(object sender, EventArgs e) {
+            FlurryWP7SDK.Api.LogEvent("ContactList - Appbar clicked", new List<Parameter>() {
+                new Parameter("Button", "Settings")
+            });
+
             NavigationService.Navigate(new Uri("/Pages/Settings.xaml", UriKind.Relative));
         }
 
         private void RefreshButton_Click(object sender, EventArgs e) {
+            FlurryWP7SDK.Api.LogEvent("ContactList - Appbar clicked", new List<Parameter>() {
+                new Parameter("Button", "Refresh")
+            });
+            
             Dispatcher.BeginInvoke(
                 () => {
                     ShowProgressBar(AppResources.ContactList_ProgressLoading);
@@ -205,6 +218,10 @@ namespace Gchat.Pages {
         }
 
         private void Logout_Click(object sender, EventArgs e) {
+            FlurryWP7SDK.Api.LogEvent("ContactList - Appbar clicked", new List<Parameter>() {
+                new Parameter("Button", "Logout")
+            });
+
             Dispatcher.BeginInvoke(() => {
                 if (MessageBox.Show(AppResources.Logout_Message, AppResources.Logout_Title, MessageBoxButton.OKCancel) == MessageBoxResult.OK) {
                     var gtalkHelper = App.Current.GtalkHelper;
@@ -214,16 +231,23 @@ namespace Gchat.Pages {
         }
 
         private void SearchButton_Click(object sender, EventArgs e) {
+            FlurryWP7SDK.Api.LogEvent("ContactList - Appbar clicked", new List<Parameter>() {
+                new Parameter("Button", "Search")
+            });
+
             NavigationService.Navigate(new Uri("/Pages/Search.xaml", UriKind.Relative));
         }
 
         private void StatusButton_Click(object sender, EventArgs e) {
+            FlurryWP7SDK.Api.LogEvent("ContactList - Appbar clicked", new List<Parameter>() {
+                new Parameter("Button", "Status")
+            });
             StatusPicker.Open();
         }
 
         private void StatusPicker_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             if (e.AddedItems.Count > 0 && App.Current.GtalkClient.LoggedIn) {
-                // TODO: complete this
+                FlurryWP7SDK.Api.LogEvent("ContactList - Status changed");
                 
                 var status = ((KeyValuePair<UserStatus, string>)e.AddedItems[0]).Key;
                 App.Current.GtalkClient.SetStatus(status, (t) => { }, (t) => { });

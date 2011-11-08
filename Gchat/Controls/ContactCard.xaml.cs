@@ -11,6 +11,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using Gchat.Data;
+using FlurryWP7SDK.Models;
 
 namespace Gchat.Controls {
     public partial class ContactCard : UserControl {
@@ -45,6 +46,10 @@ namespace Gchat.Controls {
             Contact c = item.DataContext as Contact;
 
             c.Hidden = !c.Hidden;
+
+            FlurryWP7SDK.Api.LogEvent("Contact hidden toggled", new List<Parameter>() {
+                new Parameter("Hidden", c.Hidden.ToString())
+            });
 
             App.Current.Roster.Update(c);
             App.Current.ContactList.UpdateRoster();
