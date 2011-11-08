@@ -9,6 +9,7 @@ using Gchat.Utilities;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using System.Collections.ObjectModel;
+using System.IO;
 
 namespace Gchat {
     public partial class App : Application {
@@ -73,6 +74,26 @@ namespace Gchat {
             }
         }
 
+        private void InitAnalytics() {
+            // Init flurry analytics
+            var uri = new Uri("FlurryApiKey.txt", UriKind.RelativeOrAbsolute);
+            var resourceStream = App.GetResourceStream(uri);
+            string apikey;
+
+            if (resourceStream != null) {
+                using (var sr = new StreamReader(resourceStream.Stream)) {
+                    apikey = sr.ReadLine().Trim();
+                }
+
+                FlurryWP7SDK.Api.StartSession(apikey);
+                FlurryWP7SDK.Api.SetSecureTransportEnabled();
+                FlurryWP7SDK.Api.SetVersion(AppResources.About_Version);
+                if (GtalkHelper.IsPaid()) {
+                    FlurryWP7SDK.Api.LogEvent("Paid user");
+                }
+            }
+        }
+
         // Code to execute when the application is launching (eg, from Start)
         // This code will not execute when the application is reactivated
         private void Application_Launching(object sender, LaunchingEventArgs e) {
@@ -100,7 +121,9 @@ namespace Gchat {
 
             PushHelper.RegisterPushNotifications();
 
-            if(Settings.Contains("lastError")) {
+            InitAnalytics();
+
+            if (Settings.Contains("lastError")) {
                 var result = MessageBox.Show(
                     "The application crashed the last time you used it. Do you want to send the exception information to the developers?",
                     "Application crash",
@@ -135,6 +158,8 @@ namespace Gchat {
             if (GtalkHelper == null) GtalkHelper = new GoogleTalkHelper();
 
             Roster.Load();
+
+            InitAnalytics();
             
             PushHelper.RegisterPushNotifications();
         }

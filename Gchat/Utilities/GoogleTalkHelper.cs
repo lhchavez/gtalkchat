@@ -87,6 +87,14 @@ namespace Gchat.Utilities {
             Connected = false;
         }
 
+        public bool IsPaid() {
+#if PAID
+            return !(new Microsoft.Phone.Marketplace.LicenseInformation()).IsTrial();
+#else
+            return false;
+#endif
+        }
+
         public void LoginIfNeeded() {
             if (!App.Current.Settings.Contains("auth")) {
                 App.Current.RootFrame.Dispatcher.BeginInvoke(

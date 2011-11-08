@@ -59,6 +59,9 @@
     <Reference Include="Coding4Fun.Phone.Site.Controls">
       <HintPath>..\lib\Coding4Fun.Phone.Site.Controls.dll</HintPath>
     </Reference>
+    <Reference Include="FlurryWP7SDK">
+      <HintPath>..\lib\FlurryWP7SDK.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Phone.Controls.Toolkit">
       <HintPath>..\lib\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
     </Reference>
@@ -199,6 +202,7 @@
     <Content Include="Background.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="FlurryApiKey.txt" />
     <Content Include="icons\appbar.attach.rest.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

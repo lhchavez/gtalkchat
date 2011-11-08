@@ -7,6 +7,8 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using System.Windows;
 using System.Linq;
+using System.Collections.Generic;
+using FlurryWP7SDK.Models;
 
 namespace Gchat.Pages {
     public partial class Login : PhoneApplicationPage {
@@ -60,6 +62,9 @@ namespace Gchat.Pages {
                 return;
             }
 
+            // track login attempt
+            FlurryWP7SDK.Api.LogEvent("Login started", true);
+
             ShowProgressBar("Logging in...");
             Username.IsEnabled = false;
             Password.IsEnabled = false;
@@ -72,19 +77,26 @@ namespace Gchat.Pages {
             GoogleTalkHelper.GoogleLogin(
                 Username.Text,
                 Password.Password,
-                token =>
-                Dispatcher.BeginInvoke(() => {
+                token => Dispatcher.BeginInvoke(() => {
                     settings["auth"] =
                         ProtectedData.Protect(
                             Encoding.UTF8.GetBytes(token), null
                         );
                     settings.Save();
 
+                    var par = new List<Parameter>();
+                    par.Add(new Parameter("Result", "success"));
+                    FlurryWP7SDK.Api.EndTimedEvent("Login started", par);
+
                     NavigationService.GoBack();
                 }),
-                error =>
-                Dispatcher.BeginInvoke(() => {
-                    MessageBox.Show("Authentication error: " + error);
+                error => Dispatcher.BeginInvoke(() => {
+                    MessageBox.Show(error, AppResources.Error_AuthErrorTitle, MessageBoxButton.OK);
+
+                    // track unsuccessful login
+                    var par = new List<Parameter>();
+                    par.Add(new Parameter("Result", "auth error"));
+                    FlurryWP7SDK.Api.EndTimedEvent("Login started", par);
 
                     HideProgressBar();
                     Username.IsEnabled = true;

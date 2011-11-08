@@ -7,3 +7,4 @@ glob:*.sap
 glob:*.orig
 glob:PerformanceLogs
 glob:ApiKey.txt
+glob:FlurryApiKey.txt

@@ -70,21 +70,13 @@ namespace Gchat.Pages {
         }
 
         private void SetLicenseNotice() {
-            if (IsPaid()) {
+            if (App.Current.GtalkHelper.IsPaid()) {
                 PaidVersionNotice.FontSize = (double)App.Current.Resources["PhoneFontSizeMedium"];
                 FreeVersionNotice.FontSize = 0.1;
             } else {
                 FreeVersionNotice.FontSize = (double)App.Current.Resources["PhoneFontSizeMedium"];
                 PaidVersionNotice.FontSize = 0.1;
             }
-        }
-
-        private bool IsPaid() {
-#if PAID
-            return !(new Microsoft.Phone.Marketplace.LicenseInformation()).IsTrial();
-#else
-            return false;
-#endif
         }
     }
 }
