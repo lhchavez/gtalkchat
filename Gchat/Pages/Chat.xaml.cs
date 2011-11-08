@@ -39,6 +39,8 @@ namespace Gchat.Pages {
 
             photoChooserTask.Completed += (s, r) => {
                 if (r.TaskResult == TaskResult.OK) {
+                    FlurryWP7SDK.Api.LogEvent("Chat - Image attched");
+
                     attachButton.IsEnabled = false;
                     BitmapImage bm = new BitmapImage();
                     bm.SetSource(r.ChosenPhoto);
@@ -104,6 +106,8 @@ namespace Gchat.Pages {
         protected override void OnNavigatedTo(NavigationEventArgs e) {
             base.OnNavigatedTo(e);
 
+            FlurryWP7SDK.Api.LogEvent("Chat - Chat started", true);
+
             App.Current.LastPage = e.Uri.OriginalString;
 
             gtalk = App.Current.GtalkClient;
@@ -156,6 +160,8 @@ namespace Gchat.Pages {
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e) {
             base.OnNavigatingFrom(e);
 
+            FlurryWP7SDK.Api.EndTimedEvent("Chat - Chat started");
+
             gtalkHelper.MessageReceived -= DisplayMessage;
 
             App.Current.CurrentChat = null;
@@ -164,6 +170,7 @@ namespace Gchat.Pages {
         }
 
         private void DisplayMessage(Message message) {
+            FlurryWP7SDK.Api.LogEvent("Chat - Chat recieved");
             Dispatcher.BeginInvoke(() => {
                 if (message.From.IndexOf(email) != 0) {
                     gtalkHelper.ShowToast(message);
@@ -220,18 +227,24 @@ namespace Gchat.Pages {
         }
 
         private void ShowStartOtr() {
+            FlurryWP7SDK.Api.LogEvent("Chat - OTR enabled");
+
             otrButton.IconUri = new Uri("/icons/appbar.unlock.rest.png", UriKind.Relative);
             otrButton.Text = AppResources.Chat_AppbarEndOtr;
             LogChatEvent(AppResources.Chat_NoticeStartOtr);
         }
 
         private void ShowEndOtr() {
+            FlurryWP7SDK.Api.LogEvent("Chat - OTR disabled");
+
             otrButton.IconUri = new Uri("/icons/appbar.lock.rest.png", UriKind.Relative);
             otrButton.Text = AppResources.Chat_AppbarGoOtr;
             LogChatEvent(AppResources.Chat_NoticeEndOtr);
         }
 
         private void SendButton_Click(object sender, EventArgs e) {
+            FlurryWP7SDK.Api.LogEvent("Chat - Chat sent");
+
             if (MessageText.Text.Length == 0) return;
 
             ShowProgressBar(AppResources.Chat_ProgressSendingMessage);
@@ -408,6 +421,8 @@ namespace Gchat.Pages {
         }
 
         private void OTRButton_Click(object sender, EventArgs e) {
+            FlurryWP7SDK.Api.LogEvent("Chat - OTRButton clicked");
+
             if (otr) {
                 gtalk.OTR(email, false, s => Dispatcher.BeginInvoke(ShowEndOtr), s => { });
                 otr = false;
@@ -430,6 +445,8 @@ namespace Gchat.Pages {
 
         private void DeleteThread_Click(object sender, EventArgs e)
         {
+            FlurryWP7SDK.Api.LogEvent("Chat - DeleteThread clicked");
+
             MessageBoxResult delete = MessageBox.Show(
                 AppResources.Chat_WarningDeleteThreadBody,
                 AppResources.Chat_WarningDeleteThreadTitle,
@@ -448,6 +465,8 @@ namespace Gchat.Pages {
         }
 
         private void ViewContactList_Click(object sender, EventArgs e) {
+            FlurryWP7SDK.Api.LogEvent("Chat - ViewContactList clicked");
+
             Dispatcher.BeginInvoke(() => App.Current.RootFrame.Navigate(new Uri("/Pages/ContactList.xaml", UriKind.Relative)));
         }
 
@@ -470,6 +489,7 @@ namespace Gchat.Pages {
         }
 
         private void AttachButton_Click(object sender, EventArgs e) {
+            FlurryWP7SDK.Api.LogEvent("Chat - AttachButton clicked");
             bool warned = false;
             IsolatedStorageSettings.ApplicationSettings.TryGetValue("imgurwarned", out warned);
 

@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
+using FlurryWP7SDK.Models;
 using Gchat.Data;
 using Microsoft.Phone.Controls;
 
@@ -27,8 +28,23 @@ namespace Gchat.Pages {
             SearchBox.Focus();
         }
 
+        protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e) {
+            base.OnNavigatedTo(e);
+            FlurryWP7SDK.Api.LogEvent("Search - Search started", true);
+        }
+
+        protected override void OnNavigatingFrom(System.Windows.Navigation.NavigatingCancelEventArgs e) {
+            base.OnNavigatingFrom(e);
+            FlurryWP7SDK.Api.EndTimedEvent("Search - Search started");
+        }
+
         private void SearchResults_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             if (e.AddedItems.Count > 0) {
+
+                FlurryWP7SDK.Api.LogEvent("Initiated chat", new List<Parameter>() {
+                    new Parameter("Source", "Search")
+                });
+
                 var to = (e.AddedItems[0] as Contact).Email;
                 (sender as ListBox).SelectedIndex = -1;
                 NavigationService.Navigate(new Uri("/Pages/Chat.xaml?from=" + to, UriKind.Relative));

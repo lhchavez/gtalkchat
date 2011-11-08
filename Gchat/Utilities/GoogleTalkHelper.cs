@@ -7,6 +7,7 @@ using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -17,7 +18,6 @@ using Gchat.Data;
 using Gchat.Protocol;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
-using System.Threading;
 using Microsoft.Phone.Tasks;
 
 namespace Gchat.Utilities {
@@ -782,6 +782,8 @@ namespace Gchat.Utilities {
 
         public void PinContact(string email) {
             if (!IsContactPinned(email)) {
+                FlurryWP7SDK.Api.LogEvent("Contact pinned");
+
                 Contact contact = App.Current.Roster[email];
                 StandardTileData tile;
 

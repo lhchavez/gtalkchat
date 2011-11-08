@@ -1,14 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO.IsolatedStorage;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Windows;
+using FlurryWP7SDK.Models;
 using Gchat.Utilities;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
-using System.Windows;
-using System.Linq;
-using System.Collections.Generic;
-using FlurryWP7SDK.Models;
 
 namespace Gchat.Pages {
     public partial class Login : PhoneApplicationPage {

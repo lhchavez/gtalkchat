@@ -1,18 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using Coding4Fun.Phone.Controls;
+using FlurryWP7SDK.Models;
 using Gchat.Data;
+using Gchat.Protocol;
 using Gchat.Utilities;
 using Microsoft.Phone.Controls;
-using System.Linq;
-using System.Collections.Generic;
-using Gchat.Protocol;
-using Coding4Fun.Phone.Controls;
 using Microsoft.Phone.Shell;
-using System.Windows.Media.Animation;
-using System.Windows.Media;
 
 namespace Gchat.Pages {
     public partial class ContactList : PhoneApplicationPage {
@@ -171,9 +170,17 @@ namespace Gchat.Pages {
             if (e.AddedItems.Count > 0) {
                 string to = "";
                 if (e.AddedItems[0] is Contact) {
+                    FlurryWP7SDK.Api.LogEvent("Initiated chat", new List<Parameter>() {
+                        new Parameter("Source", "Online contacts")
+                    });
+
                     to = (e.AddedItems[0] as Contact).Email;
                     (sender as ListBox).SelectedIndex = -1;
                 } else if (sender is LongListSelector) {
+                    FlurryWP7SDK.Api.LogEvent("Initiated chat", new List<Parameter>() {
+                        new Parameter("Source", "All contacts")
+                    });
+
                     to = ((sender as LongListSelector).SelectedItem as Contact).Email;
                 }
                 NavigationService.Navigate(new Uri("/Pages/Chat.xaml?from=" + to, UriKind.Relative));
@@ -224,6 +231,10 @@ namespace Gchat.Pages {
         }
 
         private void Tile_Click(object sender, RoutedEventArgs e) {
+            FlurryWP7SDK.Api.LogEvent("Initiated chat", new List<Parameter>() {
+                new Parameter("Source", "Recent contacts")
+            });
+
             var to = ((e.OriginalSource as Tile).DataContext as Contact).Email;
             NavigationService.Navigate(new Uri("/Pages/Chat.xaml?from=" + to, UriKind.Relative));
         }
