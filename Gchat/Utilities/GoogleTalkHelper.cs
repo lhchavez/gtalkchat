@@ -649,7 +649,7 @@ namespace Gchat.Utilities {
             );
         }
 
-        public void GetOfflineMessages() {
+        public void GetOfflineMessages(GoogleTalk.FinishedCallback cb) {
             Dictionary<string, string> firstMessage = new Dictionary<string, string>();
             Dictionary<string, int> messageCount = new Dictionary<string, int>();
 
@@ -678,6 +678,7 @@ namespace Gchat.Utilities {
                     } else {
                         ShowToast(error, AppResources.Error_OfflineMessagesTitle);
                     }
+                    cb();
                 },
                 () => {
                     foreach(var mc in messageCount) {
@@ -693,6 +694,7 @@ namespace Gchat.Utilities {
                             });
                         }
                     }
+                    cb();
                 }
             );
 
@@ -741,7 +743,7 @@ namespace Gchat.Utilities {
 
                         if (!offlineMessagesDownloaded) {
                             offlineMessagesDownloaded = true;
-                            GetOfflineMessages();
+                            GetOfflineMessages(() => { });
                         }
                     }
                 ),

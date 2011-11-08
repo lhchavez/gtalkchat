@@ -121,7 +121,7 @@ namespace Gchat.Pages {
 
             if (gtalkHelper.RosterLoaded && App.Current.GtalkClient.LoggedIn) {
                 if (e.IsNavigationInitiator) {
-                    gtalkHelper.GetOfflineMessages();
+                    gtalkHelper.GetOfflineMessages(() => { });
                 }
             } else {
                 UpdateRoster();

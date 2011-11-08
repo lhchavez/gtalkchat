@@ -275,6 +275,9 @@
   <data name="Chat_NoticeTyping" xml:space="preserve">
     <value>{0} is typing...</value>
   </data>
+  <data name="Chat_ProgressGettingMessages" xml:space="preserve">
+    <value>Getting offline messages...</value>
+  </data>
   <data name="Chat_ProgressSendingMessage" xml:space="preserve">
     <value>Sending message...</value>
   </data>

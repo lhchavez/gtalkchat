@@ -396,6 +396,15 @@ namespace Gchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Getting offline messages....
+        /// </summary>
+        public static string Chat_ProgressGettingMessages {
+            get {
+                return ResourceManager.GetString("Chat_ProgressGettingMessages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sending message....
         /// </summary>
         public static string Chat_ProgressSendingMessage {

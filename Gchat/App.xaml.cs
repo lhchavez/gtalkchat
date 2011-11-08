@@ -112,9 +112,7 @@ namespace Gchat {
             }
 
             Roster = new Roster();
-
             GtalkHelper = new GoogleTalkHelper();
-
             Roster.Load();
 
             RecentContacts = Settings["recent"] as ObservableCollection<Contact>;
@@ -144,19 +142,24 @@ namespace Gchat {
             if (Settings == null) Settings = IsolatedStorageSettings.ApplicationSettings;
             if (PushHelper == null) PushHelper = new PushHelper();
             if (GtalkClient == null) GtalkClient = new GoogleTalk();
-            if (RecentContacts == null) Settings["recent"] = RecentContacts = new ObservableCollection<Contact>();
+            
+            if (RecentContacts == null) {
+                if (!Settings.Contains("recent")) {
+                    Settings["recent"] = RecentContacts = new ObservableCollection<Contact>();
+                }
+                RecentContacts = Settings["recent"] as ObservableCollection<Contact>;
+            }
 
             if (!Settings.Contains("chatlog")) {
                 Settings["chatlog"] = new Dictionary<string, List<Message>>();
             }
+
             if (!Settings.Contains("unread")) {
                 Settings["unread"] = new Dictionary<string, int>();
             }
 
             Roster = new Roster();
-
             if (GtalkHelper == null) GtalkHelper = new GoogleTalkHelper();
-
             Roster.Load();
 
             InitAnalytics();
