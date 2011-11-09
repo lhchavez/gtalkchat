@@ -39,7 +39,7 @@ namespace Gchat.Pages {
 
             photoChooserTask.Completed += (s, r) => {
                 if (r.TaskResult == TaskResult.OK) {
-                    FlurryWP7SDK.Api.LogEvent("Chat - Image attched");
+                    FlurryWP7SDK.Api.LogEvent("Chat - Image attached");
 
                     attachButton.IsEnabled = false;
                     BitmapImage bm = new BitmapImage();
