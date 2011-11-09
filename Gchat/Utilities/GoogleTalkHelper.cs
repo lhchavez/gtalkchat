@@ -683,15 +683,19 @@ namespace Gchat.Utilities {
                 () => {
                     foreach(var mc in messageCount) {
                         if (mc.Value == 1) {
-                            ShowToast(new Message {
-                                From = mc.Key,
-                                Body = firstMessage[mc.Key]
-                            });
+                            if (mc.Key != App.Current.CurrentChat) {
+                                ShowToast(new Message {
+                                    From = mc.Key,
+                                    Body = firstMessage[mc.Key]
+                                });
+                            }
                         } else {
-                            ShowToast(new Message {
-                                From = mc.Key,
-                                Body = string.Format(AppResources.Notification_OfflineMessages, mc.Value)
-                            });
+                            if (mc.Key != App.Current.CurrentChat) {
+                                ShowToast(new Message {
+                                    From = mc.Key,
+                                    Body = string.Format(AppResources.Notification_OfflineMessages, mc.Value)
+                                });
+                            }
                         }
                     }
                     cb();
