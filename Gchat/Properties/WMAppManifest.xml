@@ -4,6 +4,7 @@
     <IconPath IsRelative="true" IsResource="false">ApplicationIcon.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_IDENTITY_DEVICE" />
+      <Capability Name="ID_CAP_IDENTITY_USER" />
       <Capability Name="ID_CAP_NETWORKING" />
       <Capability Name="ID_CAP_PUSH_NOTIFICATION" />
     </Capabilities>
