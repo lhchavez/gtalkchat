@@ -123,8 +123,8 @@ namespace Gchat {
 
             if (Settings.Contains("lastError")) {
                 var result = MessageBox.Show(
-                    "The application crashed the last time you used it. Do you want to send the exception information to the developers?",
-                    "Application crash",
+                    AppResources.CrashReport_Message,
+                    AppResources.CrashReport_Title,
                     MessageBoxButton.OKCancel
                 );
 

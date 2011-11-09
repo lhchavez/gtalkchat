@@ -339,6 +339,12 @@ This warning will now show again after you press OK.</value>
   <data name="Contact_ContextMenuUnhide" xml:space="preserve">
     <value>show contact</value>
   </data>
+  <data name="CrashReport_Message" xml:space="preserve">
+    <value>The application crashed the last time you used it. Do you want to send the exception information to the developers?</value>
+  </data>
+  <data name="CrashReport_Title" xml:space="preserve">
+    <value>Application crash</value>
+  </data>
   <data name="Error_ApiMessage" xml:space="preserve">
     <value>API Key matching failed. Please get a new API Key and retry.</value>
   </data>

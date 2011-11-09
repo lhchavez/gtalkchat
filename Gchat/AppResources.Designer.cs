@@ -685,6 +685,24 @@ namespace Gchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The application crashed the last time you used it. Do you want to send the exception information to the developers?.
+        /// </summary>
+        public static string CrashReport_Message {
+            get {
+                return ResourceManager.GetString("CrashReport_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Application crash.
+        /// </summary>
+        public static string CrashReport_Title {
+            get {
+                return ResourceManager.GetString("CrashReport_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to API Key matching failed. Please get a new API Key and retry..
         /// </summary>
         public static string Error_ApiMessage {
