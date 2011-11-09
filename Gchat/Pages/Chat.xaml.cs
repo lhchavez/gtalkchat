@@ -137,15 +137,14 @@ namespace Gchat.Pages {
 
             gtalkHelper.MessageReceived += DisplayMessage;
 
-
-
             if (gtalkHelper.RosterLoaded && gtalk.LoggedIn && App.Current.Roster.Contains(email)) {
                 Initialize();
-            } else if (gtalkHelper.RosterLoaded && gtalk.LoggedIn) {
-                if (e.IsNavigationInitiator) {
+
+                if (e.NavigationMode == NavigationMode.Back) {
                     ShowProgressBar(AppResources.Chat_ProgressGettingMessages);
                     gtalkHelper.GetOfflineMessages(() => Dispatcher.BeginInvoke(() => HideProgressBar()));
                 }
+
             } else {
                 ShowProgressBar(AppResources.Chat_ProgressGettingMessages);
                 gtalkHelper.RosterUpdated += () => HideProgressBar();
