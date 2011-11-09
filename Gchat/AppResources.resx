@@ -188,11 +188,11 @@
   <data name="About_PaidVersionNotice" xml:space="preserve">
     <value>This is the paid version of Gchat. It has no extra funcionality, but you can have the warm, fuzzy feeling that you contributed to this app's development.</value>
   </data>
-  <data name="About_Version" xml:space="preserve">
-    <value>Gchat 1.4</value>
-  </data>
   <data name="AppName" xml:space="preserve">
     <value>Gchat</value>
+  </data>
+  <data name="AppVersion" xml:space="preserve">
+    <value>1.4</value>
   </data>
   <data name="ChatStatus_Available" xml:space="preserve">
     <value>available</value>

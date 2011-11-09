@@ -234,20 +234,20 @@ namespace Gchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Gchat 1.4.
-        /// </summary>
-        public static string About_Version {
-            get {
-                return ResourceManager.GetString("About_Version", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Gchat.
         /// </summary>
         public static string AppName {
             get {
                 return ResourceManager.GetString("AppName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 1.4.
+        /// </summary>
+        public static string AppVersion {
+            get {
+                return ResourceManager.GetString("AppVersion", resourceCulture);
             }
         }
         

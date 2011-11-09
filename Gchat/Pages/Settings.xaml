@@ -38,8 +38,9 @@
                     <ScrollViewer Margin="0,0,-12,0">
                         <RichTextBox VerticalAlignment="Top" FontSize="{StaticResource PhoneFontSizeMedium}" Margin="0,0,24,0">
                             <Paragraph>
-                                <Hyperlink TargetName="_blank" NavigateUri="http://gchatapp.com">
-                                    <Run Text="{Binding Path=Loc.About_Version, Source={StaticResource LocalizedStrings}}" FontSize="{StaticResource PhoneFontSizeExtraLarge}" Foreground="{StaticResource PhoneAccentBrush}" />
+                                <Hyperlink TargetName="_blank" NavigateUri="http://gchatapp.com" Foreground="{StaticResource PhoneAccentBrush}" FontSize="{StaticResource PhoneFontSizeExtraLarge}">
+                                    <Run Text="{Binding Path=Loc.AppName, Source={StaticResource LocalizedStrings}}" />
+                                    <Run Text="{Binding Path=Loc.AppVersion, Source={StaticResource LocalizedStrings}}" />
                                 </Hyperlink>
                             </Paragraph>
 
