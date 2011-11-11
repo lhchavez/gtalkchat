@@ -1,37 +1,34 @@
-﻿== Version 1.0 ==
+﻿= Name =
+Gchat
 
 = Category =
 Social
 
 = Support email =
-gchat@lhchavez.com
+support@gchatapp.com
 
-= Name (en) =
-Gchat
+= Detailed Description =
 
-= Detailed Description (en) =
+[Gchat+ only]
+This is the same as the free version of Gchat, but gives you the warm fuzzy feeling that you contributed to this app's development. 
 
-﻿Gchat - A Windows Phone client for the Google Talk™ instant messaging service
+﻿A beautiful, fast, privacy-conscious client for the Google Talk™ instant messaging service Gchat supports cool features such as:
 
-A beautiful, fast, privacy-conscious client to use your favorite IM messaging service. Supports cool features such as:
+- Modern design that integrates with the rest of Windows Phone
+- Recieve IMs even if the app isn't running with push notifications
+- Pin your friends to start and recieve tile notifications for each one
+- Completely encrypted conversations and support for Google Talk's "off the record" conversations
+- New in 1.4: Image attachment, alphabetical jumplist, hide contacts, and *bold* and _italic_ formatting
 
-- Push notifications for messages
-- Pinning any of your contacts as a secondary tile, with independent unread message count.
-- Off-the-record conversations, with special and delicate handling.
-- New in version 1.3: Search, recent contact, and status changes
+More info at http://gchatapp.com
 
-Backend & Server Development
-Luis Héctor Chávez (http://lhchavez.com)
-
-Frontend Development & UI Design
-Juliana Peña (http://julianapena.com)
+Created by Luis Héctor Chávez (http://lhchavez.com) & Juliana Peña (http://julianapena.com)
 
 Grab the source code for the client at https://github.com/lhchavez/gtalkchat and for the server at https://github.com/lhchavez/gtalkjsonproxy
-
 Released under the terms of the CC BY-NC-SA license.
 
-= Feature app description (en) =
+= Feature app description =
 Google Talk™ IM client
 
-= Keywords (en) =
+= Keywords =
 gtalk, google talk, gchat, chat, im
