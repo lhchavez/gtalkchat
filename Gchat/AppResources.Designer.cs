@@ -721,6 +721,15 @@ namespace Gchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid username/password..
+        /// </summary>
+        public static string Error_AuthError {
+            get {
+                return ResourceManager.GetString("Error_AuthError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Your authentication token has expired. Try logging in again..
         /// </summary>
         public static string Error_AuthErrorMessage {
@@ -757,7 +766,7 @@ namespace Gchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unable to get your contact list. Please retry later.&quot;.
+        ///   Looks up a localized string similar to Unable to get your contact list. Please retry later..
         /// </summary>
         public static string Error_ContactListMessage {
             get {

@@ -351,6 +351,9 @@ This warning will now show again after you press OK.</value>
   <data name="Error_ApiTitle" xml:space="preserve">
     <value>API Key failure</value>
   </data>
+  <data name="Error_AuthError" xml:space="preserve">
+    <value>Invalid username/password.</value>
+  </data>
   <data name="Error_AuthErrorMessage" xml:space="preserve">
     <value>Your authentication token has expired. Try logging in again.</value>
   </data>
@@ -364,7 +367,7 @@ This warning will now show again after you press OK.</value>
     <value>Connection error</value>
   </data>
   <data name="Error_ContactListMessage" xml:space="preserve">
-    <value>Unable to get your contact list. Please retry later."</value>
+    <value>Unable to get your contact list. Please retry later.</value>
   </data>
   <data name="Error_ContactListTitle" xml:space="preserve">
     <value>Contact list</value>

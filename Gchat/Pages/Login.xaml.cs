@@ -93,15 +93,15 @@ namespace Gchat.Pages {
                 error => Dispatcher.BeginInvoke(() => {
                     MessageBox.Show(error, AppResources.Error_AuthErrorTitle, MessageBoxButton.OK);
 
-                    // track unsuccessful login
-                    var par = new List<Parameter>();
-                    par.Add(new Parameter("Result", "auth error"));
-                    FlurryWP7SDK.Api.EndTimedEvent("Login started", par);
-
                     HideProgressBar();
                     Username.IsEnabled = true;
                     Password.IsEnabled = true;
                     (ApplicationBar.Buttons[0] as ApplicationBarIconButton).IsEnabled = true;
+
+                    // track unsuccessful login
+                    var par = new List<Parameter>();
+                    par.Add(new Parameter("Result", "auth error"));
+                    FlurryWP7SDK.Api.EndTimedEvent("Login started", par);
                 })
             );
         }

@@ -630,14 +630,20 @@ namespace Gchat.Utilities {
                                     using (var responseStream = response.GetResponseStream()) {
                                         using (var sr = new StreamReader(responseStream)) {
                                             if(error != null) {
-                                                error(sr.ReadToEnd());
+                                                string errorString = sr.ReadToEnd();
+
+                                                if (errorString.StartsWith("Error=BadAuth")) {
+                                                    error(AppResources.Error_AuthError);
+                                                } else {
+                                                    error(AppResources.Error_ConnectionErrorMessage);
+                                                }
                                             }
                                         }
                                     }
                                 } catch (Exception ex) {
                                     // What is wrong with this platform?!
                                     if(error != null) {
-                                        error(ex.Message + "\n" + e.Message);
+                                        error(AppResources.Error_ConnectionErrorMessage);
                                     }
                                 }
                             }
