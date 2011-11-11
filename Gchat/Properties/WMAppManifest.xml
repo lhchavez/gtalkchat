@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Deployment xmlns="http://schemas.microsoft.com/windowsphone/2009/deployment" AppPlatformVersion="7.1">
-  <App xmlns="" ProductID="{457d18ad-5f92-45b5-8800-5b5aeab37c38}" Title="Gchat" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="Luis Héctor Chávez &amp; Juliana Peña" Description="Sample description" Publisher="gtalkchat">
+  <App xmlns="" ProductID="{457d18ad-5f92-45b5-8800-5b5aeab37c38}" Title="Gchat+" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="Luis Héctor Chávez &amp; Juliana Peña" Description="Sample description" Publisher="gtalkchat">
     <IconPath IsRelative="true" IsResource="false">ApplicationIcon.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_IDENTITY_DEVICE" />
@@ -16,7 +16,7 @@
         <TemplateType5>
           <BackgroundImageURI IsRelative="true" IsResource="false">Background.png</BackgroundImageURI>
           <Count>0</Count>
-          <Title>Gchat</Title>
+          <Title>Gchat+</Title>
         </TemplateType5>
       </PrimaryToken>
     </Tokens>
