@@ -22,7 +22,11 @@ namespace Gchat.Protocol {
         private AesUtility aes;
         public const int MessageTimeout = 30000;
         public bool LoggedIn { get; private set; }
+#if DEBUG
+        public const string DefaultRootUrl = "https://test.gchatapp.com:1337";
+#else
         public const string DefaultRootUrl = "https://gtalkjsonproxy.lhchavez.com";
+#endif
         private string rootUrl = DefaultRootUrl;
         public string RootUrl { get { return rootUrl; } set { rootUrl = value; } }
         private string ApiKey;
@@ -136,7 +140,7 @@ namespace Gchat.Protocol {
                 "/register",
                 ReceiveMode.SingleString,
                 sw => {
-                    string data = "token=" + HttpUtility.UrlEncode(token) + "&url=" + HttpUtility.UrlEncode(url) + "&version=1.3&as=" + ApiKey;
+                    string data = "token=" + HttpUtility.UrlEncode(token) + "&url=" + HttpUtility.UrlEncode(url) + "&version=" + AppResources.AppVersion + "&as=" + ApiKey;
                     sw.Write(data);
                 },
                 scb,
@@ -163,7 +167,7 @@ namespace Gchat.Protocol {
                 "/register",
                 ReceiveMode.SingleString,
                 sw => {
-                    string data = "token=" + HttpUtility.UrlEncode(token) + "&url=" + HttpUtility.UrlEncode(url) + "&tiles=" + HttpUtility.UrlEncode(tileArray.ToString()) + "&version=1.3&as=" + ApiKey;
+                    string data = "token=" + HttpUtility.UrlEncode(token) + "&url=" + HttpUtility.UrlEncode(url) + "&tiles=" + HttpUtility.UrlEncode(tileArray.ToString()) + "&version=" + AppResources.AppVersion + "&as=" + ApiKey;
                     sw.Write(data);
                 },
                 scb,

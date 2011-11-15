@@ -593,7 +593,7 @@ namespace Gchat.Utilities {
                 "&Email=" + HttpUtility.UrlEncode(username) +
                 "&Passwd=" + HttpUtility.UrlEncode(password) +
                 "&service=mail" +
-                "&source=gchatapp.com-gchat-1.4"
+                "&source=gchatapp.com-gchat-" + AppResources.AppVersion
             );
 
             var req = WebRequest.CreateHttp("https://www.google.com/accounts/ClientLogin");
