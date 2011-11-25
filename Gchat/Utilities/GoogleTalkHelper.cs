@@ -640,7 +640,7 @@ namespace Gchat.Utilities {
                                             }
                                         }
                                     }
-                                } catch (Exception ex) {
+                                } catch (Exception) {
                                     // What is wrong with this platform?!
                                     if(error != null) {
                                         error(AppResources.Error_ConnectionErrorMessage);
@@ -833,8 +833,16 @@ namespace Gchat.Utilities {
         public void AddRecentContact(Contact contact) {
             var found = false;
 
+            if (contact == null || App.Current.RecentContacts == null) {
+                // Sorry, I'd rather have it do a harmless but wrong operation than crashing.
+                return;
+            }
+
             for (var i = 0; i < App.Current.RecentContacts.Count; i++) {
-                if (App.Current.RecentContacts[i].Email == contact.Email) {
+                if (App.Current.RecentContacts[i] == null) {
+                    App.Current.RecentContacts.RemoveAt(i);
+                    i--;
+                } else if (App.Current.RecentContacts[i].Email == contact.Email) {
                     App.Current.RecentContacts.RemoveAt(i);
                     found = true;
                     break;
