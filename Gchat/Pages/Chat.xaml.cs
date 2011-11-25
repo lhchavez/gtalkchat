@@ -479,17 +479,21 @@ namespace Gchat.Pages {
         }
 
         private void ShowProgressBar(string text) {
-            SystemTray.SetProgressIndicator(this, new ProgressIndicator {
-                IsIndeterminate = true,
-                IsVisible = true,
-                Text = text
-            });
+            Dispatcher.BeginInvoke(() =>
+                SystemTray.SetProgressIndicator(this, new ProgressIndicator {
+                    IsIndeterminate = true,
+                    IsVisible = true,
+                    Text = text
+                })
+            );
         }
 
         private void HideProgressBar() {
-            SystemTray.SetProgressIndicator(this, new ProgressIndicator {
-                IsVisible = false,
-            });
+            Dispatcher.BeginInvoke(() =>
+                SystemTray.SetProgressIndicator(this, new ProgressIndicator {
+                    IsVisible = false,
+                })
+            );
         }
 
         private void AttachButton_Click(object sender, EventArgs e) {
