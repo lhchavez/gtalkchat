@@ -409,27 +409,31 @@ namespace Gchat.Protocol {
         public void ParseMessage(string cipher, MessageCallback mcb, ErrorCallback ecb) {
             bool success = true;
 
-            var line = aes.Decipher(cipher);
-            var json = Json.JsonDecode(line, ref success);
+            try {
+                var line = aes.Decipher(cipher);
+                var json = Json.JsonDecode(line, ref success);
 
-            if (success && json is Dictionary<string, object>) {
-                var data = json as Dictionary<string, object>;
+                if (success && json is Dictionary<string, object>) {
+                    var data = json as Dictionary<string, object>;
 
-                var message = new Message();
+                    var message = new Message();
 
-                message.From = data["from"] as string;
-                message.Time =
-                    new DateTime(1970, 1, 1, 0, 0, 0, 0).AddMilliseconds(
-                        long.Parse(data["time"].ToString().Split(new[] {'.'})[0])
-                    ).ToLocalTime();
-                if (data.ContainsKey("type")) message.Type = data["type"] as string;
-                if (data.ContainsKey("body")) message.Body = data["body"] as string;
-                if (data.ContainsKey("otr")) message.OTR = true.Equals(data["otr"]);
-                if (data.ContainsKey("typing")) message.Typing = true.Equals(data["typing"]);
-                message.Outbound = false;
+                    message.From = data["from"] as string;
+                    message.Time =
+                        new DateTime(1970, 1, 1, 0, 0, 0, 0).AddMilliseconds(
+                            long.Parse(data["time"].ToString().Split(new[] { '.' })[0])
+                        ).ToLocalTime();
+                    if (data.ContainsKey("type")) message.Type = data["type"] as string;
+                    if (data.ContainsKey("body")) message.Body = data["body"] as string;
+                    if (data.ContainsKey("otr")) message.OTR = true.Equals(data["otr"]);
+                    if (data.ContainsKey("typing")) message.Typing = true.Equals(data["typing"]);
+                    message.Outbound = false;
 
-                mcb(message);
-            } else {
+                    mcb(message);
+                } else {
+                    ecb("Invalid JSON");
+                }
+            } catch (NullReferenceException) {
                 ecb("Invalid JSON");
             }
         }
