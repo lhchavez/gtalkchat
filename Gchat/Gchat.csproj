@@ -195,8 +195,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Gchat_2012_04_05_03_05_09.sap" />
-    <None Include="Gchat_2012_04_05_03_12_31.sap" />
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml">
       <SubType>Designer</SubType>

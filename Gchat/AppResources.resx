@@ -414,6 +414,21 @@ This warning will now show again after you press OK.</value>
   <data name="Notification_OfflineMessages" xml:space="preserve">
     <value>{0} unread messages</value>
   </data>
+  <data name="ReviewPopup_Body" xml:space="preserve">
+    <value>If you enjoy using Gchat, would you mind taking a moment to rate it? It won't take more than a minute. Thanks for your support!</value>
+  </data>
+  <data name="ReviewPopup_NoButton" xml:space="preserve">
+    <value>No, thanks</value>
+  </data>
+  <data name="ReviewPopup_RateButton" xml:space="preserve">
+    <value>Rate Gchat</value>
+  </data>
+  <data name="ReviewPopup_RemindButton" xml:space="preserve">
+    <value>Remind me later</value>
+  </data>
+  <data name="ReviewPopup_Title" xml:space="preserve">
+    <value>Rate Gchat</value>
+  </data>
   <data name="Settings_Header" xml:space="preserve">
     <value>settings</value>
   </data>

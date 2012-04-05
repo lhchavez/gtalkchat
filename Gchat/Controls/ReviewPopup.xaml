@@ -9,7 +9,7 @@
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     d:DesignHeight="800" d:DesignWidth="480"
-    Loaded="Loaded">
+    Loaded="PageLoaded">
     
 	<UserControl.Resources>
 		<Style x:Key="ProgressOverlayStyle1" TargetType="c4f:ProgressOverlay">
@@ -40,15 +40,13 @@
     <c4f:ProgressOverlay x:Name="LayoutRoot" Style="{StaticResource ProgressOverlayStyle1}" Visibility="Collapsed">
         <Grid x:Name="MainGrid" Background="{StaticResource PhoneChromeBrush}" VerticalAlignment="Top">
             <StackPanel Margin="12,0,12,0">
-                <TextBlock FontSize="{StaticResource PhoneFontSizeLarge}" Margin="12,12,12,6" FontWeight="SemiBold">
-                ..Rate Gchat</TextBlock>
-                <RichTextBox TextWrapping="Wrap" FontSize="{StaticResource PhoneFontSizeMedium}" TextAlignment="Justify">
-                    <Paragraph>..If you enjoy using Gchat, would you mind taking a moment
-                    to rate it? It won't take more than a minute. Thanks for your support!</Paragraph>
-                </RichTextBox>
-                <Button Click="Rate_Click">..Rate Gchat</Button>
-                <Button Click="Remind_Click">..Remind me later</Button>
-                <Button Margin="0,24,0,6" Click="No_Click">..No, thanks</Button>
+                <TextBlock Text="{Binding Path=Loc.ReviewPopup_Title, Source={StaticResource LocalizedStrings}}" FontSize="{StaticResource PhoneFontSizeLarge}" Margin="12,12,12,6" FontWeight="SemiBold" />
+                
+                <TextBlock Text="{Binding Path=Loc.ReviewPopup_Body, Source={StaticResource LocalizedStrings}}" TextWrapping="Wrap" FontSize="{StaticResource PhoneFontSizeMedium}" Margin="12,12,12,6" />
+
+                <Button Click="Rate_Click" Content="{Binding Path=Loc.ReviewPopup_RateButton, Source={StaticResource LocalizedStrings}}" />
+                <Button Click="Remind_Click" Content="{Binding Path=Loc.ReviewPopup_RemindButton, Source={StaticResource LocalizedStrings}}" />
+                <Button Margin="0,24,0,6" Click="No_Click" Content="{Binding Path=Loc.ReviewPopup_NoButton, Source={StaticResource LocalizedStrings}}" />
             </StackPanel>
         </Grid>
     </c4f:ProgressOverlay>

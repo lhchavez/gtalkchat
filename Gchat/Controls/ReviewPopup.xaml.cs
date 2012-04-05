@@ -23,6 +23,28 @@ namespace Gchat.Controls {
             settings = App.Current.Settings;
         }
 
+        private void PageLoaded(object sender, RoutedEventArgs e) {
+            // Already reviewed?
+            bool reviewed;
+            if (settings.TryGetValue("ReviewPopup-Completed", out reviewed) && reviewed) {
+                return;
+            }
+
+            // Check install date
+            DateTime install;
+            if (!settings.TryGetValue("ReviewPopup-InstallDate", out install)) {
+                // No install date saved, save today
+                install = DateTime.Now;
+                settings["ReviewPopup-InstallDate"] = install;
+            }
+
+            TimeSpan diff = DateTime.Now - install;
+            if (diff.Days >= 3) {
+                // Three days have passed, show popup
+                Show();
+            }
+        }
+
         private void Show() {
             LayoutRoot.Show();
 
@@ -56,26 +78,6 @@ namespace Gchat.Controls {
             settings["ReviewPopup-Completed"] = true;
         }
 
-        private void Loaded(object sender, RoutedEventArgs e) {
-            // Already reviewed?
-            bool reviewed;
-            if (settings.TryGetValue("ReviewPopup-Completed", out reviewed) && reviewed) {
-                return;
-            }
-
-            // Check install date
-            DateTime install;
-            if (!settings.TryGetValue("ReviewPopup-InstallDate", out install)) {
-                // No install date saved, save today
-                install = DateTime.Now;
-                settings["ReviewPopup-InstallDate"] = install;
-            }
-
-            TimeSpan diff = DateTime.Now - install;
-            if (diff.Days >= 3) {
-                // Three days have passed, show popup
-                Show();
-            }
-        }
+        
     }
 }
