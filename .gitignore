@@ -5,9 +5,11 @@ _ReSharper.*
 releases/*
 video/*
 web/*
+Gchat/PerformanceLogs/*
 
 ApiKey.txt
 FlurryApiKey.txt
 
 *.suo
 *.user
+*.sap

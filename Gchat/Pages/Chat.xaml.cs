@@ -143,8 +143,8 @@ namespace Gchat.Pages {
                     ShowProgressBar(AppResources.Chat_ProgressGettingMessages);
                     gtalkHelper.GetOfflineMessages(() => Dispatcher.BeginInvoke(() => HideProgressBar()));
                 }
-
             } else {
+                Initialize();
                 ShowProgressBar(AppResources.Chat_ProgressGettingMessages);
                 gtalkHelper.RosterUpdated += () => HideProgressBar();
                 gtalkHelper.RosterUpdated += Initialize;

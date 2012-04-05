@@ -14,11 +14,13 @@ using Microsoft.Phone.Controls;
 
 namespace Gchat.Controls {
     public partial class ReviewPopup : UserControl {
-        private IsolatedStorageSettings settings = IsolatedStorageSettings.ApplicationSettings;
+        private IsolatedStorageSettings settings;
 
         public ReviewPopup() {
             InitializeComponent();
             LayoutRoot.Hide();
+
+            settings = App.Current.Settings;
         }
 
         private void Show() {

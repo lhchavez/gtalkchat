@@ -14,7 +14,7 @@
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
-    SupportedOrientations="PortraitOrLandscape"  Orientation="Portrait"
+    SupportedOrientations="PortraitOrLandscape"
     shell:SystemTray.IsVisible="True">
 
     <!--LayoutRoot is the root grid where all page content is placed-->
@@ -23,91 +23,86 @@
         <controls:Pivot Title="{Binding Path=Loc.ContactList_Title, Source={StaticResource LocalizedStrings}}">
             <!--Pivot item one-->
             <controls:PivotItem Header="{Binding Path=Loc.ContactList_OnlineHeader, Source={StaticResource LocalizedStrings}}">
-                <Grid Margin="12,-12,-12,0">
-                    <ListBox Name="OnlineContactsListBox" SelectionChanged="ContactsListBox_SelectionChanged" toolkit:TiltEffect.IsTiltEnabled="True">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <local:ContactCard DataContext="{Binding}" />
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-                </Grid>
+                <ListBox Margin="12,-12,-12,0" Name="OnlineContactsListBox" SelectionChanged="ContactsListBox_SelectionChanged" toolkit:TiltEffect.IsTiltEnabled="True">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <local:ContactCard DataContext="{Binding}" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
             </controls:PivotItem>
 
             <!--Pivot item two-->
             <controls:PivotItem Header="{Binding Path=Loc.ContactList_AllHeader, Source={StaticResource LocalizedStrings}}">
-                <Grid Margin="12,-12,-12,0">
-                    <toolkit:LongListSelector Name="AllContactsListBox" 
-                                              SelectionChanged="ContactsListBox_SelectionChanged" 
-                                              toolkit:TiltEffect.IsTiltEnabled="True">
-                        <toolkit:LongListSelector.ItemTemplate>
-                            <DataTemplate>
-                                <local:ContactCard DataContext="{Binding}" />
-                            </DataTemplate>
-                        </toolkit:LongListSelector.ItemTemplate>
-                        <toolkit:LongListSelector.GroupHeaderTemplate>
-                            <DataTemplate>
-                                <Border Background="Transparent" Margin="0,0,0,6">
-                                    <Border Background="{StaticResource PhoneAccentBrush}" 	
-                                        Padding="8,0,0,0" Width="60" Height="60" 				 
-                                        HorizontalAlignment="Left">
-                                        <TextBlock Text="{Binding Title}" 
-                                               Foreground="#FFFFFF" 
-                                               FontSize="48"
-                                               FontFamily="{StaticResource PhoneFontFamilySemiLight}"
-                                               HorizontalAlignment="Left"
-                                               VerticalAlignment="Bottom"/>
-                                    </Border>
-                                </Border>
-                            </DataTemplate>
-                        </toolkit:LongListSelector.GroupHeaderTemplate>
-                        <toolkit:LongListSelector.GroupItemTemplate>
-                            <DataTemplate>
-                                <Border Background="{Binding BackgroundBrush}" 
-                                    Width="99" Height="99" Margin="6" IsHitTestVisible="{Binding HasItems}">
+                <toolkit:LongListSelector Margin="12,-12,-12,0"
+                                          Name="AllContactsListBox" 
+                                          SelectionChanged="ContactsListBox_SelectionChanged" 
+                                          toolkit:TiltEffect.IsTiltEnabled="True">
+                    <toolkit:LongListSelector.ItemTemplate>
+                        <DataTemplate>
+                            <local:ContactCard DataContext="{Binding}" />
+                        </DataTemplate>
+                    </toolkit:LongListSelector.ItemTemplate>
+                    <toolkit:LongListSelector.GroupHeaderTemplate>
+                        <DataTemplate>
+                            <Border Background="Transparent" Margin="0,0,0,6">
+                                <Border Background="{StaticResource PhoneAccentBrush}" 	
+                                    Padding="8,0,0,0" Width="60" Height="60" 				 
+                                    HorizontalAlignment="Left">
                                     <TextBlock Text="{Binding Title}" 
-                                           FontFamily="{StaticResource PhoneFontFamilySemiBold}"
-                                           FontSize="48"
-                                           Margin="8,0,0,0"
-                                           Foreground="{Binding ForegroundBrush}"                                        
-                                           VerticalAlignment="Bottom"/>
+                                            Foreground="#FFFFFF" 
+                                            FontSize="48"
+                                            FontFamily="{StaticResource PhoneFontFamilySemiLight}"
+                                            HorizontalAlignment="Left"
+                                            VerticalAlignment="Bottom"/>
                                 </Border>
-                            </DataTemplate>
-                        </toolkit:LongListSelector.GroupItemTemplate>
-                        <toolkit:LongListSelector.GroupItemsPanel>
-                            <ItemsPanelTemplate>
-                                <toolkit:WrapPanel />
-                            </ItemsPanelTemplate>
-                        </toolkit:LongListSelector.GroupItemsPanel>
-                    </toolkit:LongListSelector>
-                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </toolkit:LongListSelector.GroupHeaderTemplate>
+                    <toolkit:LongListSelector.GroupItemTemplate>
+                        <DataTemplate>
+                            <Border Background="{Binding BackgroundBrush}" 
+                                Width="99" Height="99" Margin="6" IsHitTestVisible="{Binding HasItems}">
+                                <TextBlock Text="{Binding Title}" 
+                                        FontFamily="{StaticResource PhoneFontFamilySemiBold}"
+                                        FontSize="48"
+                                        Margin="8,0,0,0"
+                                        Foreground="{Binding ForegroundBrush}"                                        
+                                        VerticalAlignment="Bottom"/>
+                            </Border>
+                        </DataTemplate>
+                    </toolkit:LongListSelector.GroupItemTemplate>
+                    <toolkit:LongListSelector.GroupItemsPanel>
+                        <ItemsPanelTemplate>
+                            <toolkit:WrapPanel />
+                        </ItemsPanelTemplate>
+                    </toolkit:LongListSelector.GroupItemsPanel>
+                </toolkit:LongListSelector>
             </controls:PivotItem>
 
             <controls:PivotItem Header="{Binding Path=Loc.ContactList_RecentHeader, Source={StaticResource LocalizedStrings}}">
-                <Grid Margin="12,-12,-12,0">
-                    <ListBox Name="RecentContactsListBox" toolkit:TiltEffect.IsTiltEnabled="True">
-                        <ListBox.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <toolkit:WrapPanel />
-                            </ItemsPanelTemplate>
-                        </ListBox.ItemsPanel>
+                <ListBox Margin="12,-12,-12,0" Name="RecentContactsListBox" toolkit:TiltEffect.IsTiltEnabled="True">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <toolkit:WrapPanel />
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
                         
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <c4f:Tile Title="{Binding NameOrEmail}"
-                                          Width="173" Height="173"
-                                          Margin="0,0,12,12"
-                                          Click="Tile_Click">
-                                    <Grid>
-                                        <Image Source="{Binding PhotoUri}" />
-                                        <c4f:TileNotification 
-                                        Content="{Binding UnreadCount}" Visibility="{Binding UnreadCount, Converter={StaticResource NumberToVisibilityConverter}}" />
-                                    </Grid>
-                                </c4f:Tile>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-                </Grid>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <c4f:Tile Title="{Binding NameOrEmail}"
+                                        Width="173" Height="173"
+                                        Margin="0,0,12,12"
+                                        Click="Tile_Click">
+                                <Grid>
+                                    <Image Source="{Binding PhotoUri}" />
+                                    <c4f:TileNotification 
+                                    Content="{Binding UnreadCount}" Visibility="{Binding UnreadCount, Converter={StaticResource NumberToVisibilityConverter}}" />
+                                </Grid>
+                            </c4f:Tile>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
             </controls:PivotItem>
         </controls:Pivot>
 

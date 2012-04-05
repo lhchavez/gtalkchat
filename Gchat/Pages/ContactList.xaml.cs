@@ -110,14 +110,13 @@ namespace Gchat.Pages {
 
             gtalkHelper.SetCorrectOrientation(this);
 
-            Dispatcher.BeginInvoke(
-                () => {
-                    if (gtalkHelper.RosterLoaded) {
-                        HideProgressBar();
-                    } else {
-                        ShowProgressBar(AppResources.ContactList_ProgressLoading);
-                    }
-                });
+            Dispatcher.BeginInvoke(() => {
+                if (gtalkHelper.RosterLoaded) {
+                    HideProgressBar();
+                } else {
+                    ShowProgressBar(AppResources.ContactList_ProgressLoading);
+                }
+            });
 
             if (gtalkHelper.RosterLoaded && App.Current.GtalkClient.LoggedIn) {
                 if (e.IsNavigationInitiator) {
@@ -132,35 +131,32 @@ namespace Gchat.Pages {
         }
 
         private void RosterLoaded() {
-            Dispatcher.BeginInvoke(
-                () => {
-                    FlurryWP7SDK.Api.LogEvent("ContactList - Roster loaded");
+            Dispatcher.BeginInvoke(() => {
+                FlurryWP7SDK.Api.LogEvent("ContactList - Roster loaded");
 
-                    var onlineContacts = App.Current.Roster.GetOnlineContacts();
+                var onlineContacts = App.Current.Roster.GetOnlineContacts();
 
-                    if (!reloadedRoster && onlineContacts.Count == 0) {
-                        reloadedRoster = true;
-                        var timer = new Timer(state => {
-                            (state as Timer).Dispose();
-                            gtalkHelper.LoadRoster();
-                        });
-                        timer.Change(1000, Timeout.Infinite);
-                    } else {
-                        HideProgressBar();
-                        OnlineContactsListBox.ItemsSource = onlineContacts;
-                    }
-
-                    AllContactsListBox.ItemsSource = GroupRoster();
+                if (!reloadedRoster && onlineContacts.Count == 0) {
+                    reloadedRoster = true;
+                    var timer = new Timer(state => {
+                        (state as Timer).Dispose();
+                        gtalkHelper.LoadRoster();
+                    });
+                    timer.Change(1000, Timeout.Infinite);
+                } else {
+                    HideProgressBar();
+                    OnlineContactsListBox.ItemsSource = onlineContacts;
                 }
-            );
+
+                AllContactsListBox.ItemsSource = GroupRoster();
+            });
         }
 
         private void ConnectFailed(string message, string title) {
-            Dispatcher.BeginInvoke(
-                () => {
-                    HideProgressBar();
-                    gtalkHelper.ShowToast(message, title);
-                });
+            Dispatcher.BeginInvoke(() => {
+                HideProgressBar();
+                gtalkHelper.ShowToast(message, title);
+            });
         }
 
         protected override void OnNavigatedFrom(System.Windows.Navigation.NavigationEventArgs e) {

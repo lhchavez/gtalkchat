@@ -10,6 +10,7 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.ComponentModel;
 
 namespace Gchat {
     public partial class App : Application {
@@ -122,17 +123,19 @@ namespace Gchat {
             InitAnalytics();
 
             if (Settings.Contains("lastError")) {
-                var result = MessageBox.Show(
-                    AppResources.CrashReport_Message,
-                    AppResources.CrashReport_Title,
-                    MessageBoxButton.OKCancel
-                );
+                RootFrame.Dispatcher.BeginInvoke(() => {
+                    var result = MessageBox.Show(
+                        AppResources.CrashReport_Message,
+                        AppResources.CrashReport_Title,
+                        MessageBoxButton.OKCancel
+                    );
 
-                if(result == MessageBoxResult.OK) {
-                    GtalkClient.CrashReport(Settings["lastError"] as string, success => Settings.Remove("lastError"), error => {});
-                } else {
-                    Settings.Remove("lastError");
-                }
+                    if (result == MessageBoxResult.OK) {
+                        GtalkClient.CrashReport(Settings["lastError"] as string, success => Settings.Remove("lastError"), error => { });
+                    } else {
+                        Settings.Remove("lastError");
+                    }
+                });
             }
         }
 

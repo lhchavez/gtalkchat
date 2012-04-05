@@ -44,8 +44,6 @@
 
         <localpages:NumberToVisibilityConverter x:Key="NumberToVisibilityConverter" />
         <localpages:StatusToColorConverter x:Key="StatusToColorConverter" />
-
-        
     </Application.Resources>
 
     <Application.ApplicationLifetimeObjects>

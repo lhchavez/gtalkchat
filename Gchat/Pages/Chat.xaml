@@ -6,12 +6,11 @@
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:local="clr-namespace:Gchat" 
     x:Class="Gchat.Pages.Chat"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
-    SupportedOrientations="PortraitOrLandscape" Orientation="Portrait"
+    SupportedOrientations="PortraitOrLandscape"
     mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True">
     
@@ -36,52 +35,6 @@
 							<VisualStateManager.VisualStateGroups>
 								<VisualStateGroup x:Name="CommonStates">
 									<VisualState x:Name="Normal"/>
-									<VisualState x:Name="MouseOver"/>
-									<VisualState x:Name="Disabled">
-										<Storyboard>
-											<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Visibility" Storyboard.TargetName="EnabledBorder">
-												<DiscreteObjectKeyFrame KeyTime="0">
-													<DiscreteObjectKeyFrame.Value>
-														<Visibility>Collapsed</Visibility>
-													</DiscreteObjectKeyFrame.Value>
-												</DiscreteObjectKeyFrame>
-											</ObjectAnimationUsingKeyFrames>
-											<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Visibility" Storyboard.TargetName="DisabledOrReadonlyBorder">
-												<DiscreteObjectKeyFrame KeyTime="0">
-													<DiscreteObjectKeyFrame.Value>
-														<Visibility>Visible</Visibility>
-													</DiscreteObjectKeyFrame.Value>
-												</DiscreteObjectKeyFrame>
-											</ObjectAnimationUsingKeyFrames>
-										</Storyboard>
-									</VisualState>
-									<VisualState x:Name="ReadOnly">
-										<Storyboard>
-											<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Visibility" Storyboard.TargetName="EnabledBorder">
-												<DiscreteObjectKeyFrame KeyTime="0">
-													<DiscreteObjectKeyFrame.Value>
-														<Visibility>Collapsed</Visibility>
-													</DiscreteObjectKeyFrame.Value>
-												</DiscreteObjectKeyFrame>
-											</ObjectAnimationUsingKeyFrames>
-											<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Visibility" Storyboard.TargetName="DisabledOrReadonlyBorder">
-												<DiscreteObjectKeyFrame KeyTime="0">
-													<DiscreteObjectKeyFrame.Value>
-														<Visibility>Visible</Visibility>
-													</DiscreteObjectKeyFrame.Value>
-												</DiscreteObjectKeyFrame>
-											</ObjectAnimationUsingKeyFrames>
-											<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="DisabledOrReadonlyBorder">
-												<DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PhoneTextBoxBrush}"/>
-											</ObjectAnimationUsingKeyFrames>
-											<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderBrush" Storyboard.TargetName="DisabledOrReadonlyBorder">
-												<DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PhoneTextBoxBrush}"/>
-											</ObjectAnimationUsingKeyFrames>
-											<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="DisabledOrReadonlyContent">
-												<DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PhoneTextBoxReadOnlyBrush}"/>
-											</ObjectAnimationUsingKeyFrames>
-										</Storyboard>
-									</VisualState>
 								</VisualStateGroup>
 								<VisualStateGroup x:Name="FocusStates">
 									<VisualState x:Name="Focused">
@@ -104,7 +57,7 @@
 								</VisualStateGroup>
 							</VisualStateManager.VisualStateGroups>
 							<Border x:Name="EnabledBorder" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
-								<Grid Name="InputBubbleGrid" Grid.Row="1">
+								<Grid Name="InputBubbleGrid">
 									<Grid.RowDefinitions>
 										<RowDefinition Height="Auto" />
 										<RowDefinition Height="14" />
@@ -139,21 +92,15 @@
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,0,0">
-        	<Grid.RowDefinitions>
-        		<RowDefinition/>
-        	</Grid.RowDefinitions>
-        	
-            <ScrollViewer Name="Scroller" Margin="12,0,0,0">
-                <StackPanel Margin="0,0,24,0"  VerticalAlignment="Bottom">
-                    <StackPanel Name="MessageList">
+        <ScrollViewer Grid.Row="1" Name="Scroller" Margin="24,0,0,0">
+            <StackPanel Margin="0,0,24,0"  VerticalAlignment="Bottom">
+                <StackPanel Name="MessageList">
                         
-                    </StackPanel>
-                    <TextBlock Name="TypingStatus" Visibility="Collapsed" Grid.Row="1" FontSize="{StaticResource PhoneFontSizeNormal}" />
-                    <TextBox VerticalAlignment="Bottom" AcceptsReturn="True" Margin="98,12,-4,6" Name="MessageText" InputScope="Text" Grid.Row="2" TextWrapping="Wrap" FontSize="{StaticResource PhoneFontSizeMediumLarge}" Background="{x:Null}" BorderBrush="{x:Null}" Style="{StaticResource InputBubbleStyle}" KeyUp="MessageText_KeyUp" />
                 </StackPanel>
-            </ScrollViewer>
-        </Grid>
+                <TextBlock Name="TypingStatus" Visibility="Collapsed" Grid.Row="1" FontSize="{StaticResource PhoneFontSizeNormal}" />
+                <TextBox VerticalAlignment="Bottom" AcceptsReturn="True" Margin="98,12,-4,6" Name="MessageText" InputScope="Text" Grid.Row="2" TextWrapping="Wrap" FontSize="{StaticResource PhoneFontSizeMediumLarge}" Background="{x:Null}" BorderBrush="{x:Null}" Style="{StaticResource InputBubbleStyle}" KeyUp="MessageText_KeyUp" />
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 
     <toolkit:TransitionService.NavigationInTransition>
