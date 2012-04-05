@@ -22,11 +22,11 @@ namespace Gchat.Protocol {
         private AesUtility aes;
         public const int MessageTimeout = 30000;
         public bool LoggedIn { get; private set; }
-#if DEBUG
-        public const string DefaultRootUrl = "https://test.gchatapp.com:1337";
-#else
+//#if DEBUG
+//        public const string DefaultRootUrl = "https://test.gchatapp.com:1337";
+//#else
         public const string DefaultRootUrl = "https://gtalkjsonproxy.lhchavez.com";
-#endif
+//#endif
         private string rootUrl = DefaultRootUrl;
         public string RootUrl { get { return rootUrl; } set { rootUrl = value; } }
         private string ApiKey;
