@@ -1,7 +1,13 @@
-gtalkchat/obj
-gtalkchat/Bin
+.hg/*
+Gchat/obj/*
+Gchat/Bin/*
 _ReSharper.*
+releases/*
+video/*
+web/*
+
 ApiKey.txt
+FlurryApiKey.txt
 
 *.suo
 *.user
