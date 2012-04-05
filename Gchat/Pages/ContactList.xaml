@@ -122,6 +122,8 @@
                 </DataTemplate>
             </toolkit:ListPicker.FullModeItemTemplate>
         </toolkit:ListPicker>
+
+        <local:ReviewPopup />
     </Grid>
 
     <toolkit:TransitionService.NavigationInTransition>

@@ -8,29 +8,48 @@
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
-    d:DesignHeight="800" d:DesignWidth="480">
+    d:DesignHeight="800" d:DesignWidth="480"
+    Loaded="Loaded">
     
-    <Grid x:Name="LayoutRoot">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <c4f:ProgressOverlay Grid.RowSpan="2" />
-        
-        <Grid Background="{StaticResource PhoneChromeBrush}">
-            <StackPanel>
-                <TextBlock FontSize="{StaticResource PhoneFontSizeMedium}" Margin="{StaticResource PhoneTouchTargetOverhang}" FontWeight="SemiBold">
-                    ..Rate Gchat
-                </TextBlock>
-                <TextBlock TextWrapping="Wrap" FontSize="{StaticResource PhoneFontSizeMedium}" Margin="{StaticResource PhoneTouchTargetOverhang}">
-                    ..If you enjoy using Gchat, would you mind taking a moment
-                    to rate it? It won't take more than a minute. Thanks for your support!
-                </TextBlock>
-                <Button>..Rate Gchat</Button>
-                <Button>..Remind me later</Button>
-                <Button Margin="0,24,0,0">..No, thanks</Button>
+	<UserControl.Resources>
+		<Style x:Key="ProgressOverlayStyle1" TargetType="c4f:ProgressOverlay">
+			<Setter Property="Background" Value="{StaticResource PhoneSemitransparentBrush}"/>
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="c4f:ProgressOverlay">
+						<Grid x:Name="LayoutGrid" Background="{TemplateBinding Background}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+							<Grid.Resources>
+								<Storyboard x:Name="fadeOut">
+									<DoubleAnimation Duration="0:0:0.5" To="0" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="LayoutGrid"/>
+								</Storyboard>
+								<Storyboard x:Name="fadeIn">
+									<DoubleAnimation Duration="0:0:0.5" From="0" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="LayoutGrid"/>
+								</Storyboard>
+							</Grid.Resources>
+							<Rectangle Fill="{StaticResource TransparentBrush}"/>
+							<Grid>
+								<ContentControl Content="{TemplateBinding Content}" HorizontalContentAlignment="Stretch" VerticalAlignment="Top"/>
+							</Grid>
+						</Grid>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+	</UserControl.Resources>
+    
+    <c4f:ProgressOverlay x:Name="LayoutRoot" Style="{StaticResource ProgressOverlayStyle1}" Visibility="Collapsed">
+        <Grid x:Name="MainGrid" Background="{StaticResource PhoneChromeBrush}" VerticalAlignment="Top">
+            <StackPanel Margin="12,0,12,0">
+                <TextBlock FontSize="{StaticResource PhoneFontSizeLarge}" Margin="12,12,12,6" FontWeight="SemiBold">
+                ..Rate Gchat</TextBlock>
+                <RichTextBox TextWrapping="Wrap" FontSize="{StaticResource PhoneFontSizeMedium}" TextAlignment="Justify">
+                    <Paragraph>..If you enjoy using Gchat, would you mind taking a moment
+                    to rate it? It won't take more than a minute. Thanks for your support!</Paragraph>
+                </RichTextBox>
+                <Button Click="Rate_Click">..Rate Gchat</Button>
+                <Button Click="Remind_Click">..Remind me later</Button>
+                <Button Margin="0,24,0,6" Click="No_Click">..No, thanks</Button>
             </StackPanel>
         </Grid>
-        
-    </Grid>
+    </c4f:ProgressOverlay>
 </UserControl>

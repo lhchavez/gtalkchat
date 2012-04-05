@@ -92,6 +92,9 @@
     <Compile Include="Controls\HubTile.xaml.cs">
       <DependentUpon>HubTile.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ReviewPopup.xaml.cs">
+      <DependentUpon>ReviewPopup.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Data\Group.cs" />
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="Pages\Search.xaml.cs">
@@ -146,6 +149,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\HighlightedTextBlock.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ReviewPopup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
