@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
-using System.IO.IsolatedStorage;
+using System.Diagnostics;
 using System.Runtime.Serialization;
 using System.Windows.Media.Imaging;
+using Gchat.Utilities;
 
 namespace Gchat.Data {
     [DataContract]
     public class Contact : INotifyPropertyChanged, IComparable<Contact> {
-        private static object mutex = new object();
-
+        private static Consumer consumer = new Consumer();
         #region Public Properties
 
         private bool hidden;
@@ -73,67 +72,16 @@ namespace Gchat.Data {
         public string PhotoHash {
             get { return photo; }
             set {
-                bool changed = false;
-
-                lock (mutex) {
-                    if (value != photo && value != null) {
-                        photo = value;
-                        changed = true;
-                    }
-                }
-
-                if (changed) {
+                if (value != photo && value != null) {
+                    photo = value;
                     Changed("PhotoHash");
 
                     if (!string.IsNullOrEmpty(photo)) {
-                        var fileName = "Shared/ShellContent/" + photo + ".jpg";
-
-                        App.Current.RootFrame.Dispatcher.BeginInvoke(() => {
-                            using (IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication()) {
-                                if (isf.FileExists(fileName)) {
-                                    try {
-                                        var file = isf.OpenFile(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-
-                                        if (file.Length == 0) {
-                                            file.Close();
-                                            isf.DeleteFile(fileName);
-                                        } else {
-                                            try {
-                                                PhotoUri = new BitmapImage();
-                                                PhotoUri.SetSource(file);
-                                                Changed("PhotoUri");
-                                            } catch (Exception e) {
-                                                System.Diagnostics.Debug.WriteLine(e);
-                                            } finally {
-                                                file.Close();
-                                            }
-
-                                            return;
-                                        }
-                                    } catch (Exception e) {
-                                        System.Diagnostics.Debug.WriteLine(e);
-                                    }
-                                }
-                            }
-
-                            App.Current.GtalkHelper.DownloadImage(
-                                this,
-                                () => App.Current.RootFrame.Dispatcher.BeginInvoke(() => {
-                                    using (IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication()) {
-                                        try {
-                                            using (var file = isf.OpenFile(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)) {
-                                                PhotoUri = new BitmapImage();
-                                                PhotoUri.SetSource(file);
-                                                Changed("PhotoUri");
-                                            }
-                                        } catch (Exception e) {
-                                            System.Diagnostics.Debug.WriteLine(e);
-                                        }
-                                    }
-                                }),
-                                () => {
-                                }
-                            );
+                        consumer.Add(this, (name, bitmap) => {
+                            PhotoUri = bitmap;
+                            Changed("PhotoUri");
+                        }, (error) => {
+                            Debug.WriteLine(error);
                         });
                     } else {
                         PhotoUri = null;

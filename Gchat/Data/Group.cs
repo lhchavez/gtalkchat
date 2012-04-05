@@ -17,6 +17,10 @@ namespace Gchat.Data {
             this.Items = new List<T>(items);
         }
 
+        public override int GetHashCode() {
+            return this.Title.GetHashCode();
+        }
+
         public override bool Equals(object obj) {
             Group<T> that = obj as Group<T>;
 

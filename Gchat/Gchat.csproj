@@ -114,6 +114,7 @@
       <DependentUpon>ContactList.xaml</DependentUpon>
     </Compile>
     <Compile Include="Data\ContactSession.cs" />
+    <Compile Include="Utilities\Consumer.cs" />
     <Compile Include="Utilities\Extensions.cs" />
     <Compile Include="Protocol\GoogleTalk.cs" />
     <Compile Include="Utilities\GoogleTalkHelper.cs" />
