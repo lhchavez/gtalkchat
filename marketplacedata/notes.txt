@@ -1,4 +1,4 @@
-﻿= Name =
+= Name =
 Gchat
 
 = Category =
@@ -10,9 +10,9 @@ support@gchatapp.com
 = Detailed Description =
 
 [Gchat+ only]
-This is the same as the free version of Gchat, but gives you the warm fuzzy feeling that you contributed to this app's development. As a tiny perk, can stay signed in for 24hrs after app launch, instead of the 2hrs of the free version.
+This is the same as the free version of Gchat, but gives you the warm fuzzy feeling that you contributed to this app's development. As a tiny perk, you will stay signed in for 24hrs after app launch, instead of the 2hrs for the free version.
 
-﻿A beautiful, fast, privacy-conscious client for the Google Talk™ instant messaging service. Gchat supports cool features such as:
+A beautiful, fast, privacy-conscious client for the Google Talk™ instant messaging service. Gchat supports cool features such as:
 
 - Modern design that integrates with the rest of Windows Phone
 - Receive IMs even if the app isn't running with push notifications
