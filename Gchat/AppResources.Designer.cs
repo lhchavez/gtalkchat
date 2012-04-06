@@ -232,7 +232,7 @@ namespace Gchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Gchat.
+        ///   Looks up a localized string similar to Gchat+.
         /// </summary>
         public static string AppName {
             get {
@@ -854,7 +854,7 @@ namespace Gchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to GCHAT.
+        ///   Looks up a localized string similar to GCHAT+.
         /// </summary>
         public static string Login_Title {
             get {
@@ -962,7 +962,7 @@ namespace Gchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to GCHAT.
+        ///   Looks up a localized string similar to GCHAT+.
         /// </summary>
         public static string Settings_Title {
             get {
