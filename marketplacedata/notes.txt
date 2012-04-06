@@ -10,7 +10,7 @@ support@gchatapp.com
 = Detailed Description =
 
 [Gchat+ only]
-This is the same as the free version of Gchat, but gives you the warm fuzzy feeling that you contributed to this app's development. 
+This is the same as the free version of Gchat, but gives you the warm fuzzy feeling that you contributed to this app's development. As a tiny perk, can stay signed in for 24hrs after app launch, instead of the 2hrs of the free version.
 
 ﻿A beautiful, fast, privacy-conscious client for the Google Talk™ instant messaging service. Gchat supports cool features such as:
 
@@ -18,7 +18,7 @@ This is the same as the free version of Gchat, but gives you the warm fuzzy feel
 - Receive IMs even if the app isn't running with push notifications
 - Pin your friends to start and receive tile notifications for each one
 - Completely encrypted conversations and support for Google Talk's "off the record" conversations
-- New in 1.4: Image attachment, alphabetical jumplist, hide contacts, *bold* and _italic_ formatting, and more!
+- New in 1.5: Loads of bug fixes and 24hrs signed in timeout for the paid version, Gchat+ (please wait up to two weeks for the servers to be updated)
 
 More info at http://gchatapp.com
 
