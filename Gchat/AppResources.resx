@@ -190,7 +190,7 @@
     <value>CC BY-NC-SA license</value>
   </data>
   <data name="About_PaidVersionNotice" xml:space="preserve">
-    <value>This is the paid version of Gchat. It has no extra funcionality, but you can have the warm, fuzzy feeling that you contributed to this app's development, and as a tiny perk, can stay signed in for 24hrs after app launch.</value>
+    <value>This is the paid version of Gchat. It has no extra funcionality, but you can have the warm, fuzzy feeling that you contributed to this app's development. As a tiny perk, you will stay signed in for 24hrs after app launch.</value>
   </data>
   <data name="AppName" xml:space="preserve">
     <value>Gchat+</value>
