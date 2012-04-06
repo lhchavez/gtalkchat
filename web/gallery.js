@@ -9,10 +9,10 @@ $(function() {
          }
       );
    }
+   
    if (!$.browser.msie || parseInt($.browser.version, 10) >= 9) {
       setTimeout(rotateScreenshots, 3000);
    }
-   
    
    $("#nav-features").click(function(e) {
       
@@ -41,6 +41,18 @@ $(function() {
          });
       });
       e.preventDefault();
+   });
+   
+   $("#download").click(function(e) {
+      $("#overlay").fadeIn();
+      $("#compare").fadeIn();
+      
+      e.preventDefault();
+   });
+   
+   $("#overlay, #close").click(function() {
+      $("#overlay").fadeOut();
+      $("#compare").fadeOut();
    });
 
 });
