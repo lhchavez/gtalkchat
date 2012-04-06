@@ -27,8 +27,9 @@ namespace Gchat {
         public IsolatedStorageSettings Settings { get; set; }
 
         public GoogleTalkHelper GtalkHelper { get; set; }
-
-        public Roster Roster { get; set; }
+        
+        private Roster roster = new Roster();
+        public Roster Roster { get { return roster; } }
 
         public ObservableCollection<Contact> RecentContacts { get; set; }
 
@@ -71,7 +72,9 @@ namespace Gchat {
                 // application's PhoneApplicationService object to Disabled.
                 // Caution:- Use this under debug mode only. Application that disables user idle detection will continue to run
                 // and consume battery power when the user is not using the phone.
-                PhoneApplicationService.Current.UserIdleDetectionMode = IdleDetectionMode.Disabled;
+                if (PhoneApplicationService.Current != null) {
+                    PhoneApplicationService.Current.UserIdleDetectionMode = IdleDetectionMode.Disabled;
+                }
             }
         }
 
@@ -112,7 +115,6 @@ namespace Gchat {
                 Settings["recent"] = new ObservableCollection<Contact>();
             }
 
-            Roster = new Roster();
             GtalkHelper = new GoogleTalkHelper();
             Roster.Load();
 
@@ -161,7 +163,6 @@ namespace Gchat {
                 Settings["unread"] = new Dictionary<string, int>();
             }
 
-            Roster = new Roster();
             if (GtalkHelper == null) GtalkHelper = new GoogleTalkHelper();
             Roster.Load();
 
