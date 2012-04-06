@@ -166,13 +166,13 @@
     <value>Report it!</value>
   </data>
   <data name="About_FreeVersionNotice1" xml:space="preserve">
-    <value>This is the free version. It's not limited or anything because we love you. Please consider getting the</value>
+    <value>This is the free version of Gchat. It's not limited or anything because we love you. However, the</value>
   </data>
   <data name="About_FreeVersionNotice2" xml:space="preserve">
     <value>paid version</value>
   </data>
   <data name="About_FreeVersionNotice3" xml:space="preserve">
-    <value>to support the development of this app (and paying the servers).</value>
+    <value>supports the app's development and servers, and signs you in for 24hrs after app launch, instead of 2hrs.</value>
   </data>
   <data name="About_Header" xml:space="preserve">
     <value>about</value>
@@ -190,7 +190,7 @@
     <value>CC BY-NC-SA license</value>
   </data>
   <data name="About_PaidVersionNotice" xml:space="preserve">
-    <value>This is the paid version of Gchat. It has no extra funcionality, but you can have the warm, fuzzy feeling that you contributed to this app's development.</value>
+    <value>This is the paid version of Gchat. It has no extra funcionality, but you can have the warm, fuzzy feeling that you contributed to this app's development, and as a tiny perk, can stay signed in for 24hrs after app launch.</value>
   </data>
   <data name="AppName" xml:space="preserve">
     <value>Gchat</value>

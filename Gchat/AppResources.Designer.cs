@@ -151,7 +151,7 @@ namespace Gchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This is the free version. It&apos;s not limited or anything because we love you. Please consider getting the.
+        ///   Looks up a localized string similar to This is the free version of Gchat. It&apos;s not limited or anything because we love you. However, the.
         /// </summary>
         public static string About_FreeVersionNotice1 {
             get {
@@ -169,7 +169,7 @@ namespace Gchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to to support the development of this app (and paying the servers)..
+        ///   Looks up a localized string similar to supports the app&apos;s development and servers, and signs you in for 24hrs after app launch, instead of 2hrs..
         /// </summary>
         public static string About_FreeVersionNotice3 {
             get {
@@ -223,7 +223,7 @@ namespace Gchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This is the paid version of Gchat. It has no extra funcionality, but you can have the warm, fuzzy feeling that you contributed to this app&apos;s development..
+        ///   Looks up a localized string similar to This is the paid version of Gchat. It has no extra funcionality, but you can have the warm, fuzzy feeling that you contributed to this app&apos;s development, and as a tiny perk, can stay signed in for 24hrs after app launch..
         /// </summary>
         public static string About_PaidVersionNotice {
             get {
