@@ -223,7 +223,7 @@ namespace Gchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This is the paid version of Gchat. It has no extra funcionality, but you can have the warm, fuzzy feeling that you contributed to this app&apos;s development, and as a tiny perk, can stay signed in for 24hrs after app launch..
+        ///   Looks up a localized string similar to This is the paid version of Gchat. It has no extra funcionality, but you can have the warm, fuzzy feeling that you contributed to this app&apos;s development. As a tiny perk, you will stay signed in for 24hrs after app launch..
         /// </summary>
         public static string About_PaidVersionNotice {
             get {
