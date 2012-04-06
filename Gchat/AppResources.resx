@@ -118,7 +118,11 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="About_ChangelistBody" xml:space="preserve">
-    <value>1.4 Codename Flan
+    <value>1.5 Codename Taffy
+· LOADS of bug fixes, should fix most crashes
+· Gchat+ users are now logged out after 24 hours instead of 2 hours (please wait up to two weeks for servers to be fully updated)
+
+1.4 Codename Flan
 · Image attachments and thumbnails
 · Message formatting: *bold* and _italic_
 · Alphabetical jumplist for all contacts list
@@ -192,7 +196,7 @@
     <value>Gchat</value>
   </data>
   <data name="AppVersion" xml:space="preserve">
-    <value>1.4</value>
+    <value>1.5</value>
   </data>
   <data name="ChatStatus_Available" xml:space="preserve">
     <value>available</value>

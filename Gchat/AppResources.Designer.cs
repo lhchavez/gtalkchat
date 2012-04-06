@@ -61,7 +61,11 @@ namespace Gchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 1.4 Codename Flan
+        ///   Looks up a localized string similar to 1.5 Codename Taffy
+        ///· LOADS of bug fixes, should fix most crashes
+        ///· Gchat+ users are now logged out after 24 hours instead of 2 hours (please wait up to two weeks for servers to be fully updated)
+        ///
+        ///1.4 Codename Flan
         ///· Image attachments and thumbnails
         ///· Message formatting: *bold* and _italic_
         ///· Alphabetical jumplist for all contacts list
@@ -75,13 +79,7 @@ namespace Gchat {
         ///· Status change
         ///· Bugfixes
         ///
-        ///1.2 Codename Mousse
-        ///· Fixed a bug with the display pictures
-        ///· Extended timeout period to 30 seconds
-        ///· Fixed a couple of crashes
-        ///
-        ///1.1 Codename Jelly
-        ///· Initial release!.
+        ///1.2 Codename Mou [rest of string was truncated]&quot;;.
         /// </summary>
         public static string About_ChangelistBody {
             get {
@@ -243,7 +241,7 @@ namespace Gchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 1.4.
+        ///   Looks up a localized string similar to 1.5.
         /// </summary>
         public static string AppVersion {
             get {
