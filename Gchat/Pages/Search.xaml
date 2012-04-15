@@ -24,7 +24,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <TextBox Name="SearchBox" InputScope="Search" />
+            <TextBox Name="SearchBox" InputScope="Search" KeyUp="SearchBox_KeyUp" />
 
             <ListBox Grid.Row="1" 
                      Name="SearchResults" 
