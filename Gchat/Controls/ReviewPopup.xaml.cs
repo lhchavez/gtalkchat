@@ -45,39 +45,49 @@ namespace Gchat.Controls {
             }
         }
 
-        private void Show() {
+        public void Show() {
             LayoutRoot.Show();
 
             var f = App.Current.RootFrame.Content as PhoneApplicationPage;
             f.ApplicationBar.IsVisible = false;
         }
 
-        private void Hide() {
+        public void Hide() {
             LayoutRoot.Hide();
-
+            
             var f = App.Current.RootFrame.Content as PhoneApplicationPage;
             f.ApplicationBar.IsVisible = true;
+        }
+
+        public bool IsShown() {
+            return LayoutRoot.Visibility == System.Windows.Visibility.Visible;
         }
 
         private void Rate_Click(object sender, RoutedEventArgs e) {
             Hide();
             settings["ReviewPopup-Completed"] = true;
-            FlurryWP7SDK.Api.LogEvent("About - Review clicked");
+            FlurryWP7SDK.Api.LogEvent("ReviewPopup", new List<FlurryWP7SDK.Models.Parameter>() {
+                new FlurryWP7SDK.Models.Parameter("Button", "Rate")
+            });
             var t = new Microsoft.Phone.Tasks.MarketplaceReviewTask();
             t.Show();
         }
 
-        private void Remind_Click(object sender, RoutedEventArgs e) {
+        public void Remind_Click(object sender, RoutedEventArgs e) {
             Hide();
             settings["ReviewPopup-InstallDate"] = DateTime.Now; // reset install date
             settings["ReviewPopup-Completed"] = false;
+            FlurryWP7SDK.Api.LogEvent("ReviewPopup", new List<FlurryWP7SDK.Models.Parameter>() {
+                new FlurryWP7SDK.Models.Parameter("Button", "Remind")
+            });
         }
 
         private void No_Click(object sender, RoutedEventArgs e) {
             Hide();
             settings["ReviewPopup-Completed"] = true;
+            FlurryWP7SDK.Api.LogEvent("ReviewPopup", new List<FlurryWP7SDK.Models.Parameter>() {
+                new FlurryWP7SDK.Models.Parameter("Button", "No")
+            });
         }
-
-        
     }
 }

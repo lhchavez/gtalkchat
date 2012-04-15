@@ -38,6 +38,15 @@ namespace Gchat.Pages {
             App.Current.ContactList = this;
         }
 
+        protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e) {
+            if (ReviewPopup.IsShown()) {
+                ReviewPopup.Remind_Click(this, null);
+                e.Cancel = true;
+            }
+            
+            base.OnBackKeyPress(e);
+        }
+
         public void UpdateRoster() {
             Dispatcher.BeginInvoke(() => OnlineContactsListBox.ItemsSource = App.Current.Roster.GetOnlineContacts());
         }

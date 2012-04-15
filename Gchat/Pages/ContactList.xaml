@@ -118,7 +118,7 @@
             </toolkit:ListPicker.FullModeItemTemplate>
         </toolkit:ListPicker>
 
-        <local:ReviewPopup />
+        <local:ReviewPopup x:Name="ReviewPopup"/>
     </Grid>
 
     <toolkit:TransitionService.NavigationInTransition>
