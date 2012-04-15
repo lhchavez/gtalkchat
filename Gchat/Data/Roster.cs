@@ -75,7 +75,7 @@ namespace Gchat.Data {
 
         public void Update(Contact item) {
             if (CollectionChanged != null) {
-                CollectionChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset, item, IndexOf(item)));
+                CollectionChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset, item, item, IndexOf(item)));
             }
         }
 
