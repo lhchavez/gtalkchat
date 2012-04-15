@@ -800,7 +800,7 @@ namespace Gchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Register.
+        ///   Looks up a localized string similar to Error.
         /// </summary>
         public static string Error_RegisterTitle {
             get {

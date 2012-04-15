@@ -383,7 +383,7 @@ This warning will now show again after you press OK.</value>
     <value>Getting offline messages</value>
   </data>
   <data name="Error_RegisterTitle" xml:space="preserve">
-    <value>Register</value>
+    <value>Error</value>
   </data>
   <data name="Login_AppbarLogin" xml:space="preserve">
     <value>log in</value>
