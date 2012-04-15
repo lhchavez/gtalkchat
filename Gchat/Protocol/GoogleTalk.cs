@@ -235,7 +235,7 @@ namespace Gchat.Protocol {
                 "/roster",
                 ReceiveMode.Lines,
                 sw => sw.Write("token=" + HttpUtility.UrlEncode(token)),
-                line => ParseContact(line, false, o.Add, ecb),
+                line => ParseContact(line, o.Add, ecb),
                 null,
                 ecb,
                 () => rcb(o)
@@ -406,7 +406,7 @@ namespace Gchat.Protocol {
             );
         }
 
-        public void ParseMessage(string cipher, MessageCallback mcb, ErrorCallback ecb) {
+        public void ParseMessage(string cipher, MessageCallback mcb, ErrorCallback ecb, bool retry = true) {
             bool success = true;
 
             try {
@@ -435,13 +435,23 @@ namespace Gchat.Protocol {
                 }
             } catch (NullReferenceException) {
                 ecb("Invalid JSON");
+            } catch (System.Security.Cryptography.CryptographicException) {
+                // Get key again
+                if (retry) {
+                    GetKey(
+                        key => ParseMessage(cipher, mcb, ecb, false),
+                        error => ecb(error)
+                    );
+                } else {
+                    ecb("Invalid decryption key");
+                }
             }
         }
 
-        public void ParseContact(string cipher, bool ciphered, ContactCallback mcb, ErrorCallback ecb) {
+        public void ParseContact(string jsontext, ContactCallback mcb, ErrorCallback ecb) {
             bool success = true;
 
-            var json = Json.JsonDecode(ciphered ? aes.Decipher(cipher) : cipher, ref success);
+            var json = Json.JsonDecode(jsontext, ref success);
 
             if (success && json is Dictionary<string, object>) {
                 var data = json as Dictionary<string, object>;
