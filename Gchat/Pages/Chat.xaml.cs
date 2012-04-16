@@ -391,6 +391,12 @@ namespace Gchat.Pages {
                 if (App.Current.Roster.Contains(email)) {
                     App.Current.Roster[email].UnreadCount = 0;
                 }
+                foreach (var con in App.Current.RecentContacts) {
+                    if (con.Email == email) {
+                        con.UnreadCount = 0;
+                        break;
+                    }
+                }
 
                 Uri url = gtalkHelper.GetPinUri(email);
                 ShellTile existing = ShellTile.ActiveTiles.FirstOrDefault(x => x.NavigationUri == url);
