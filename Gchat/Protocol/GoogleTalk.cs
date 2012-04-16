@@ -14,6 +14,7 @@ namespace Gchat.Protocol {
         Away,
         ExtendedAway,
         Dnd,
+        Invisible,
         Offline
     };
 
@@ -210,6 +211,9 @@ namespace Gchat.Protocol {
                     break;
                 case UserStatus.Offline:
                     statusString = "xa";
+                    break;
+                case UserStatus.Invisible:
+                    statusString = "invisible";
                     break;
                 case UserStatus.Available:
                 default:

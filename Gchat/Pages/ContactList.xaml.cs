@@ -20,8 +20,8 @@ namespace Gchat.Pages {
 
         private Dictionary<UserStatus, string> status = new Dictionary<UserStatus,string> { 
             {UserStatus.Available, AppResources.ChatStatus_Available}, 
-            {UserStatus.Dnd, AppResources.ChatStatus_Busy}, 
-            {UserStatus.Away, AppResources.ChatStatus_Away}
+            {UserStatus.Dnd, AppResources.ChatStatus_Busy},
+            {UserStatus.Invisible, AppResources.ChatStatus_Invisible}
         };
         
         public ContactList() {
