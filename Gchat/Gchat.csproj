@@ -53,12 +53,6 @@
     <Reference Include="Coding4Fun.Phone.Controls">
       <HintPath>..\lib\Coding4Fun.Phone.Controls.dll</HintPath>
     </Reference>
-    <Reference Include="Coding4Fun.Phone.Controls.Toolkit">
-      <HintPath>..\lib\Coding4Fun.Phone.Controls.Toolkit.dll</HintPath>
-    </Reference>
-    <Reference Include="Coding4Fun.Phone.Site.Controls">
-      <HintPath>..\lib\Coding4Fun.Phone.Site.Controls.dll</HintPath>
-    </Reference>
     <Reference Include="FlurryWP7SDK">
       <HintPath>..\lib\FlurryWP7SDK.dll</HintPath>
     </Reference>
