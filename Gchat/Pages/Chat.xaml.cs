@@ -284,6 +284,8 @@ namespace Gchat.Pages {
                     }
 
                     MessageText.Text = "";
+                    this.Focus();
+                    MessageText.Focus();
 
                     FlurryWP7SDK.Api.LogEvent("Chat - Chat sent");
                 }), error => {
