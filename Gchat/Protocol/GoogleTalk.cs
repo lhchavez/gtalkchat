@@ -57,7 +57,7 @@ namespace Gchat.Protocol {
         public GoogleTalk() {
             LoggedIn = false;
 
-            var uri = new Uri("ApiKey.txt", UriKind.RelativeOrAbsolute);
+            var uri = new Uri(App.Current.GtalkHelper.IsPaid() ? "PlusApiKey.txt" : "ApiKey.txt", UriKind.RelativeOrAbsolute);
             var resourceStream = App.GetResourceStream(uri);
 
             using (var sr = new StreamReader(resourceStream.Stream)) {
