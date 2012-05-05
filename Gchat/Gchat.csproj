@@ -604,6 +604,7 @@
     <Content Include="icons\emoticon.rage.serious.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="PlusApiKey.txt" />
     <Content Include="SplashScreenImage.jpg" />
     <Content Include="ToastIcon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
