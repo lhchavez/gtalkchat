@@ -106,7 +106,7 @@ namespace Gchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This is a third party app and is not endorsed or supported by Google..
+        ///   Looks up a localized string similar to This is a third party app and is not endorsed or supported by Google. &quot;Conversation&quot; symbol by Anna Weiss, from thenounproject.com collection..
         /// </summary>
         public static string About_Disclaimer {
             get {
