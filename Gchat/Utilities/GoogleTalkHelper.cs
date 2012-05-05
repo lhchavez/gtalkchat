@@ -87,7 +87,7 @@ namespace Gchat.Utilities {
             Connected = false;
         }
 
-        public bool IsPaid() {
+        public static bool IsPaid() {
 #if PAID
             return !(new Microsoft.Phone.Marketplace.LicenseInformation()).IsTrial();
 #else
