@@ -9,6 +9,7 @@ Gchat/PerformanceLogs/*
 
 ApiKey.txt
 FlurryApiKey.txt
+PlusApiKey.txt
 
 *.suo
 *.user
