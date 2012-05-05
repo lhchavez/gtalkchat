@@ -92,7 +92,7 @@ namespace Gchat {
                 FlurryWP7SDK.Api.StartSession(apikey);
                 FlurryWP7SDK.Api.SetSecureTransportEnabled();
                 FlurryWP7SDK.Api.SetVersion(String.Format("{0} {1}", AppResources.AppName, AppResources.AppVersion));
-                if (GtalkHelper.IsPaid()) {
+                if (GoogleTalkHelper.IsPaid()) {
                     FlurryWP7SDK.Api.LogEvent("Paid user");
                 }
             }

@@ -92,7 +92,7 @@ namespace Gchat.Pages {
         }
 
         private void SetLicenseNotice() {
-            if (App.Current.GtalkHelper.IsPaid()) {
+            if (GoogleTalkHelper.IsPaid()) {
                 PaidVersionNotice.FontSize = (double)App.Current.Resources["PhoneFontSizeMedium"];
                 FreeVersionNotice.FontSize = 0.1;
             } else {
