@@ -2,6 +2,7 @@
 using Microsoft.Phone.Controls;
 using System.Collections.Generic;
 using FlurryWP7SDK.Models;
+using Gchat.Utilities;
 
 namespace Gchat.Pages {
     public partial class Settings : PhoneApplicationPage {
