@@ -184,6 +184,12 @@
   <data name="About_Header" xml:space="preserve">
     <value>about</value>
   </data>
+  <data name="About_Icon" xml:space="preserve">
+    <value>Icon designed by</value>
+  </data>
+  <data name="About_IconLink" xml:space="preserve">
+    <value>djyanko</value>
+  </data>
   <data name="About_License1" xml:space="preserve">
     <value>Open source!</value>
   </data>

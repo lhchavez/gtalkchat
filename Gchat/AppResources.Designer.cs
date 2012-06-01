@@ -186,6 +186,24 @@ namespace Gchat {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Icon designed by.
+        /// </summary>
+        public static string About_Icon {
+            get {
+                return ResourceManager.GetString("About_Icon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to djyanko.
+        /// </summary>
+        public static string About_IconLink {
+            get {
+                return ResourceManager.GetString("About_IconLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Open source!.
         /// </summary>
         public static string About_License1 {

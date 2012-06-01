@@ -106,6 +106,11 @@
                                 <Hyperlink TargetName="_blank" NavigateUri="http://creativecommons.org/licenses/by-nc-sa/3.0/" Foreground="{StaticResource PhoneAccentBrush}">
                                     <Run Text="{Binding Path=Loc.About_License4, Source={StaticResource LocalizedStrings}}" />
                                 </Hyperlink>
+                                <LineBreak/>
+                                <Run Text="{Binding Path=Loc.About_Icon, Source={StaticResource LocalizedStrings}}" />
+                                <Hyperlink TargetName="_blank" NavigateUri="http://twitter.com/djyanko" Foreground="{StaticResource PhoneAccentBrush}">
+                                    <Run Text="{Binding Path=Loc.About_IconLink, Source={StaticResource LocalizedStrings}}"/>
+                                </Hyperlink>
                             </Paragraph>
 
                             <Paragraph>
