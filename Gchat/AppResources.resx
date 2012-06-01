@@ -118,9 +118,16 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="About_ChangelistBody" xml:space="preserve">
-    <value>1.5 Codename Taffy
+    <value>1.6 Codename Milkshake
+· New icon
+· Invisible status
+· Fixed issue with autocorrect
+· Fixed issue with recent contacts unread count
+· Other minor bug fixes
+· Gchat+ users are now logged out after 24 hours instead of 2 hours 
+
+1.5 Codename Taffy
 · LOADS of bug fixes, should fix most crashes
-· Gchat+ users are now logged out after 24 hours instead of 2 hours (please wait up to two weeks for servers to be fully updated)
 
 1.4 Codename Flan
 · Image attachments and thumbnails
@@ -151,7 +158,7 @@
     <value>by</value>
   </data>
   <data name="About_Disclaimer" xml:space="preserve">
-    <value>This is a third party app and is not endorsed or supported by Google. "Conversation" symbol by Anna Weiss, from thenounproject.com collection.</value>
+    <value>This is a third party app and is not endorsed or supported by Google.</value>
   </data>
   <data name="About_Feedback1" xml:space="preserve">
     <value>Do you like this app?</value>
@@ -192,11 +199,14 @@
   <data name="About_PaidVersionNotice" xml:space="preserve">
     <value>This is the paid version of Gchat. It has no extra funcionality, but you can have the warm, fuzzy feeling that you contributed to this app's development. As a tiny perk, you will stay signed in for 24hrs after app launch.</value>
   </data>
+  <data name="About_PrivacyPolicy" xml:space="preserve">
+    <value>Privacy Policy</value>
+  </data>
   <data name="AppName" xml:space="preserve">
     <value>Gchat</value>
   </data>
   <data name="AppVersion" xml:space="preserve">
-    <value>1.5</value>
+    <value>1.6</value>
   </data>
   <data name="ChatStatus_Available" xml:space="preserve">
     <value>available</value>
@@ -397,6 +407,9 @@ This warning will now show again after you press OK.</value>
   <data name="Login_PasswordLabel" xml:space="preserve">
     <value>Google password</value>
   </data>
+  <data name="Login_PrivacyPolicy" xml:space="preserve">
+    <value>Gchat Privacy Policy</value>
+  </data>
   <data name="Login_Progress" xml:space="preserve">
     <value>Logging in...</value>
   </data>
@@ -407,7 +420,7 @@ This warning will now show again after you press OK.</value>
     <value>Google username or email</value>
   </data>
   <data name="Login_WarningNotifications" xml:space="preserve">
-    <value>By logging in, you are also opting in to raw, toast and tile push notifications for incoming chat messages. You can disable toast and tile notifications individually in the settings page at any time. Raw notifications are required for the app to function properly and can be disabled at any time by logging out.</value>
+    <value>By logging in, you are also enabling push notifications for incoming messages. You can disable them in the settings page at any time. </value>
   </data>
   <data name="Logout_Message" xml:space="preserve">
     <value>By logging out, all your settings will be erased. Do you wish to continue?</value>
