@@ -21,7 +21,7 @@ This is the free version of Gchat. It's not limited or anything because we love 
 - Receive IMs even if the app isn't running with push notifications
 - Pin your friends to start and receive tile notifications for each one
 - Completely encrypted conversations and support for Google Talk's "off the record" conversations
-- New in 1.5: Loads of bug fixes and 24hrs signed in timeout for the paid version, Gchat+ (please wait up to two weeks for the servers to be updated)
+- New in 1.6: New icon, invisible status, bug fixes, and 24hrs logout timer for Gchat+ users
 
 More info at http://gchatapp.com
 
