@@ -35,15 +35,20 @@
                 <TextBlock Text="{Binding Path=Loc.Login_PasswordLabel, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextSubtleStyle}" />
                 <PasswordBox Name="Password" KeyUp="Password_KeyUp" />
 
-                <HyperlinkButton 
-                TargetName="_blank" 
-                NavigateUri="https://www.google.com/accounts/NewAccount"
-                Margin="0,24,0,0" Content="{Binding Path=Loc.Login_CreateAccountLink, Source={StaticResource LocalizedStrings}}" />
+                <HyperlinkButton Content="{Binding Path=Loc.Login_PrivacyPolicy, Source={StaticResource LocalizedStrings}}"
+                                 TargetName="_blank"
+                                 Margin="0,24,0,0"
+                                 NavigateUri="http://gchatapp.com/privacy" />
+
+                <HyperlinkButton TargetName="_blank" 
+                                 NavigateUri="https://www.google.com/accounts/NewAccount"
+                                 Margin="0,24,0,0" 
+                                 Content="{Binding Path=Loc.Login_CreateAccountLink, Source={StaticResource LocalizedStrings}}" />
 
                 <TextBlock TextWrapping="Wrap" 
-                            Style="{StaticResource PhoneTextNormalStyle}" 
-                            Margin="12,48,12,6" 
-                            Text="{Binding Path=Loc.Login_WarningNotifications, Source={StaticResource LocalizedStrings}}" />
+                           Style="{StaticResource PhoneTextNormalStyle}" 
+                           Margin="12,24,12,6" 
+                           Text="{Binding Path=Loc.Login_WarningNotifications, Source={StaticResource LocalizedStrings}}" />
             </StackPanel>
         </ScrollViewer>
     </Grid>

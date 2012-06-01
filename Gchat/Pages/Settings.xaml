@@ -71,6 +71,16 @@
                             </Paragraph>
 
                             <Paragraph>
+                                <Hyperlink TargetName="_blank" NavigateUri="http://gchatapp.com/privacy/" Foreground="{StaticResource PhoneAccentBrush}">
+                                    <Run Text="{Binding Path=Loc.About_PrivacyPolicy, Source={StaticResource LocalizedStrings}}" />
+                                </Hyperlink>
+                            </Paragraph>
+
+                            <Paragraph>
+                                <Run Text="" />
+                            </Paragraph>
+
+                            <Paragraph>
                                 <Run Text="{Binding Path=Loc.About_Feedback1, Source={StaticResource LocalizedStrings}}" />
                                 <Hyperlink Click="Review_Click" Foreground="{StaticResource PhoneAccentBrush}">
                                     <Run Text="{Binding Path=Loc.About_Feedback2, Source={StaticResource LocalizedStrings}}" />
