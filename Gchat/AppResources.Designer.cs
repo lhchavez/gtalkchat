@@ -258,7 +258,7 @@ namespace Gchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Gchat.
+        ///   Looks up a localized string similar to Gchat+.
         /// </summary>
         public static string AppName {
             get {
@@ -889,7 +889,7 @@ namespace Gchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to GCHAT.
+        ///   Looks up a localized string similar to GCHAT+.
         /// </summary>
         public static string Login_Title {
             get {
@@ -943,7 +943,7 @@ namespace Gchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to If you enjoy using Gchat, would you mind taking a moment to rate it? It won&apos;t take more than a minute. Thanks for your support!.
+        ///   Looks up a localized string similar to If you enjoy using Gchat+, would you mind taking a moment to rate it? It won&apos;t take more than a minute. Thanks for your support!.
         /// </summary>
         public static string ReviewPopup_Body {
             get {
@@ -961,7 +961,7 @@ namespace Gchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Rate Gchat.
+        ///   Looks up a localized string similar to Rate Gchat+.
         /// </summary>
         public static string ReviewPopup_RateButton {
             get {
@@ -979,7 +979,7 @@ namespace Gchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Rate Gchat.
+        ///   Looks up a localized string similar to Rate Gchat+.
         /// </summary>
         public static string ReviewPopup_Title {
             get {
@@ -997,7 +997,7 @@ namespace Gchat {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to GCHAT.
+        ///   Looks up a localized string similar to GCHAT+.
         /// </summary>
         public static string Settings_Title {
             get {
